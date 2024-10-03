@@ -1,0 +1,81 @@
+@startuml
+class User {
+  + Role
+  + Email
+  }
+
+class Patient {
+  + First Name
+  + Last Name
+  + Full Name
+  + Date of Birth
+  + Gender
+  + Medical Record Number
+  + Contact Information
+  + Allergies/Medical Conditions
+  + Emergency Contact
+  + Appointment History
+
+}
+
+class PatientInfoLog{
++ ProfileHistory
+}
+
+class Specialization{
+}
+
+class Staff {
+
+  + First Name
+  + Last Name
+  + Full Name
+  + License Number
+  + Contact Information
+  + Availability Slots
+}
+
+class OperationRequest {
+  + ID
+  + Patient ID
+  + Doctor ID
+  + Operation Type ID
+  + Deadline Date
+  + Priority
+}
+
+class OperationType {
+  + ID
+  + Name
+  + Estimated Duration
+  + active
+}
+
+class Appointment {
+  + ID
+  + Request ID
+  + Room ID
+  + Date and Time
+  + Status
+}
+
+class SurgeryRoom {
+  + Room Number
+  + Type
+  + Capacity
+  + Assigned Equipment
+  + Current Status
+}
+
+Specialization <--Staff: has
+Specialization ---> OperationType: required to perform
+Patient "1"--> "1" PatientInfoLog : has
+User "1"--> "1" Patient : can be
+User "1"--> "1" Staff : can be
+Patient "1" --> "*" Appointment : has
+Staff "1" --> "*" Appointment : performs
+Staff "1" --> "*" OperationRequest : requests
+Appointment "*" --> "1" SurgeryRoom : occurs in
+OperationRequest "1" --> "1" OperationType : has
+
+@enduml
