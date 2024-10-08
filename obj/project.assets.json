@@ -5526,19 +5526,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\jjjos\\.nuget\\packages\\": {}
+    "C:\\Users\\Rodrigo Almeida\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\jjjos\\Uni\\3Ano\\Lapr5\\lapr5-24-25\\DDDNetCore.csproj",
+      "projectUniqueName": "C:\\Users\\Rodrigo Almeida\\Desktop\\lapr5\\lapr5-24-25-g065\\DDDNetCore.csproj",
       "projectName": "DDDNetCore",
-      "projectPath": "C:\\Users\\jjjos\\Uni\\3Ano\\Lapr5\\lapr5-24-25\\DDDNetCore.csproj",
-      "packagesPath": "C:\\Users\\jjjos\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jjjos\\Uni\\3Ano\\Lapr5\\lapr5-24-25\\obj\\",
+      "projectPath": "C:\\Users\\Rodrigo Almeida\\Desktop\\lapr5\\lapr5-24-25-g065\\DDDNetCore.csproj",
+      "packagesPath": "C:\\Users\\Rodrigo Almeida\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Rodrigo Almeida\\Desktop\\lapr5\\lapr5-24-25-g065\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\jjjos\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Rodrigo Almeida\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp5.0"
