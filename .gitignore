@@ -1,5 +1,8 @@
 /TodoApi/obj/
 /TodoApi/bin/
+/obj
 *.exe
 *.dll
 *.pdb
+*.vs
+*.vscode
