@@ -5531,11 +5531,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\elisa\\Documents\\lapr5-24-25-g065\\lapr5-24-25-g065\\DDDNetCore.csproj",
+      "projectUniqueName": "C:\\Users\\elisa\\Documents\\lapr5-24-25-g065\\DDDNetCore.csproj",
       "projectName": "DDDNetCore",
-      "projectPath": "C:\\Users\\elisa\\Documents\\lapr5-24-25-g065\\lapr5-24-25-g065\\DDDNetCore.csproj",
+      "projectPath": "C:\\Users\\elisa\\Documents\\lapr5-24-25-g065\\DDDNetCore.csproj",
       "packagesPath": "C:\\Users\\elisa\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\elisa\\Documents\\lapr5-24-25-g065\\lapr5-24-25-g065\\obj\\",
+      "outputPath": "C:\\Users\\elisa\\Documents\\lapr5-24-25-g065\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\elisa\\AppData\\Roaming\\NuGet\\NuGet.Config"
