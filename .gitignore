@@ -8,3 +8,4 @@
 *.vscode
 *.exe
 /bin
+bin/Debug/netcoreapp8.0/DDDNetCore.dll
