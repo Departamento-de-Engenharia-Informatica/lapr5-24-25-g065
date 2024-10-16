@@ -1,0 +1,21 @@
+| Term                           | Definition                                                                                                                                                    |
+|--------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| User                           | Represents a system user, either an admin, a healthcare staff member (doctor, nurse, technician), or a patient.                                               |
+| Patient                        | An individual receiving medical care, who has a profile in the system with personal data, medical history, and contact information.                           |
+| Healthcare Staff               | Professionals providing healthcare services, including doctors, nurses, and technicians, with specific specializations.                                       |
+| Operation Request              | A request to schedule a medical operation for a patient, including information such as the type of operation, priority, and deadline.                         |
+| Operation Type                 | Predefined types of medical procedures, including the name, estimated duration, and required staff specializations.                                           |
+| Appointment                    | Represents a scheduled operation for a patient, with defined professionals, room, and time slot.                                                             |
+| Surgery Room                   | Rooms within the medical facility where operations take place, with specific capacities and equipment.                                                       |
+| IAM (Identity Access Management) | System used for managing user identities and access, including authentication for external users (e.g., Google, hospital SSO).                               |
+| GDPR (General Data Protection Regulation) | European data protection regulation that defines the requirements for data protection and management within the system.                                    |
+| Backoffice                     | Administrative application for managing users, patients, operation types, and operation requests.                                                            |
+| 3D Visualization Module        | System component that renders the hospital layout and real-time resource availability.                                                                        |
+| Planning Module                | Component responsible for generating and optimizing the surgery schedule based on the availability of staff and rooms.                                        |
+| Business Continuity            | Plan to ensure the system can continue functioning in case of failures or interruptions.                                                                     |
+| Resilience                     | The ability of the system to quickly recover from difficulties or adapt easily to changes.                                                                    |
+| Authentication                 | The process of verifying a user's identity in the system, ensuring secure access to features.                                                                |
+| Sensitive Properties           | Data that requires special protection due to patient privacy, such as medical history.                                                                        |
+| Availability Slot              | Time slots defined by healthcare staff indicating when they are available for appointments.                                                                  |
+| Compliance                     | Assurance that the system meets all applicable legal and regulatory requirements, especially related to GDPR.                                                |
+| Role-Based Access Control (RBAC) | A mechanism that restricts access to system functionalities based on the user's role (Admin, Doctor, etc.).                                                   |
