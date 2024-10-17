@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Categories;
 using DDDSample1.Domain.BackOfficeUsers;
 using DDDSample1.Domain.Specializations;
 

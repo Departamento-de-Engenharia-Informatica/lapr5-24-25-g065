@@ -5526,27 +5526,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\jjjos\\.nuget\\packages\\": {}
+    "C:\\Users\\elisa\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\jjjos\\Uni\\3Ano\\Lapr5\\lapr5-24-25\\DDDNetCore.csproj",
+      "projectUniqueName": "C:\\Users\\elisa\\Documents\\lapr5-24-25-g065\\DDDNetCore.csproj",
       "projectName": "DDDNetCore",
-      "projectPath": "C:\\Users\\jjjos\\Uni\\3Ano\\Lapr5\\lapr5-24-25\\DDDNetCore.csproj",
-      "packagesPath": "C:\\Users\\jjjos\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jjjos\\Uni\\3Ano\\Lapr5\\lapr5-24-25\\obj\\",
+      "projectPath": "C:\\Users\\elisa\\Documents\\lapr5-24-25-g065\\DDDNetCore.csproj",
+      "packagesPath": "C:\\Users\\elisa\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\elisa\\Documents\\lapr5-24-25-g065\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\jjjos\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\elisa\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -5615,7 +5612,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
       }
     }
   },

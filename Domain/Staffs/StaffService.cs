@@ -1,42 +1,41 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Categories;
-using DDDSample1.Domain.BackOfficeUsers;
+using DDDSample1.Domain.Staffs;
 using DDDSample1.Domain.Specializations;
 
-namespace DDDSample1.Domain.BackOfficeUsers
+namespace DDDSample1.Domain.Staffs
 {
-    public class BackOfficeUserService
+    public class StaffService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly BackOfficeUserRepository _repo;
+        private readonly StaffRepository _repo;
 
-        public BackOfficeUserService(IUnitOfWork unitOfWork, BackOfficeUserRepository repo)
+        public StaffService(IUnitOfWork unitOfWork, StaffRepository repo)
         {
             this._unitOfWork = unitOfWork;
             this._repo = repo;
         }
 
-        public async Task<List<BackOfficeUserDto>> GetAllAsync()
+        public async Task<List<StaffDto>> GetAllAsync()
         {
             var list = await this._repo.GetAllAsync();
             
-            List<BackOfficeUserDto> listDto = list.ConvertAll<BackOfficeUserDto>(bouser => 
-                new BackOfficeUserDto(bouser.Firstname,bouser.FullName,bouser.LastName,bouser.Gender,bouser.Specialization,bouser.Type,bouser.LicenseNumber));
+            List<StaffDto> listDto = list.ConvertAll<StaffDto>(bouser => 
+                new StaffDto(bouser.Firstname,bouser.FullName,bouser.LastName,bouser.Gender,bouser.Specialization,bouser.Type,bouser.LicenseNumber));
 
             return listDto;
         }
 
-        public async Task<BackOfficeUserDto> AddAsync(CreatingBackOfficeUserDto dto)
+        public async Task<StaffDto> AddAsync(StaffDto dto)
         {
-            var backOfficeUser = new BackOfficeUser(dto.Firstname,dto.FullName,dto.LastName,dto.Gender,dto.Specialization,dto.Type,dto.LicenseNumber);
+            var staff = new Staff(dto.Firstname,dto.FullName,dto.LastName,dto.Gender,dto.Specialization,dto.Type,dto.LicenseNumber);
 
-            await this._repo.AddAsync(backOfficeUser);
+            await this._repo.AddAsync(staff);
 
             await this._unitOfWork.CommitAsync();
 
-            return new BackOfficeUserDto(backOfficeUser.Firstname,backOfficeUser.FullName, backOfficeUser.LastName,backOfficeUser.Gender,backOfficeUser.Specialization,backOfficeUser.Type,backOfficeUser.LicenseNumber);
+            return new Staff(staff.Firstname,staff.FullName, staff.LastName,staff.Gender,staff.Specialization,staff.Type,staff.LicenseNumber);
         }
 
         /*public async Task<BackOfficeUserDto> UpdateAsync(BackOfficeUserDto dto)
