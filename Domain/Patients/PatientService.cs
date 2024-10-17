@@ -1,41 +1,49 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
+using System.Runtime.ConstrainedExecution;
 using DDDSample1.Domain.BackOfficeUsers;
-using DDDSample1.Domain.Specializations;
 
 namespace DDDSample1.Domain.Patients
 {
-    public class BackOfficeUserService
+    public class PatientService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly BackOfficeUserRepository _repo;
+        private readonly PatientRepository _repo;
 
-        public BackOfficeUserService(IUnitOfWork unitOfWork, BackOfficeUserRepository repo)
+        public PatientService(IUnitOfWork unitOfWork, PatientRepository repo)
         {
             this._unitOfWork = unitOfWork;
             this._repo = repo;
         }
 
-        public async Task<List<BackOfficeUserDto>> GetAllAsync()
+        public async Task<List<PatientDto>> GetAllAsync()
         {
             var list = await this._repo.GetAllAsync();
             
-            List<BackOfficeUserDto> listDto = list.ConvertAll<BackOfficeUserDto>(bouser => 
-                new BackOfficeUserDto(bouser.Firstname,bouser.LastName,bouser.Gender,bouser.Specialization,bouser.Type,bouser.LicenseNumber));
+            List<PatientDto> listDto = list.ConvertAll<PatientDto>(patient => 
+                new PatientDto(patient.Firstname, patient.LastName,patient.FullName, patient.Gender, patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber ));
 
             return listDto;
         }
 
-        public async Task<BackOfficeUserDto> AddAsync(CreatingBackOfficeUserDto dto)
-        {
-            var backOfficeUser = new BackOfficeUser(dto.Firstname,dto.LastName,dto.Gender,dto.Specialization,dto.Type,dto.LicenseNumber);
+        public async Task<PatientDto> AddAsync(CreatingPatientDto dto)
+        {   
+            var patient = new Patient(dto.Firstname, dto.LastName,dto.FullName, dto.Gender, dto.Allergies, dto.EmergencyContact, dto.DateOfBirth, dto.MedicalRecordNumber );
 
-            await this._repo.AddAsync(backOfficeUser);
+            if(patient.Allergies.Count == 0){
+                await this._repo.AddAsync(patient);
 
-            await this._unitOfWork.CommitAsync();
+                await this._unitOfWork.CommitAsync();
 
-            return new BackOfficeUserDto(backOfficeUser.Firstname,backOfficeUser.LastName,backOfficeUser.Gender,backOfficeUser.Specialization,backOfficeUser.Type,backOfficeUser.LicenseNumber);
+                return new PatientDto(patient.Firstname, patient.LastName,patient.FullName, patient.Gender, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber );
+            }else{
+                await this._repo.AddAsync(patient);
+
+                await this._unitOfWork.CommitAsync();
+
+                return new PatientDto(patient.Firstname, patient.LastName,patient.FullName, patient.Gender, patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber );
+            }
         }
 
         /*public async Task<BackOfficeUserDto> UpdateAsync(BackOfficeUserDto dto)

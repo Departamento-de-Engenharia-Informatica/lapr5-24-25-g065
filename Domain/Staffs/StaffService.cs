@@ -29,13 +29,13 @@ namespace DDDSample1.Domain.Staffs
 
         public async Task<StaffDto> AddAsync(StaffDto dto)
         {
-            var staff = new Staff(dto.Firstname,dto.FullName,dto.LastName,dto.Gender,dto.Specialization,dto.Type,dto.LicenseNumber);
+            var staff = new Staff(dto.Firstname,dto.LastName,dto.FullName,dto.Gender,dto.Specialization,dto.Type,dto.LicenseNumber);
 
             await this._repo.AddAsync(staff);
 
             await this._unitOfWork.CommitAsync();
 
-            return new Staff(staff.Firstname,staff.FullName, staff.LastName,staff.Gender,staff.Specialization,staff.Type,staff.LicenseNumber);
+            return new StaffDto(staff.Firstname,staff.LastName,staff.FullName,staff.Gender,staff.Specialization,staff.Type,staff.LicenseNumber);
         }
 
         /*public async Task<BackOfficeUserDto> UpdateAsync(BackOfficeUserDto dto)
