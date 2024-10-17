@@ -13,12 +13,14 @@ namespace DDDSample1.Domain.BackOfficeUsers
         public string Firstname { get;  private set; }
 
         public string LastName { get;  private set; }
+        public string FullName { get;  private set; }
 
         public string LicenseNumber { get;  private set; }
 
-        public BackOfficeUser(string firstname, string lastName, string gender, Specialization specialization, string type, string licenseNumber ){
+        public BackOfficeUser(string firstname, string lastName,string fullName, string gender, Specialization specialization, string type, string licenseNumber ){
             Firstname = firstname;
             LastName = lastName;
+            FullName = fullName;
             Gender = gender;
             Specialization = specialization;
             Type = type;

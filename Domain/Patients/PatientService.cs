@@ -5,7 +5,7 @@ using DDDSample1.Domain.Categories;
 using DDDSample1.Domain.BackOfficeUsers;
 using DDDSample1.Domain.Specializations;
 
-namespace DDDSample1.Domain.BackOfficeUsers
+namespace DDDSample1.Domain.Patients
 {
     public class BackOfficeUserService
     {
@@ -23,20 +23,20 @@ namespace DDDSample1.Domain.BackOfficeUsers
             var list = await this._repo.GetAllAsync();
             
             List<BackOfficeUserDto> listDto = list.ConvertAll<BackOfficeUserDto>(bouser => 
-                new BackOfficeUserDto(bouser.Firstname,bouser.FullName,bouser.LastName,bouser.Gender,bouser.Specialization,bouser.Type,bouser.LicenseNumber));
+                new BackOfficeUserDto(bouser.Firstname,bouser.LastName,bouser.Gender,bouser.Specialization,bouser.Type,bouser.LicenseNumber));
 
             return listDto;
         }
 
         public async Task<BackOfficeUserDto> AddAsync(CreatingBackOfficeUserDto dto)
         {
-            var backOfficeUser = new BackOfficeUser(dto.Firstname,dto.FullName,dto.LastName,dto.Gender,dto.Specialization,dto.Type,dto.LicenseNumber);
+            var backOfficeUser = new BackOfficeUser(dto.Firstname,dto.LastName,dto.Gender,dto.Specialization,dto.Type,dto.LicenseNumber);
 
             await this._repo.AddAsync(backOfficeUser);
 
             await this._unitOfWork.CommitAsync();
 
-            return new BackOfficeUserDto(backOfficeUser.Firstname,backOfficeUser.FullName, backOfficeUser.LastName,backOfficeUser.Gender,backOfficeUser.Specialization,backOfficeUser.Type,backOfficeUser.LicenseNumber);
+            return new BackOfficeUserDto(backOfficeUser.Firstname,backOfficeUser.LastName,backOfficeUser.Gender,backOfficeUser.Specialization,backOfficeUser.Type,backOfficeUser.LicenseNumber);
         }
 
         /*public async Task<BackOfficeUserDto> UpdateAsync(BackOfficeUserDto dto)
