@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using DDDSample1.Domain.Shared;
+using DDDSample1.Domain.Staffs;
 
 namespace DDDSample1.Infrastructure.Shared
 {
@@ -12,7 +13,7 @@ namespace DDDSample1.Infrastructure.Shared
     where TEntityId : EntityId
     {
         private readonly DbSet<TEntity> _objs;
-        
+    
         public BaseRepository(DbSet<TEntity> objs)
         {
             this._objs = objs ?? throw new ArgumentNullException(nameof(objs));

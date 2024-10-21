@@ -36,5 +36,31 @@ namespace DDDSample1.Domain.Patients
             DateOfBirth = dateOfBirth;
             MedicalRecordNumber = medicalRecordNumber;
         }
+
+        public void ChangeFirstName(string firstname){
+            this.Firstname = firstname;
+        }
+        public void ChangeLastName(string lastName){
+            this.LastName = lastName;
+        }
+        public void ChangeFullName(string fullName){
+            this.FullName = fullName;
+        }
+        public void ChangeGender(string gender){
+            this.Gender = gender;
+        }
+        public void ChangeEmergencyContact(string emergencyContact){
+            this.EmergencyContact = emergencyContact;
+        }
+        public void ChangeAllergies(List<string> allergies){
+            this.Allergies = allergies;
+        }
+        public void ChangeDateOfBirth(string dateOfBirth){
+            this.DateOfBirth = dateOfBirth;
+        }
+
+        public void ChangeMedicalRecordNumber(string medicalRecordNumber){
+            this.MedicalRecordNumber=medicalRecordNumber;
+        }
     }
 }

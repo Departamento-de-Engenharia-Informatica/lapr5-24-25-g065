@@ -3,34 +3,34 @@ using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Products;
+using DDDSample1.Domain.Staffs;
 
 
 namespace DDDSample1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class StaffsController : ControllerBase
     {
-        private readonly ProductService _service;
+        private readonly StaffService _service;
 
-        public ProductsController(ProductService service)
+        public StaffsController(StaffService service)
         {
             _service = service;
         }
 
-        // GET: api/Products
+        // GET: api/Staff
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<StaffDto>>> GetAll()
         {
             return await _service.GetAllAsync();
         }
 
         // GET: api/Products/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductDto>> GetGetById(Guid id)
+        public async Task<ActionResult<StaffDto>> GetGetById(Guid id)
         {
-            var prod = await _service.GetByIdAsync(new ProductId(id));
+            var prod = await _service.GetByIdAsync(new StaffId(id));
 
             if (prod == null)
             {
@@ -40,15 +40,15 @@ namespace DDDSample1.Controllers
             return prod;
         }
 
-        // POST: api/Products
+        // POST: api/Staffs
         [HttpPost]
-        public async Task<ActionResult<ProductDto>> Create(CreatingProductDto dto)
+        public async Task<ActionResult<StaffDto>> Create(CreatingStaffDto dto)
         {
             try
             {
-                var prod = await _service.AddAsync(dto);
+                var staff = await _service.AddAsync(dto);
 
-                return CreatedAtAction(nameof(GetGetById), new { id = prod.Id }, prod);
+                return CreatedAtAction(nameof(GetGetById), new { id = staff.Id }, staff);
             }
             catch(BusinessRuleValidationException ex)
             {
@@ -59,7 +59,7 @@ namespace DDDSample1.Controllers
         
         // PUT: api/Products/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<ProductDto>> Update(Guid id, ProductDto dto)
+        public async Task<ActionResult<StaffDto>> Update(Guid id, StaffDto dto)
         {
             if (id != dto.Id)
             {
@@ -81,28 +81,14 @@ namespace DDDSample1.Controllers
                 return BadRequest(new {Message = ex.Message});
             }
         }
-
-        // Inactivate: api/Products/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<ProductDto>> SoftDelete(Guid id)
-        {
-            var prod = await _service.InactivateAsync(new ProductId(id));
-
-            if (prod == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(prod);
-        }
         
         // DELETE: api/Products/5
         [HttpDelete("{id}/hard")]
-        public async Task<ActionResult<ProductDto>> HardDelete(Guid id)
+        public async Task<ActionResult<StaffDto>> HardDelete(Guid id)
         {
             try
             {
-                var prod = await _service.DeleteAsync(new ProductId(id));
+                var prod = await _service.DeleteAsync(new StaffId(id));
 
                 if (prod == null)
                 {

@@ -18,13 +18,37 @@ namespace DDDSample1.Domain.Staffs
         public string LicenseNumber { get;  private set; }
 
         public Staff(string firstname, string lastName,string fullName, string gender, Specialization specialization, string type, string licenseNumber ){
-            Firstname = firstname;
-            LastName = lastName;
-            FullName = fullName;
-            Gender = gender;
-            Specialization = specialization;
-            Type = type;
-            LicenseNumber = licenseNumber;
+            this.Id = new StaffId(Guid.NewGuid());
+            this.Firstname = firstname;
+            this.LastName = lastName;
+            this.FullName = fullName;
+            this.Gender = gender;
+            this.Specialization = specialization;
+            this.Type = type;
+            this.LicenseNumber = licenseNumber;
         }
+
+        public void ChangeFirstName(string firstname){
+            this.Firstname = firstname;
+        }
+        public void ChangeLastName(string lastName){
+            this.LastName = lastName;
+        }
+        public void ChangeFullName(string fullName){
+            this.FullName = fullName;
+        }
+        public void ChangeGender(string gender){
+            this.Gender = gender;
+        }
+        public void ChangeSpecialization(Specialization specialization){
+            this.Specialization = specialization;
+        }
+        public void ChangeType(string type){
+            this.Type = type;
+        }
+        public void ChangeLicenseNumber(string licenseNumber){
+            this.LicenseNumber = licenseNumber;
+        }
+
     }
 }

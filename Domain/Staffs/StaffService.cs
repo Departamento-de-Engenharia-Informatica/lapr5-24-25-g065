@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Staffs;
 using DDDSample1.Domain.Specializations;
+using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace DDDSample1.Domain.Staffs
 {
@@ -21,13 +23,13 @@ namespace DDDSample1.Domain.Staffs
         {
             var list = await this._repo.GetAllAsync();
             
-            List<StaffDto> listDto = list.ConvertAll<StaffDto>(bouser => 
-                new StaffDto(bouser.Firstname,bouser.FullName,bouser.LastName,bouser.Gender,bouser.Specialization,bouser.Type,bouser.LicenseNumber));
+            List<StaffDto> listDto = list.ConvertAll<StaffDto>(staff => 
+                new StaffDto(staff.Id.AsGuid(),staff.Firstname,staff.LastName,staff.FullName,staff.Gender,staff.Specialization,staff.Type,staff.LicenseNumber));
 
             return listDto;
         }
 
-        public async Task<StaffDto> AddAsync(StaffDto dto)
+        public async Task<StaffDto> AddAsync(CreatingStaffDto dto)
         {
             var staff = new Staff(dto.Firstname,dto.LastName,dto.FullName,dto.Gender,dto.Specialization,dto.Type,dto.LicenseNumber);
 
@@ -35,37 +37,51 @@ namespace DDDSample1.Domain.Staffs
 
             await this._unitOfWork.CommitAsync();
 
-            return new StaffDto(staff.Firstname,staff.LastName,staff.FullName,staff.Gender,staff.Specialization,staff.Type,staff.LicenseNumber);
+            return new StaffDto(staff.Id.AsGuid(),staff.Firstname,staff.LastName,staff.FullName,staff.Gender,staff.Specialization,staff.Type,staff.LicenseNumber);
         }
 
-        /*public async Task<BackOfficeUserDto> UpdateAsync(BackOfficeUserDto dto)
+        internal async Task<ActionResult<StaffDto>> GetByIdAsync(StaffId id)
         {
-            await checkCategoryIdAsync(dto.CategoryId);
-            var product = await this._repo.GetByIdAsync(new ProductId(dto.Id)); 
+            var staff = await this._repo.GetByIdAsync(id);
+            
+            if(staff == null)
+                return null;
 
-            if (product == null)
+            return new StaffDto(staff.Id.AsGuid(),staff.Firstname,staff.LastName,staff.FullName,staff.Gender,staff.Specialization,staff.Type,staff.LicenseNumber);
+        }
+
+        public async Task<StaffDto> UpdateAsync(StaffDto dto)
+        {
+            var staff = await this._repo.GetByIdAsync(new StaffId(dto.Id)); 
+
+            if (staff == null)
                 return null;   
 
             // change all fields
-            product.ChangeDescription(dto.Description);
-            product.ChangeCategoryId(dto.CategoryId);
-            
+            staff.ChangeFirstName(staff.Firstname);
+            staff.ChangeLastName(staff.LastName);
+            staff.ChangeFullName(staff.FullName);
+            staff.ChangeGender(staff.Gender);
+            staff.ChangeType(staff.Type);
+            staff.ChangeLicenseNumber(staff.LicenseNumber);
+            staff.ChangeSpecialization(staff.Specialization);
+
             await this._unitOfWork.CommitAsync();
 
-            return new ProductDto(product.Id.AsGuid(),product.Description,product.CategoryId);
+            return new StaffDto(staff.Id.AsGuid(),staff.Firstname,staff.LastName,staff.FullName,staff.Gender,staff.Specialization,staff.Type,staff.LicenseNumber);
         }
 
-        public async Task<ProductDto> DeleteAsync(ProductId id)
+        public async Task<StaffDto> DeleteAsync(StaffId id)
         {
-            var product = await this._repo.GetByIdAsync(id); 
+            var staff = await this._repo.GetByIdAsync(id); 
 
-            if (product == null)
+            if (staff == null)
                 return null;   
 
-            this._repo.Remove(product);
+            this._repo.Remove(staff);
             await this._unitOfWork.CommitAsync();
 
-            return new BackOfficeUserDto(product.Id.AsGuid(),product.Description,product.CategoryId);
-        }*/
+            return new StaffDto(staff.Id.AsGuid(),staff.Firstname,staff.LastName,staff.FullName,staff.Gender,staff.Specialization,staff.Type,staff.LicenseNumber);
+        }
     }
 }

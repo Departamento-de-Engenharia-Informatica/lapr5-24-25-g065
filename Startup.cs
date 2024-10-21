@@ -6,14 +6,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using DDDSample1.Infrastructure;
-using DDDSample1.Infrastructure.Categories;
-using DDDSample1.Infrastructure.Products;
-using DDDSample1.Infrastructure.Families;
 using DDDSample1.Infrastructure.Shared;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Categories;
-using DDDSample1.Domain.Products;
-using DDDSample1.Domain.Families;
+using DDDSample1.Domain.Patients;
+using DDDSample1.Infrastructure.Patients;
+using DDDSample1.Domain.Staffs;
+using DDDSample1.Infrastructure.Staffs;
+using DDDSample1.Domain.Specializations;
+using DDDSample1.Infrastructure.Specializations;
 
 namespace DDDSample1
 {
@@ -68,14 +68,15 @@ namespace DDDSample1
         {
             services.AddTransient<IUnitOfWork,UnitOfWork>();
 
-            services.AddTransient<ICategoryRepository,CategoryRepository>();
-            services.AddTransient<CategoryService>();
+            services.AddTransient<IPatientRepository,PatientRepository>();
+            services.AddTransient<PatientService>();
 
-            services.AddTransient<IProductRepository,ProductRepository>();
-            services.AddTransient<ProductService>();
+            services.AddTransient<IStaffRepository,StaffRepository>();
+            services.AddTransient<StaffService>();
 
-            services.AddTransient<IFamilyRepository,FamilyRepository>();
-            services.AddTransient<FamilyService>();
+            services.AddTransient<ISpecializationRepository,SpecializationRepository>();
+            services.AddTransient<SpecializationService>();
+
         }
     }
 }

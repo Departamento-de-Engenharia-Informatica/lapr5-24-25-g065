@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DDDSample1.Domain.BackOfficeUsers
+namespace DDDSample1.Domain.Patients
 {
     public class CreatingPatientDto
     {
@@ -14,7 +14,7 @@ namespace DDDSample1.Domain.BackOfficeUsers
         public string MedicalRecordNumber {get; private set;}
         /*public List<Appointement> AppointmentHistory { get;  private set; }*/
 
-        public CreatingPatientDto(string firstname, string lastName,string fullName, string gender, List<String> allergies, string emergencyContact, string dateOfBirth, string medicalRecordNumber ){
+        public CreatingPatientDto(string firstname, string lastName,string fullName, string gender, List<string> allergies, string emergencyContact, string dateOfBirth, string medicalRecordNumber ){
             Firstname = firstname;
             LastName = lastName;
             FullName = fullName;

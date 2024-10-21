@@ -27,3 +27,14 @@ C:\Users\elisa\Documents\lapr5-24-25-g065\lapr5-24-25-g065\obj\Debug\netcoreapp8
 C:\Users\elisa\Documents\lapr5-24-25-g065\lapr5-24-25-g065\obj\Debug\netcoreapp8.0\DDDNetCore.pdb
 C:\Users\elisa\Documents\lapr5-24-25-g065\lapr5-24-25-g065\obj\Debug\netcoreapp8.0\DDDNetCore.genruntimeconfig.cache
 C:\Users\elisa\Documents\lapr5-24-25-g065\lapr5-24-25-g065\obj\Debug\netcoreapp8.0\ref\DDDNetCore.dll
+C:\Users\elisa\Documents\lapr5-24-25-g065\obj\Debug\netcoreapp8.0\DDDNetCore.csproj.AssemblyReference.cache
+C:\Users\elisa\Documents\lapr5-24-25-g065\obj\Debug\netcoreapp8.0\DDDNetCore.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\elisa\Documents\lapr5-24-25-g065\obj\Debug\netcoreapp8.0\DDDNetCore.AssemblyInfoInputs.cache
+C:\Users\elisa\Documents\lapr5-24-25-g065\obj\Debug\netcoreapp8.0\DDDNetCore.AssemblyInfo.cs
+C:\Users\elisa\Documents\lapr5-24-25-g065\obj\Debug\netcoreapp8.0\DDDNetCore.csproj.CoreCompileInputs.cache
+C:\Users\elisa\Documents\lapr5-24-25-g065\obj\Debug\netcoreapp8.0\DDDNetCore.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\elisa\Documents\lapr5-24-25-g065\obj\Debug\netcoreapp8.0\DDDNetCore.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\elisa\Documents\lapr5-24-25-g065\obj\Debug\netcoreapp8.0\DDDNetCore.sourcelink.json
+C:\Users\elisa\Documents\lapr5-24-25-g065\obj\Debug\netcoreapp8.0\DDDNetCore.dll
+C:\Users\elisa\Documents\lapr5-24-25-g065\obj\Debug\netcoreapp8.0\refint\DDDNetCore.dll
+C:\Users\elisa\Documents\lapr5-24-25-g065\obj\Debug\netcoreapp8.0\DDDNetCore.pdb
