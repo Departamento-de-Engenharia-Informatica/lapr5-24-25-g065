@@ -11,9 +11,9 @@ namespace DDDSample1.Domain.Staffs
     public class StaffService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly StaffRepository _repo;
+        private readonly IStaffRepository _repo;
 
-        public StaffService(IUnitOfWork unitOfWork, StaffRepository repo)
+        public StaffService(IUnitOfWork unitOfWork, IStaffRepository repo)
         {
             this._unitOfWork = unitOfWork;
             this._repo = repo;

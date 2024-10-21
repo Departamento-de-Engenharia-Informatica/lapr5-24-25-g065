@@ -8,7 +8,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System;
 using Microsoft.Extensions.Hosting;
-
+using MySql.Data.EntityFrameworkCore.Extensions;
+using DDDSample1.Infrastructure;
+using Microsoft.Extensions.Configuration;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Configure MySQL as the database provider
-builder.Services.AddDbContext<UserContext>(options =>
+builder.Services.AddDbContext<DDDSample1DbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("UserContext"),
         new MySqlServerVersion(new Version(8, 0, 39))
@@ -24,7 +27,7 @@ builder.Services.AddDbContext<UserContext>(options =>
 );
 
 
-
+/*
 // Register AuthServicePatient with HttpClient
 builder.Services.AddHttpClient<AuthServicePatient>();
 
@@ -82,6 +85,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<OperationService>();
 builder.Services.AddTransient<Auth0UserService>();
 builder.Services.AddTransient<PasswordGeneratorService>();
+*/
+
 
 var app = builder.Build();
 

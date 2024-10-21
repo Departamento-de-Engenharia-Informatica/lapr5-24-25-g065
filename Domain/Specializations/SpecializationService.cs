@@ -8,9 +8,9 @@ namespace DDDSample1.Domain.Specializations
     public class SpecializationService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly SpecializationRepository _repo;
+        private readonly ISpecializationRepository _repo;
 
-        public SpecializationService(IUnitOfWork unitOfWork, SpecializationRepository repo)
+        public SpecializationService(IUnitOfWork unitOfWork, ISpecializationRepository repo)
         {
             this._unitOfWork = unitOfWork;
             this._repo = repo;
@@ -21,7 +21,7 @@ namespace DDDSample1.Domain.Specializations
             var list = await this._repo.GetAllAsync();
             
             List<SpecializationDto> listDto = list.ConvertAll<SpecializationDto>(s => 
-                new SpecializationDto(s.Type,s.Description));
+                new SpecializationDto(s.Id.AsGuid(),s.Type,s.Description));
 
             return listDto;
         }
@@ -34,7 +34,7 @@ namespace DDDSample1.Domain.Specializations
 
             await this._unitOfWork.CommitAsync();
 
-            return new SpecializationDto(spec.Type,spec.Description);
+            return new SpecializationDto(spec.Id.AsGuid(),spec.Type,spec.Description);
         }
 
         /*public async Task<BackOfficeUserDto> UpdateAsync(BackOfficeUserDto dto)

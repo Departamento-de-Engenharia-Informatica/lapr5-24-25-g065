@@ -11,16 +11,16 @@ namespace DDDSample1.Infrastructure
 {
     public class DDDSample1DbContext : DbContext
     {
-        public DbSet<Patient> Patients { get; set; }
-        public DbSet<Staff> Staffs { get; set; }
-        public DbSet<Specialization> Specializations { get; set; }
+        
     
 
         public DDDSample1DbContext(DbContextOptions options) : base(options)
         {
 
         }
-
+        public DbSet<Patient> Patients { get; set; }
+        public DbSet<Staff> Staffs { get; set; }
+        public DbSet<Specialization> Specializations { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new PatientEntityTypeConfiguration());

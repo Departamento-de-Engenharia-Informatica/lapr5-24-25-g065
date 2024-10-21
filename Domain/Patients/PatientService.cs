@@ -2,16 +2,14 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
 using System.Runtime.ConstrainedExecution;
-using DDDSample1.Domain.BackOfficeUsers;
-
 namespace DDDSample1.Domain.Patients
 {
     public class PatientService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly PatientRepository _repo;
+        private readonly IPatientRepository _repo;
 
-        public PatientService(IUnitOfWork unitOfWork, PatientRepository repo)
+        public PatientService(IUnitOfWork unitOfWork, IPatientRepository repo)
         {
             this._unitOfWork = unitOfWork;
             this._repo = repo;
@@ -22,7 +20,7 @@ namespace DDDSample1.Domain.Patients
             var list = await this._repo.GetAllAsync();
             
             List<PatientDto> listDto = list.ConvertAll<PatientDto>(patient => 
-                new PatientDto(patient.Firstname, patient.LastName,patient.FullName, patient.Gender, patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber ));
+                new PatientDto(patient.Id.AsGuid(),patient.Firstname, patient.LastName,patient.FullName, patient.Gender, patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber ));
 
             return listDto;
         }
@@ -36,13 +34,13 @@ namespace DDDSample1.Domain.Patients
 
                 await this._unitOfWork.CommitAsync();
 
-                return new PatientDto(patient.Firstname, patient.LastName,patient.FullName, patient.Gender, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber );
+                return new PatientDto(patient.Id.AsGuid(),patient.Firstname, patient.LastName,patient.FullName, patient.Gender, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber );
             }else{
                 await this._repo.AddAsync(patient);
 
                 await this._unitOfWork.CommitAsync();
 
-                return new PatientDto(patient.Firstname, patient.LastName,patient.FullName, patient.Gender, patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber );
+                return new PatientDto(patient.Id.AsGuid(),patient.Firstname, patient.LastName,patient.FullName, patient.Gender, patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber );
             }
         }
 

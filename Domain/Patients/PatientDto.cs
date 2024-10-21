@@ -17,7 +17,7 @@ namespace DDDSample1.Domain.Patients
         public string MedicalRecordNumber {get; private set;}
         /*public List<Appointement> AppointmentHistory { get;  private set; }*/
 
-        public PatientDto(Guid id,string firstname, string lastName,string fullName, string gender, List<String> allergies, string emergencyContact, string dateOfBirth, string medicalRecordNumber ){
+        public PatientDto(Guid id,string firstname, string lastName,string fullName, string gender, List<string> allergies, string emergencyContact, string dateOfBirth, string medicalRecordNumber ){
             this.Id=id;
             this.Firstname = firstname;
             this.LastName = lastName;
