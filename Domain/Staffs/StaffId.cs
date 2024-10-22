@@ -11,10 +11,6 @@ namespace DDDSample1.Domain.Staffs
         {
         }
 
-        public StaffId(String value) : base(value)
-        {
-        }
-
         override
         protected  Object createFromString(String text){
             return new Guid(text);

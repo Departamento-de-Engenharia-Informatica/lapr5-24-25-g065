@@ -12,11 +12,12 @@ namespace DDDSample1.Domain.Staffs
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IStaffRepository _repo;
-
-        public StaffService(IUnitOfWork unitOfWork, IStaffRepository repo)
+        private readonly ISpecializationRepository _specRepo;
+        public StaffService(IUnitOfWork unitOfWork, IStaffRepository repo,ISpecializationRepository specRepo)
         {
             this._unitOfWork = unitOfWork;
             this._repo = repo;
+            this._specRepo = specRepo; 
         }
 
         public async Task<List<StaffDto>> GetAllAsync()
@@ -24,20 +25,20 @@ namespace DDDSample1.Domain.Staffs
             var list = await this._repo.GetAllAsync();
             
             List<StaffDto> listDto = list.ConvertAll<StaffDto>(staff => 
-                new StaffDto(staff.Id.AsGuid(),staff.Firstname,staff.LastName,staff.FullName,staff.Gender,staff.Specialization,staff.Type,staff.LicenseNumber));
+                new StaffDto(staff.Id.AsGuid(),staff.Firstname,staff.LastName,staff.FullName,staff.Gender,staff.SpecializationId,staff.Type,staff.LicenseNumber));
 
             return listDto;
         }
 
         public async Task<StaffDto> AddAsync(CreatingStaffDto dto)
         {
-            var staff = new Staff(dto.Firstname,dto.LastName,dto.FullName,dto.Gender,dto.Specialization,dto.Type,dto.LicenseNumber);
+            var staff = new Staff(dto.Firstname,dto.LastName,dto.FullName,dto.Gender,dto.SpecializationId,dto.Type,dto.LicenseNumber);
 
             await this._repo.AddAsync(staff);
 
             await this._unitOfWork.CommitAsync();
 
-            return new StaffDto(staff.Id.AsGuid(),staff.Firstname,staff.LastName,staff.FullName,staff.Gender,staff.Specialization,staff.Type,staff.LicenseNumber);
+            return new StaffDto(staff.Id.AsGuid(),staff.Firstname,staff.LastName,staff.FullName,staff.Gender,staff.SpecializationId,staff.Type,staff.LicenseNumber);
         }
 
         internal async Task<ActionResult<StaffDto>> GetByIdAsync(StaffId id)
@@ -47,7 +48,7 @@ namespace DDDSample1.Domain.Staffs
             if(staff == null)
                 return null;
 
-            return new StaffDto(staff.Id.AsGuid(),staff.Firstname,staff.LastName,staff.FullName,staff.Gender,staff.Specialization,staff.Type,staff.LicenseNumber);
+            return new StaffDto(staff.Id.AsGuid(),staff.Firstname,staff.LastName,staff.FullName,staff.Gender,staff.SpecializationId,staff.Type,staff.LicenseNumber);
         }
 
         public async Task<StaffDto> UpdateAsync(StaffDto dto)
@@ -64,11 +65,11 @@ namespace DDDSample1.Domain.Staffs
             staff.ChangeGender(staff.Gender);
             staff.ChangeType(staff.Type);
             staff.ChangeLicenseNumber(staff.LicenseNumber);
-            staff.ChangeSpecialization(staff.Specialization);
+            staff.ChangeSpecialization(staff.SpecializationId);
 
             await this._unitOfWork.CommitAsync();
 
-            return new StaffDto(staff.Id.AsGuid(),staff.Firstname,staff.LastName,staff.FullName,staff.Gender,staff.Specialization,staff.Type,staff.LicenseNumber);
+            return new StaffDto(staff.Id.AsGuid(),staff.Firstname,staff.LastName,staff.FullName,staff.Gender,staff.SpecializationId,staff.Type,staff.LicenseNumber);
         }
 
         public async Task<StaffDto> DeleteAsync(StaffId id)
@@ -81,7 +82,7 @@ namespace DDDSample1.Domain.Staffs
             this._repo.Remove(staff);
             await this._unitOfWork.CommitAsync();
 
-            return new StaffDto(staff.Id.AsGuid(),staff.Firstname,staff.LastName,staff.FullName,staff.Gender,staff.Specialization,staff.Type,staff.LicenseNumber);
+            return new StaffDto(staff.Id.AsGuid(),staff.Firstname,staff.LastName,staff.FullName,staff.Gender,staff.SpecializationId,staff.Type,staff.LicenseNumber);
         }
     }
 }

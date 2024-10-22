@@ -9,7 +9,10 @@ namespace DDDSample1.Domain.Staffs
         public string Gender { get;  private set; }
         public string Type{ get;  private set; }
 
-        public Specialization Specialization { get;  private set; }
+        public SpecializationId SpecializationId { get;  private set; }
+
+        public Specialization Specialization { get; private set; }
+
         public string Firstname { get;  private set; }
 
         public string LastName { get;  private set; }
@@ -17,13 +20,13 @@ namespace DDDSample1.Domain.Staffs
 
         public string LicenseNumber { get;  private set; }
 
-        public Staff(string firstname, string lastName,string fullName, string gender, Specialization specialization, string type, string licenseNumber ){
+        public Staff(string firstname, string lastName,string fullName, string gender, SpecializationId specializationId, string type, string licenseNumber ){
             this.Id = new StaffId(Guid.NewGuid());
             this.Firstname = firstname;
             this.LastName = lastName;
             this.FullName = fullName;
             this.Gender = gender;
-            this.Specialization = specialization;
+            this.SpecializationId = specializationId;
             this.Type = type;
             this.LicenseNumber = licenseNumber;
         }
@@ -40,8 +43,8 @@ namespace DDDSample1.Domain.Staffs
         public void ChangeGender(string gender){
             this.Gender = gender;
         }
-        public void ChangeSpecialization(Specialization specialization){
-            this.Specialization = specialization;
+        public void ChangeSpecialization(SpecializationId specializationId){
+            this.SpecializationId = specializationId;
         }
         public void ChangeType(string type){
             this.Type = type;

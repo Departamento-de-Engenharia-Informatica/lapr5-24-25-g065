@@ -29,7 +29,7 @@ namespace DDDSample1.Domain.Patients
         {   
             var patient = new Patient(dto.Firstname, dto.LastName,dto.FullName, dto.Gender, dto.Allergies, dto.EmergencyContact, dto.DateOfBirth, dto.MedicalRecordNumber );
 
-            if(patient.Allergies.Count == 0){
+            if(patient.Allergies == null){
                 await this._repo.AddAsync(patient);
 
                 await this._unitOfWork.CommitAsync();

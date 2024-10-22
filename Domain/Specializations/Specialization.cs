@@ -1,16 +1,22 @@
-using System;
+using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
+using DDDSample1.Domain.Staffs;
 
 namespace DDDSample1.Domain.Specializations
 {
     public class Specialization : Entity<SpecializationId>, IAggregateRoot
     {
-        public string Type { get;  private set; }
-        public string Description{ get;  private set; }
+        public string Type { get; private set; }
+        public string Description { get; private set; }
 
-        public Specialization(string type, string description){
-            Type=type;
-            Description=description;
+        // Navigation property for the related Staff entities
+        public virtual ICollection<Staff> StaffMembers { get; private set; }
+
+        public Specialization(string type, string description)
+        {
+            Type = type;
+            Description = description;
+            StaffMembers = new List<Staff>(); // Initialize the collection
         }
     }
 }
