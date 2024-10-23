@@ -1,81 +1,126 @@
 @startuml
-class User {
-  + Role
-  + Email
-  }
 
-class Patient {
-  + First Name
-  + Last Name
-  + Full Name
-  + Date of Birth
-  + Gender
-  + Medical Record Number
-  + Contact Information
-  + Allergies/Medical Conditions
-  + Emergency Contact
-  + Appointment History
 
+package "Patient Aggregate" {
+    class Patient <<root Entity>>
+    class FirstName <<Value Object>>
+    class LastName <<Value Object>>
+    class FullName <<Value Object>>
+    class DateOfBirth <<Value Object>>
+    class Gender <<Value Object>>
+    class MedicalRecordNumber <<Value Object>>
+    class ContactInformation <<Value Object>>
+    class AllergiesMedicalConditions <<Value Object>>
+    class EmergencyContact <<Value Object>>
+    class PatientInfoLog <<Entity>>
+    class ProfileHistory <<Value Object>>
+
+    ' Connections
+    Patient -- FirstName
+    Patient -- LastName
+    Patient -- FullName
+    Patient -- DateOfBirth
+    Patient -- Gender
+    Patient -- MedicalRecordNumber
+    Patient -- ContactInformation
+    Patient -- AllergiesMedicalConditions
+    Patient -- EmergencyContact
+    PatientInfoLog -- ProfileHistory
 }
 
-class PatientInfoLog{
-+ ProfileHistory
+package "User Aggregate" {
+    class User <<root Entity>>
+    class Role <<Value Object>>
+    class Email <<Value Object>>
+
+    ' Connections
+    User -- Role
+    User -- Email
 }
 
-class Specialization{
+package "Staff Aggregate" {
+    class Staff <<root Entity>>
+    class StaffFirstName <<Value Object>>
+    class StaffLastName <<Value Object>>
+    class StaffFullName <<Value Object>>
+    class LicenseNumber <<Value Object>>
+    class StaffContactInformation <<Value Object>>
+    class AvailabilitySlots <<Value Object>>
+    class Specialization <<Value Object>>
+
+    ' Connections
+    Staff -- StaffFirstName
+    Staff -- StaffLastName
+    Staff -- StaffFullName
+    Staff -- LicenseNumber
+    Staff -- StaffContactInformation
+    Staff -- AvailabilitySlots
+    Staff -- Specialization
 }
 
-class Staff {
+package "Operation Aggregate" {
+    class OperationRequest <<root Entity>>
+    class OperationRequestID <<Value Object>>
+    class DeadlineDate <<Value Object>>
+    class Priority <<Value Object>>
 
-  + First Name
-  + Last Name
-  + Full Name
-  + License Number
-  + Contact Information
-  + Availability Slots
+    ' Connections
+    OperationRequest -- OperationRequestID
+    OperationRequest -- DeadlineDate
+    OperationRequest -- Priority
 }
 
-class OperationRequest {
-  + ID
-  + Patient ID
-  + Doctor ID
-  + Operation Type ID
-  + Deadline Date
-  + Priority
+package "Operation Type Aggregate" {
+    class OperationType <<root Entity>>
+    class OperationName <<Value Object>>
+    class EstimatedDuration <<Value Object>>
+    class Active <<Value Object>>
+
+    ' Connections
+    OperationType -- OperationName
+    OperationType -- EstimatedDuration
+    OperationType -- Active
 }
 
-class OperationType {
-  + ID
-  + Name
-  + Estimated Duration
-  + active
+package "Room Aggregate" {
+    class SurgeryRoom <<root Entity>>
+    class RoomNumber <<Value Object>>
+    class RoomType <<Value Object>>
+    class Capacity <<Value Object>>
+    class AssignedEquipment <<Value Object>>
+    class CurrentStatus <<Value Object>>
+
+    ' Connections
+    SurgeryRoom -- RoomNumber
+    SurgeryRoom -- RoomType
+    SurgeryRoom -- Capacity
+    SurgeryRoom -- AssignedEquipment
+    SurgeryRoom -- CurrentStatus
 }
 
-class Appointment {
-  + ID
-  + Request ID
-  + Room ID
-  + Date and Time
-  + Status
+package "Appointment Aggregate" {
+    class Appointment <<root Entity>>
+    class AppointmentID <<Value Object>>
+    class DateAndTime <<Value Object>>
+    class AppointmentStatus <<Value Object>>
+
+    ' Connections
+    Appointment -- AppointmentID
+    Appointment -- DateAndTime
+    Appointment -- AppointmentStatus
 }
 
-class SurgeryRoom {
-  + Room Number
-  + Type
-  + Capacity
-  + Assigned Equipment
-  + Current Status
-}
 
-Specialization <--Staff: has
-Specialization ---> OperationType: required to perform
-Patient "1"--> "1" PatientInfoLog : has
-User "1"--> "1" Patient : can be
-User "1"--> "1" Staff : can be
-Patient "1" --> "*" Appointment : has
-Staff "1" --> "*" Appointment : performs
-Staff "1" --> "*" OperationRequest : requests
-Appointment "*" --> "1" SurgeryRoom : occurs in
-OperationRequest "1" --> "1" OperationType : has
+OperationRequest "1" -up- "1" OperationType : is for >
+Patient "1" -- "0..*" Appointment : has >
+Patient "1" -- "1" PatientInfoLog : includes >
+User "1" -- "1" Patient : can be >
+User "1" -- "1" Staff : can be >
+Staff "1" -- "0..*" Appointment : performs >
+Staff "1" -- "1..*" Specialization : specializes in >
+Staff "1" -- "0..*" OperationRequest : requests >
+OperationRequest "0..*" -- "1" Patient : related to >
+Appointment "0..*" -- "1" SurgeryRoom : occurs in >
+SurgeryRoom "1" -- "0..*" Appointment : available for >
 
 @enduml
