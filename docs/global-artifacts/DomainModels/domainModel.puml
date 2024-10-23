@@ -55,7 +55,6 @@ package "Staff Aggregate" {
     Staff -- LicenseNumber
     Staff -- StaffContactInformation
     Staff -- AvailabilitySlots
-    Staff -- Specialization
 }
 
 package "Operation Aggregate" {
@@ -121,6 +120,5 @@ Staff "1" -- "1..*" Specialization : specializes in >
 Staff "1" -- "0..*" OperationRequest : requests >
 OperationRequest "0..*" -- "1" Patient : related to >
 Appointment "0..*" -- "1" SurgeryRoom : occurs in >
-SurgeryRoom "1" -- "0..*" Appointment : available for >
 
 @enduml
