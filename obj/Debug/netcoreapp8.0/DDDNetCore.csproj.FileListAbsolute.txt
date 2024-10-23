@@ -167,3 +167,4 @@ C:\Users\elisa\Documents\lapr5-24-25-g065\obj\Debug\netcoreapp8.0\DDDNetCore.gen
 C:\Users\elisa\Documents\lapr5-24-25-g065\obj\Debug\netcoreapp8.0\ref\DDDNetCore.dll
 C:\Users\elisa\Documents\lapr5-24-25-g065\bin\Debug\netcoreapp8.0\MySqlConnector.dll
 C:\Users\elisa\Documents\lapr5-24-25-g065\bin\Debug\netcoreapp8.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\elisa\Documents\lapr5-24-25-g065\bin\Debug\netcoreapp8.0\Microsoft.AspNetCore.Authentication.Google.dll
