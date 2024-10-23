@@ -1,81 +1,110 @@
 @startuml
-class User {
-  + Role
-  + Email
-  }
 
-class Patient {
-  + First Name
-  + Last Name
-  + Full Name
-  + Date of Birth
-  + Gender
-  + Medical Record Number
-  + Contact Information
-  + Allergies/Medical Conditions
-  + Emergency Contact
-  + Appointment History
+entity Patient
+class FirstName
+class LastName
+class FullName
+class DateOfBirth
+class Gender
+class MedicalRecordNumber
+class ContactInformation
+class AllergiesMedicalConditions
+class EmergencyContact
+class PatientInfoLog
+class ProfileHistory
 
-}
+entity User
+class Role
+class Email
 
-class PatientInfoLog{
-+ ProfileHistory
-}
+entity Staff
+class StaffFirstName
+class StaffLastName
+class StaffFullName
+class LicenseNumber
+class StaffContactInformation
+class AvailabilitySlots
+class Specialization
 
-class Specialization{
-}
+entity OperationRequest
+class OperationRequestID
+class DeadlineDate
+class Priority
 
-class Staff {
+entity OperationType
+class OperationName
+class EstimatedDuration
+class Active
 
-  + First Name
-  + Last Name
-  + Full Name
-  + License Number
-  + Contact Information
-  + Availability Slots
-}
+entity SurgeryRoom
+class RoomNumber
+class RoomType
+class Capacity
+class AssignedEquipment
+class CurrentStatus
 
-class OperationRequest {
-  + ID
-  + Patient ID
-  + Doctor ID
-  + Operation Type ID
-  + Deadline Date
-  + Priority
-}
+entity Appointment
+class AppointmentID
+class DateAndTime
+class AppointmentStatus
 
-class OperationType {
-  + ID
-  + Name
-  + Estimated Duration
-  + active
-}
 
-class Appointment {
-  + ID
-  + Request ID
-  + Room ID
-  + Date and Time
-  + Status
-}
+Patient -down- FirstName
+Patient -down- LastName
+Patient -down- FullName
+Patient -down- DateOfBirth
+Patient -down- Gender
+Patient -down- MedicalRecordNumber
+Patient -down- ContactInformation
+Patient -down- AllergiesMedicalConditions
+Patient -down- EmergencyContact
+PatientInfoLog -down- ProfileHistory
 
-class SurgeryRoom {
-  + Room Number
-  + Type
-  + Capacity
-  + Assigned Equipment
-  + Current Status
-}
 
-Specialization <--Staff: has
-Specialization ---> OperationType: required to perform
-Patient "1"--> "1" PatientInfoLog : has
-User "1"--> "1" Patient : can be
-User "1"--> "1" Staff : can be
-Patient "1" --> "*" Appointment : has
-Staff "1" --> "*" Appointment : performs
-Staff "1" --> "*" OperationRequest : requests
-Appointment "*" --> "1" SurgeryRoom : occurs in
-OperationRequest "1" --> "1" OperationType : has
+User -- Role
+User -- Email
+
+
+Staff -up- StaffFirstName
+Staff -up- StaffLastName
+Staff -up- StaffFullName
+Staff -up- LicenseNumber
+Staff -up- StaffContactInformation
+Staff -up- AvailabilitySlots
+Staff -up- Specialization
+
+
+OperationRequest -- OperationRequestID
+OperationRequest -- DeadlineDate
+OperationRequest -- Priority
+
+
+OperationType -- OperationName
+OperationType -- EstimatedDuration
+OperationType -- Active
+
+
+SurgeryRoom -- RoomNumber
+SurgeryRoom -- RoomType
+SurgeryRoom -- Capacity
+SurgeryRoom -- AssignedEquipment
+SurgeryRoom -- CurrentStatus
+
+
+Appointment -- AppointmentID
+Appointment -- DateAndTime
+Appointment -- AppointmentStatus
+
+
+OperationRequest -left- OperationType
+Patient -- Appointment
+Patient -- PatientInfoLog
+User -- Patient
+User -up- Staff
+Staff -- Appointment 
+Staff -- OperationRequest
+OperationRequest -right- Patient
+Appointment -- SurgeryRoom
+
 
 @enduml
