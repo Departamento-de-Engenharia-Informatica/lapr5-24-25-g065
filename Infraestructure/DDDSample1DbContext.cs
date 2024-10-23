@@ -5,7 +5,8 @@ using DDDSample1.Domain.Specializations;
 using DDDSample1.Infrastructure.Patients;
 using DDDSample1.Infrastructure.Staffs;
 using DDDSample1.Infrastructure.Specializations;
-
+using DDDSample1.Domain.Users;
+using System;
 
 namespace DDDSample1.Infrastructure
 {
@@ -21,12 +22,13 @@ namespace DDDSample1.Infrastructure
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Specialization> Specializations { get; set; }
+        public DbSet<User> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             ConfigureSpecialization(modelBuilder);  // Call to configure Specialization entity
             ConfigurePatient(modelBuilder);         // Call to configure Patient entity
             ConfigureStaff(modelBuilder);           // Call to configure Staff entity
-            
+            ConfigureUser(modelBuilder);
         }
 
         private void ConfigureSpecialization(ModelBuilder modelBuilder)
@@ -108,11 +110,6 @@ namespace DDDSample1.Infrastructure
 
         private void ConfigureStaff(ModelBuilder modelBuilder)
         {
-            /*
-            modelBuilder.ApplyConfiguration(new SpecializationEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new StaffEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new PatientEntityTypeConfiguration());
-            */
             
             modelBuilder.Entity<Staff>()
                 .HasKey(s => s.Id);
@@ -156,13 +153,47 @@ namespace DDDSample1.Infrastructure
                 .HasMaxLength(100);
 
             // Configure Specialization as a reference (navigation property)
-             modelBuilder.Entity<Staff>()
+            modelBuilder.Entity<Staff>()
             .HasOne(s => s.Specialization) // Navigation property
             .WithMany(sp => sp.StaffMembers) // Specialization can have many Staff members
             .HasForeignKey(s => s.SpecializationId); // Foreign key
 
+            modelBuilder.Entity<Staff>()
+            .HasOne(s => s.User) // Each Staff has a required User
+            .WithOne() // No navigation property on User (because User doesn't reference Staff)
+            .HasForeignKey<Staff>(s => s.UserId) // Foreign key in Staff
+            .IsRequired(); // Staff must have a User
+
+
             
         }
+
+        private void ConfigureUser(ModelBuilder modelBuilder){
+             modelBuilder.Entity<User>()
+                .HasKey(u => u.Id);
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.Id)
+                .HasConversion(
+                    v => v.AsGuid(),
+                    v => new UserId(v)
+                )
+                .HasColumnName("UserId");
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.UserName)
+                .IsRequired()
+                .HasMaxLength(150);
+
+            modelBuilder.Entity<User>()
+            .Property(u => u.Role)
+            .HasConversion(
+                v => v.ToString(),        // Convert enum to string for storage
+                v => (Role)Enum.Parse(typeof(Role), v) // Convert string back to enum
+            )
+            .IsRequired()
+            .HasMaxLength(50); // Adjust max length based on your enum values
+            }
 
     }
 }

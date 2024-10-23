@@ -1,4 +1,5 @@
 using DDDSample1.Domain.Specializations;
+using DDDSample1.Domain.Users;
 
 namespace DDDSample1.Domain.Staffs
 {
@@ -12,8 +13,10 @@ namespace DDDSample1.Domain.Staffs
         public string FullName { get;  private set; }
 
         public string LicenseNumber { get;  private set; }
+        public UserId UserId { get;  private set; }
 
-        public CreatingStaffDto(string firstname, string lastName,string fullName, string gender, SpecializationId specializationId, string type, string licenseNumber ){
+
+        public CreatingStaffDto(string firstname, string lastName,string fullName, string gender, SpecializationId specializationId, string type, string licenseNumber,UserId userId ){
             Firstname = firstname;
             LastName = lastName;
             FullName = fullName;
@@ -21,6 +24,7 @@ namespace DDDSample1.Domain.Staffs
             SpecializationId = specializationId;
             Type = type;
             LicenseNumber = licenseNumber;
+            UserId = userId;
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Specializations;
+using DDDSample1.Domain.Users;
 
 namespace DDDSample1.Domain.Staffs
 {
@@ -20,7 +21,11 @@ namespace DDDSample1.Domain.Staffs
 
         public string LicenseNumber { get;  private set; }
 
-        public Staff(string firstname, string lastName,string fullName, string gender, SpecializationId specializationId, string type, string licenseNumber ){
+         public UserId UserId { get;  private set; }
+
+        public User User { get; private set; }
+
+        public Staff(string firstname, string lastName,string fullName, string gender, SpecializationId specializationId, string type, string licenseNumber, UserId userId ){
             this.Id = new StaffId(Guid.NewGuid());
             this.Firstname = firstname;
             this.LastName = lastName;
@@ -29,6 +34,7 @@ namespace DDDSample1.Domain.Staffs
             this.SpecializationId = specializationId;
             this.Type = type;
             this.LicenseNumber = licenseNumber;
+            this.UserId = userId;
         }
 
         public void ChangeFirstName(string firstname){
