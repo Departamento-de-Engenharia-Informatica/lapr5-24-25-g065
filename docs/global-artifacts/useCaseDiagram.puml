@@ -1,0 +1,51 @@
+@startuml
+skinparam packageStyle rectangle
+title Surgical Appointment and Resource Management - Use Case Diagram
+
+left to right direction
+
+actor "Admin" as Admin
+actor "Doctor" as Doctor
+actor "Patient" as Patient
+
+rectangle "Use Cases" as usecases {
+    usecase "Register User" as UC1
+    usecase "List Users" as UC2
+    usecase "Edit User Profile" as UC3
+    usecase "Register Patient" as UC4
+    usecase "Edit Patient Profile" as UC5
+    usecase "Delete Patient Profile" as UC6
+    usecase "Register Operation Request" as UC7
+    usecase "Update Operation Request" as UC8
+    usecase "Schedule Surgery" as UC9
+    usecase "Manage Appointments" as UC10
+    usecase "List All Patients" as UC11
+    usecase "View Patient Medical Records" as UC12
+    usecase "Add Operation Type" as UC13
+    usecase "Edit Operation Type" as UC14
+    usecase "Deactivate Operation Type" as UC15
+}
+
+Admin -- UC1
+Admin -- UC2
+Admin -- UC3
+Admin -- UC4
+Admin -- UC5
+Admin -- UC6
+Admin -- UC13
+Admin -- UC14
+Admin -- UC15
+Admin -- UC11
+
+Doctor -- UC7
+Doctor -- UC8
+Doctor -- UC9
+Doctor -- UC10
+Doctor -- UC12
+
+Patient -- UC5
+Patient -- UC6
+
+
+
+@enduml
