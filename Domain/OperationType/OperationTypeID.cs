@@ -4,7 +4,10 @@ using Newtonsoft.Json;
 
 namespace DDDSample1.Domain.OperationType{
 public class  OperationTypeID : EntityId{
-    public int value;
+    [JsonConstructor]
+        public OperationTypeID(Guid value) : base(value)
+        {
+        }
 
         public OperationTypeID(object value) : base(value)
         {

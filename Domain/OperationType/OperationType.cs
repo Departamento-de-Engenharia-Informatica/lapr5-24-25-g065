@@ -6,7 +6,6 @@ using DDDSample1.Domain.Specializations;
 namespace DDDSample1.Domain.OperationType
 {
 public class OperationType: Entity<OperationTypeID> {
-    public OperationTypeID operationTypeID;
     public string Name { get; set; }
     public List<Specialization> RequiredStaffBySpecialization { get; set; }
     public TimeSpan EstimatedDuration { get; set; }

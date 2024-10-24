@@ -7,6 +7,7 @@ using DDDSample1.Infrastructure.Staffs;
 using DDDSample1.Infrastructure.Specializations;
 using DDDSample1.Domain.Users;
 using System;
+using DDDNetCore.Migrations;
 
 namespace DDDSample1.Infrastructure
 {
@@ -23,13 +24,41 @@ namespace DDDSample1.Infrastructure
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Specialization> Specializations { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<OperationType> OperationTypes {get;set;}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             ConfigureSpecialization(modelBuilder);  // Call to configure Specialization entity
             ConfigurePatient(modelBuilder);         // Call to configure Patient entity
             ConfigureStaff(modelBuilder);           // Call to configure Staff entity
             ConfigureUser(modelBuilder);
+            //ConfigureOperationsType(modelBuilder);
         }
+
+       /*  private void ConfigureOperationsType(ModelBuilder modelBuilder)
+        {
+             modelBuilder.Entity<OperationType>()
+                .HasKey(ot => ot.Id);
+
+            modelBuilder.Entity<OperationType>()
+                .Property(ot => ot.Id)
+                .HasConversion(
+                    v => v.AsGuid(),
+                    v => new SpecializationId(v)
+                )
+                .HasColumnName("SpecializationId");
+
+            modelBuilder.Entity<OperationType>()
+                .Property(ot => ot.RequiredStaffBySpecialization)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<OperationType>()
+                .Property(ot => ot.EstimatedDuration)
+                .HasMaxLength(500);
+
+            modelBuilder.Entity<OperationType>()
+                .Property(ot => ot.isActive)
+        } */
 
         private void ConfigureSpecialization(ModelBuilder modelBuilder)
         {
