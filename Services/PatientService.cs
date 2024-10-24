@@ -36,7 +36,7 @@ namespace DDDSample1.Domain.Patients
             return new PatientDto(patient.Id.AsGuid(), patient.Firstname, patient.LastName, patient.FullName, patient.Gender, patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber);
         }
 
-        public async Task<PatientDto> AddAsync(CreatingPatientDto dto)
+        public async Task<PatientDto> AddAsync(CreatePatientDTO dto)
         {   
             var patient = new Patient(dto.Firstname, dto.LastName, dto.FullName, dto.Gender, dto.Allergies, dto.EmergencyContact, dto.DateOfBirth, dto.MedicalRecordNumber);
 
