@@ -1,3 +1,109 @@
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System;
+using System.Threading.Tasks;
+using DDDSample1.Domain.Shared;
+using DDDSample1.Domain.Patients;
+
+namespace DDDSample1.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PatientsController : ControllerBase
+    {
+        private readonly PatientService _service;
+
+        public PatientsController(PatientService service)
+        {
+            _service = service;
+        }
+
+        // GET: api/Patients
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<PatientDto>>> GetAll()
+        {
+            return await _service.GetAllAsync();
+        }
+
+        // GET: api/Patients/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PatientDto>> GetById(Guid id)
+        {
+            var patient = await _service.GetByIdAsync(new PatientId(id));
+
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
+            return patient;
+        }
+
+        // POST: api/Patients
+        [HttpPost]
+        public async Task<ActionResult<PatientDto>> Create(CreatingPatientDto dto)
+        {
+            try
+            {
+                var patient = await _service.AddAsync(dto);
+                return CreatedAtAction(nameof(GetById), new { id = patient.Id }, patient);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        // PUT: api/Patients/5
+        [HttpPut("{id}")]
+        public async Task<ActionResult<PatientDto>> Update(Guid id, PatientDto dto)
+        {
+            if (id != dto.Id)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var patient = await _service.UpdateAsync(dto);
+
+                if (patient == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(patient);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        // DELETE: api/Patients/5/hard
+        [HttpDelete("{id}/hard")]
+        public async Task<ActionResult<PatientDto>> HardDelete(Guid id)
+        {
+            try
+            {
+                var patient = await _service.DeleteAsync(new PatientId(id));
+
+                if (patient == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(patient);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+        
+    }
+}
+
 /*using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
