@@ -1,0 +1,6 @@
+@startuml
+
+package "Surgical Appointment and Resource Management System" {
+   rectangle "MySis" as Admin
+
+@enduml
