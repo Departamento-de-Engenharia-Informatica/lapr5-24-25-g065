@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDDNetCore.Migrations
 {
     [DbContext(typeof(DDDSample1DbContext))]
-    [Migration("20241024104724_OperationType")]
-    partial class OperationType
+    [Migration("20241024152117_AdiçãoOperationType")]
+    partial class AdiçãoOperationType
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,35 @@ namespace DDDNetCore.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("DDDSample1.Domain.OperationTypes.OperationType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("OperationTypeId");
+
+                    b.Property<TimeSpan>("EstimatedDuration")
+                        .HasMaxLength(500)
+                        .HasColumnType("time(6)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("RequiredStaffBySpecialization")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid?>("SpecializationId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SpecializationId");
+
+                    b.ToTable("OperationType");
+                });
 
             modelBuilder.Entity("DDDSample1.Domain.Patients.Patient", b =>
                 {
@@ -169,6 +198,15 @@ namespace DDDNetCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("DDDSample1.Domain.OperationTypes.OperationType", b =>
+                {
+                    b.HasOne("DDDSample1.Domain.Specializations.Specialization", "Specialization")
+                        .WithMany()
+                        .HasForeignKey("SpecializationId");
+
+                    b.Navigation("Specialization");
                 });
 
             modelBuilder.Entity("DDDSample1.Domain.Staffs.Staff", b =>

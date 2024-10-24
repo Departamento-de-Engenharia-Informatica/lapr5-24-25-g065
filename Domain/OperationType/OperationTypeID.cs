@@ -2,7 +2,7 @@ using System;
 using DDDSample1.Domain.Shared;
 using Newtonsoft.Json;
 
-namespace DDDSample1.Domain.OperationType{
+namespace DDDSample1.Domain.OperationTypes{
 public class  OperationTypeID : EntityId{
     [JsonConstructor]
         public OperationTypeID(Guid value) : base(value)
@@ -22,6 +22,9 @@ public class  OperationTypeID : EntityId{
         protected override object createFromString(string text)
         {
             throw new NotImplementedException();
+        }
+          public Guid AsGuid(){
+            return (Guid) base.ObjValue;
         }
     }
 }

@@ -2,12 +2,17 @@ using Microsoft.EntityFrameworkCore;
 using DDDSample1.Domain.Staffs;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Specializations;
+using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Infrastructure.Patients;
 using DDDSample1.Infrastructure.Staffs;
 using DDDSample1.Infrastructure.Specializations;
+using DDDSample1.Infrastructure.OperationTypes;
 using DDDSample1.Domain.Users;
 using System;
 using DDDNetCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Collections.Generic;
+using System.Text.Json;
 
 namespace DDDSample1.Infrastructure
 {
@@ -24,17 +29,17 @@ namespace DDDSample1.Infrastructure
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Specialization> Specializations { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<OperationType> OperationTypes {get;set;}
+        public DbSet<OperationType> OperationType {get;set;}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             ConfigureSpecialization(modelBuilder);  // Call to configure Specialization entity
             ConfigurePatient(modelBuilder);         // Call to configure Patient entity
             ConfigureStaff(modelBuilder);           // Call to configure Staff entity
             ConfigureUser(modelBuilder);
-            //ConfigureOperationsType(modelBuilder);
+            ConfigureOperationsType(modelBuilder);
         }
 
-       /*  private void ConfigureOperationsType(ModelBuilder modelBuilder)
+        private void ConfigureOperationsType(ModelBuilder modelBuilder)
         {
              modelBuilder.Entity<OperationType>()
                 .HasKey(ot => ot.Id);
@@ -43,22 +48,26 @@ namespace DDDSample1.Infrastructure
                 .Property(ot => ot.Id)
                 .HasConversion(
                     v => v.AsGuid(),
-                    v => new SpecializationId(v)
+                    v => new OperationTypeID(v)
                 )
-                .HasColumnName("SpecializationId");
+                .HasColumnName("OperationTypeId");
+
+            var valueConverter = new ValueConverter<List<Specialization>, string>(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),   // Convert list to JSON string for storage
+                v => JsonSerializer.Deserialize<List<Specialization>>(v, (JsonSerializerOptions)null) // Convert JSON string back to list
+            );
 
             modelBuilder.Entity<OperationType>()
                 .Property(ot => ot.RequiredStaffBySpecialization)
-                .IsRequired()
-                .HasMaxLength(100);
+                .HasConversion(valueConverter);
 
             modelBuilder.Entity<OperationType>()
                 .Property(ot => ot.EstimatedDuration)
                 .HasMaxLength(500);
 
             modelBuilder.Entity<OperationType>()
-                .Property(ot => ot.isActive)
-        } */
+                .Property(ot => ot.IsActive);
+        }
 
         private void ConfigureSpecialization(ModelBuilder modelBuilder)
         {
