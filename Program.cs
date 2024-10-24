@@ -14,11 +14,30 @@ using MySql.Data.EntityFrameworkCore.Extensions;
 using DDDSample1.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using DDDSample1.Domain.Patients;
+using DDDSample1.Infrastructure.Patients;
+using DDDSample1.Domain.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddScoped<PatientService>();
+
+
+
+//instanciar todos os services
+// builder.Services.AddScoped<PatientService>();
+// builder.Services.AddScoped<PatientService>();
+// builder.Services.AddScoped<PatientService>();
+// builder.Services.AddScoped<PatientService>();
+// builder.Services.AddScoped<PatientService>();
+// builder.Services.AddScoped<PatientService>();
+
+
+//instanciar todos os repos
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Configure MySQL as the database provider
 builder.Services.AddDbContext<DDDSample1DbContext>(options =>
@@ -57,8 +76,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+//     app.UseSwagger();
+//     app.UseSwaggerUI();
 }
 
 
