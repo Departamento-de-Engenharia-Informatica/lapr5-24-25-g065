@@ -44,34 +44,38 @@ namespace DDDSample1.Domain.Patients
             }
         }
 
-        /*public async Task<BackOfficeUserDto> UpdateAsync(BackOfficeUserDto dto)
+        public async Task<PatientDto> UpdateAsync(PatientDto dto)
         {
-            await checkCategoryIdAsync(dto.CategoryId);
-            var product = await this._repo.GetByIdAsync(new ProductId(dto.Id)); 
+            var patient = await this._repo.GetByIdAsync(new PatientId(dto.Id)); 
 
-            if (product == null)
+            if (patient == null)
                 return null;   
 
             // change all fields
-            product.ChangeDescription(dto.Description);
-            product.ChangeCategoryId(dto.CategoryId);
+            patient.ChangeFirstName(dto.Firstname);
+            patient.ChangeLastName(dto.LastName);
+            patient.ChangeFullName(dto.FullName);
+            patient.ChangeGender(dto.Gender);
+            patient.ChangeDateOfBirth(dto.DateOfBirth);
+            patient.ChangeAllergies(dto.Allergies);
+            patient.ChangeMedicalRecordNumber(dto.MedicalRecordNumber);
             
             await this._unitOfWork.CommitAsync();
 
-            return new ProductDto(product.Id.AsGuid(),product.Description,product.CategoryId);
-        }
+            return new PatientDto(patient.Id.AsGuid(),patient.Firstname, patient.LastName,patient.FullName, patient.Gender, patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber );
+            }
 
-        public async Task<ProductDto> DeleteAsync(ProductId id)
+        public async Task<PatientDto> DeleteAsync(PatientId id)
         {
-            var product = await this._repo.GetByIdAsync(id); 
+            var patient = await this._repo.GetByIdAsync(id); 
 
-            if (product == null)
+            if (patient == null)
                 return null;   
 
-            this._repo.Remove(product);
+            this._repo.Remove(patient);
             await this._unitOfWork.CommitAsync();
 
-            return new BackOfficeUserDto(product.Id.AsGuid(),product.Description,product.CategoryId);
-        }*/
+            return new PatientDto(patient.Id.AsGuid(),patient.Firstname, patient.LastName,patient.FullName, patient.Gender, patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber );
+        }
     }
 }
