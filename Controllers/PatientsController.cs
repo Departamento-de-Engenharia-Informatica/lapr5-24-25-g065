@@ -41,10 +41,14 @@ namespace DDDSample1.Controllers
 
         // POST: api/Patients
         [HttpPost]
-        public async Task<ActionResult<PatientDto>> Create(CreatingPatientDto dto)
+        public async Task<ActionResult<PatientDto>> Create(CreatePatientDTO dto)
         {
             try
             {
+                var dtoTeste = new CreatePatientDTO
+                {
+                    Allergies = ""
+                };
                 var patient = await _service.AddAsync(dto);
                 return CreatedAtAction(nameof(GetById), new { id = patient.Id }, patient);
             }
