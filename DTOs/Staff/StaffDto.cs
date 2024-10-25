@@ -19,8 +19,15 @@ namespace DDDNetCore.DTOs.Staff
 
         public string LicenseNumber { get; private set; }
 
+        public string AvailabilitySlot { get; private set; }
+
+        public string PhoneNumber { get; private set; }
+
+        public string Email { get; private set; }
+
+
         public UserId UserId { get; private set; }
-        public StaffDto(Guid id, string firstname, string lastName, string fullName, string gender, SpecializationId specializationId, string type, string licenseNumber, UserId userId)
+        public StaffDto(Guid id, string firstname, string lastName, string fullName, string gender, SpecializationId specializationId, string type, string licenseNumber, UserId userId, string availabilitySlot, string phoneNumber, string email)
         {
             Id = id;
             Firstname = firstname;
@@ -31,6 +38,9 @@ namespace DDDNetCore.DTOs.Staff
             Type = type;
             LicenseNumber = licenseNumber;
             UserId = userId;
+            AvailabilitySlot=availabilitySlot;
+            PhoneNumber=phoneNumber;
+            Email=email;
         }
     }
 }
