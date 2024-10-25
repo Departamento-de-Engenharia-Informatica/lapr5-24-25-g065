@@ -1,0 +1,18 @@
+@startuml
+
+title C4 Model - System Context Level 2
+package "Surgical Appointment System"{
+Rectangle "Backend" as BE
+Rectangle "DataBase" as DB
+}
+
+Rectangle "HTTPS API: ASP.NET Core" as API
+Rectangle "AuthN API: IAM" as AuthN
+Rectangle "DB: MySQL" as Database
+
+BE -(0- DB
+BE -(0- API : Uses
+BE -(0- AuthN : Authenticates via
+DB -(0- Database : Stores data in
+
+@enduml

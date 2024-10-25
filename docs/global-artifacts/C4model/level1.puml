@@ -1,15 +1,13 @@
 @startuml
 
 title C4 Model - System Context Level 1
-
+package "Surgical Appointment System"{
 Rectangle "Surgical Appointment System" as System
+}
 
-
-Rectangle "API" as API
-Rectangle "AuthN" as AuthN
-
+Rectangle "HTTPS API: ASP.NET Core" as API
 
 System -(0- API : Uses
-System -(0- AuthN : Authenticates via
+
 
 @enduml

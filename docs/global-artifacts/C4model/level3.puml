@@ -1,0 +1,32 @@
+@startuml
+
+title C4 Model - System Context Level 3
+package "Surgical Appointment System - Backend"{
+Rectangle "Router" as ROU
+Rectangle "Controller" as CTRL
+Rectangle "Service" as SRVC
+Rectangle "Domain" as DOMN
+Rectangle "AuthNDriver" as AUTNDR
+Rectangle "DatabaseDriver" as DBDR
+Rectangle "ALGAV Module" as ALGAV
+Rectangle "SGRAI Module" as SGRAI
+}
+
+Rectangle "AuthN API" as AUAPI
+Rectangle "Database API" as DBAPI
+Rectangle "HTTPS API" as API
+
+
+API -(0- ROU
+ROU -(0- CTRL
+CTRL -(0- SRVC
+SRVC -(0- DOMN 
+SRVC -(0- AUTNDR
+SRVC -(0- DBDR
+SRVC -(0- SGRAI
+SRVC -(0- ALGAV
+AUTNDR -(0- AUAPI
+DBDR -(0- DBAPI
+
+
+@enduml
