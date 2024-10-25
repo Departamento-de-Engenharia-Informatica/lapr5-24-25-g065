@@ -4,32 +4,33 @@ using System;
 using System.Threading.Tasks;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Patients;
+using DDDNetCore.DTOs.Patient;
 
 namespace DDDSample1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PatientsController : ControllerBase
+    public class PatientController : ControllerBase
     {
-        private readonly PatientService _service;
+        private readonly PatientService patientService;
 
-        public PatientsController(PatientService service)
+        public PatientController(PatientService service)
         {
-            _service = service;
+            patientService = service;
         }
 
         // GET: api/Patients
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PatientDto>>> GetAll()
         {
-            return await _service.GetAllAsync();
+            return await patientService.GetAllAsync();
         }
 
         // GET: api/Patients/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PatientDto>> GetById(Guid id)
         {
-            var patient = await _service.GetByIdAsync(new PatientId(id));
+            var patient = await patientService.GetByIdAsync(new PatientId(id));
 
             if (patient == null)
             {
@@ -45,11 +46,7 @@ namespace DDDSample1.Controllers
         {
             try
             {
-                var dtoTeste = new CreatePatientDTO
-                {
-                    Allergies = ""
-                };
-                var patient = await _service.AddAsync(dto);
+                var patient = await patientService.AddAsync(dto);
                 return CreatedAtAction(nameof(GetById), new { id = patient.Id }, patient);
             }
             catch (BusinessRuleValidationException ex)
@@ -69,7 +66,7 @@ namespace DDDSample1.Controllers
 
             try
             {
-                var patient = await _service.UpdateAsync(dto);
+                var patient = await patientService.UpdateAsync(dto);
 
                 if (patient == null)
                 {
@@ -90,7 +87,7 @@ namespace DDDSample1.Controllers
         {
             try
             {
-                var patient = await _service.DeleteAsync(new PatientId(id));
+                var patient = await patientService.DeleteAsync(new PatientId(id));
 
                 if (patient == null)
                 {

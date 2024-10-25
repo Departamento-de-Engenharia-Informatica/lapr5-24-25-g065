@@ -5,7 +5,7 @@ namespace DDDSample1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class ValueController : ControllerBase
     {
         // GET api/values
         [HttpGet]

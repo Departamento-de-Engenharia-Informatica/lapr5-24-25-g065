@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Staffs;
+using DDDNetCore.IRepos;
 
 namespace DDDSample1.Infrastructure.Shared
 {

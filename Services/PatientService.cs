@@ -1,22 +1,23 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using DDDSample1.Domain.Shared;
+using DDDNetCore.IRepos;
+using DDDNetCore.DTOs.Patient;
 namespace DDDSample1.Domain.Patients
 {
     public class PatientService
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IPatientRepository _repo;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IPatientRepository patientRepository;
 
         public PatientService(IUnitOfWork unitOfWork, IPatientRepository repo)
         {
-            this._unitOfWork = unitOfWork;
-            this._repo = repo;
+            this.unitOfWork = unitOfWork;
+            this.patientRepository = repo;
         }
 
         public async Task<List<PatientDto>> GetAllAsync()
         {
-            var list = await this._repo.GetAllAsync();
+            var list = await this.patientRepository.GetAllAsync();
             
             List<PatientDto> listDto = list.ConvertAll(patient => 
                 new PatientDto(patient.Id.AsGuid(), patient.Firstname, patient.LastName, patient.FullName, patient.Gender, patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber));
@@ -26,7 +27,7 @@ namespace DDDSample1.Domain.Patients
 
         public async Task<PatientDto> GetByIdAsync(PatientId id)
         {
-            var patient = await this._repo.GetByIdAsync(id);
+            var patient = await this.patientRepository.GetByIdAsync(id);
 
             if (patient == null)
             {
@@ -40,15 +41,15 @@ namespace DDDSample1.Domain.Patients
         {   
             var patient = new Patient(dto.Firstname, dto.LastName, dto.FullName, dto.Gender, dto.Allergies, dto.EmergencyContact, dto.DateOfBirth, dto.MedicalRecordNumber);
 
-            await this._repo.AddAsync(patient);
-            await this._unitOfWork.CommitAsync();
+            await this.patientRepository.AddAsync(patient);
+            await this.unitOfWork.CommitAsync();
 
             return new PatientDto(patient.Id.AsGuid(), patient.Firstname, patient.LastName, patient.FullName, patient.Gender, patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber);
         }
 
         public async Task<PatientDto> UpdateAsync(PatientDto dto)
         {
-            var patient = await this._repo.GetByIdAsync(new PatientId(dto.Id));
+            var patient = await this.patientRepository.GetByIdAsync(new PatientId(dto.Id));
 
             if (patient == null)
                 return null;   
@@ -62,20 +63,20 @@ namespace DDDSample1.Domain.Patients
             patient.ChangeAllergies(dto.Allergies);
             patient.ChangeMedicalRecordNumber(dto.MedicalRecordNumber);
 
-            await this._unitOfWork.CommitAsync();
+            await this.unitOfWork.CommitAsync();
 
             return new PatientDto(patient.Id.AsGuid(), patient.Firstname, patient.LastName, patient.FullName, patient.Gender, patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber);
         }
 
         public async Task<PatientDto> DeleteAsync(PatientId id)
         {
-            var patient = await this._repo.GetByIdAsync(id);
+            var patient = await this.patientRepository.GetByIdAsync(id);
 
             if (patient == null)
                 return null;   
 
-            this._repo.Remove(patient);
-            await this._unitOfWork.CommitAsync();
+            this.patientRepository.Remove(patient);
+            await this.unitOfWork.CommitAsync();
 
             return new PatientDto(patient.Id.AsGuid(), patient.Firstname, patient.LastName, patient.FullName, patient.Gender, patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber);
         }

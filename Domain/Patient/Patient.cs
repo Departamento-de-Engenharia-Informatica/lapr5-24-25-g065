@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using DDDNetCore.IRepos;
 using DDDSample1.Domain.Shared;
 
 namespace DDDSample1.Domain.Patients
 {
     public class Patient : Entity<PatientId>, IAggregateRoot
     {
+        public PatientId Id { get; private set; }
         public string Firstname { get;  private set; }
         public string LastName { get;  private set; }
         public string FullName { get;  private set; }
@@ -28,6 +30,7 @@ namespace DDDSample1.Domain.Patients
         }
 
         public Patient(string firstname, string lastName,string fullName, string gender, string emergencyContact, string dateOfBirth, string medicalRecordNumber ){
+            Id = new PatientId(Guid.NewGuid());
             Firstname = firstname;
             LastName = lastName;
             FullName = fullName;

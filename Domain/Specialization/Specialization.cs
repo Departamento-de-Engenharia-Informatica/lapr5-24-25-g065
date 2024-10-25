@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DDDNetCore.IRepos;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Staffs;
 

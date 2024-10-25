@@ -7,7 +7,7 @@ namespace DDDSample1.Domain.OperationTypes
 {
 public class OperationType: Entity<OperationTypeID> {
     public string Name { get; set; }
-    public Specialization Specialization { get; private set; }
+    public Specialization Specialization { get; set; }
     public List<Specialization> RequiredStaffBySpecialization { get; set; }
     public TimeSpan EstimatedDuration { get; set; }
     public bool IsActive { get; set; } = true;

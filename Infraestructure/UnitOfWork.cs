@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using DDDSample1.Domain.Shared;
+using DDDNetCore.IRepos;
 
 namespace DDDSample1.Infrastructure
 {

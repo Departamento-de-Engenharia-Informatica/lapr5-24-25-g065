@@ -1,10 +1,9 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Staffs;
-using DDDSample1.Domain.Specializations;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using DDDNetCore.IRepos;
+using DDDNetCore.DTOs.Staff;
 
 namespace DDDSample1.Domain.Staffs
 {

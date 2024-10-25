@@ -1,3 +1,4 @@
+using DDDNetCore.IRepos;
 using DDDSample1.Domain.Specializations;
 using DDDSample1.Infrastructure.Shared;
 

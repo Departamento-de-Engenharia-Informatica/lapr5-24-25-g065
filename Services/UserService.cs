@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using DDDSample1.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using DDDNetCore.IRepos;
 
 namespace DDDSample1.Domain.Users
 {
@@ -26,7 +26,7 @@ namespace DDDSample1.Domain.Users
             return listDto;
         }
 
-        public async Task<UserDto> AddAsync(CreatingUserDto dto)
+        public async Task<UserDto> AddAsync(CreateUserDto dto)
         {
             var user = new User(dto.UserName,dto.Email,dto.Role);
             await this._repo.AddAsync(user);

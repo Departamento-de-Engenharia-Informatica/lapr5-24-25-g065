@@ -4,17 +4,18 @@ using System;
 using System.Threading.Tasks;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Staffs;
+using DDDNetCore.DTOs.Staff;
 
 
 namespace DDDSample1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StaffsController : ControllerBase
+    public class StaffController : ControllerBase
     {
         private readonly StaffService _service;
 
-        public StaffsController(StaffService service)
+        public StaffController(StaffService service)
         {
             _service = service;
         }
