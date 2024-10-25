@@ -1,6 +1,15 @@
 @startuml
 
-package "Surgical Appointment and Resource Management System" {
-   rectangle "MySis" as Admin
+title C4 Model - System Context Level 1
+
+Rectangle "Surgical Appointment System" as System
+
+
+Rectangle "API" as API
+Rectangle "AuthN" as AuthN
+
+
+System -(0- API : Uses
+System -(0- AuthN : Authenticates via
 
 @enduml
