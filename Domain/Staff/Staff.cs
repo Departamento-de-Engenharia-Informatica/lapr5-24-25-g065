@@ -26,7 +26,15 @@ namespace DDDSample1.Domain.Staffs
 
         public User User { get; private set; }
 
-        public Staff(string firstname, string lastName,string fullName, string gender, SpecializationId specializationId, string type, string licenseNumber, UserId userId ){
+        public string AvailabilitySlot { get; private set; }
+
+        public string PhoneNumber { get; private set; }
+
+        public string Email { get; private set; }
+
+        public Staff(string firstname, string lastName,string fullName, string gender, SpecializationId specializationId,
+                     string type, string licenseNumber, UserId userId, string availabilitySlot, string phoneNumber, string email){
+
             this.Id = new StaffId(Guid.NewGuid());
             this.Firstname = firstname;
             this.LastName = lastName;
@@ -36,6 +44,9 @@ namespace DDDSample1.Domain.Staffs
             this.Type = type;
             this.LicenseNumber = licenseNumber;
             this.UserId = userId;
+            this.AvailabilitySlot=availabilitySlot;
+            this.PhoneNumber=phoneNumber;
+            this.Email=email;
         }
 
         public void ChangeFirstName(string firstname){
@@ -60,5 +71,16 @@ namespace DDDSample1.Domain.Staffs
             this.LicenseNumber = licenseNumber;
         }
 
+        public void ChangeAvailabilitySlot(string availabilitySlot){
+            this.AvailabilitySlot = availabilitySlot;
+        }
+
+        public void ChangePhoneNumber(string phoneNumber){
+            this.PhoneNumber=phoneNumber;
+        }
+
+        public void ChangeEmail(string email){
+            this.Email=email;
+        }
     }
 }
