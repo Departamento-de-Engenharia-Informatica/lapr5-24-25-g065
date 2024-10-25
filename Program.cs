@@ -16,28 +16,34 @@ using Microsoft.Extensions.Configuration;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Infrastructure.Patients;
-using DDDSample1.Domain.Shared;
+using DDDSample1.Domain.Specializations;
+using DDDSample1.Domain.Staffs;
+using DDDSample1.Domain.Users;
+using DDDSample1.Infrastructure.OperationTypes;
+using DDDSample1.Infrastructure.Specializations;
+using DDDSample1.Infrastructure.Staffs;
+using DDDSample1.Infrastructure.Users;
+using DDDNetCore.IRepos;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to dependency scope.
 builder.Services.AddControllers();
 builder.Services.AddScoped<PatientService>();
+builder.Services.AddScoped<OperationTypeService>();
+builder.Services.AddScoped<SpecializationService>();
+builder.Services.AddScoped<StaffService>();
+builder.Services.AddScoped<UserService>();
 
 
-
-//instanciar todos os services
-// builder.Services.AddScoped<PatientService>();
-// builder.Services.AddScoped<PatientService>();
-// builder.Services.AddScoped<PatientService>();
-// builder.Services.AddScoped<PatientService>();
-// builder.Services.AddScoped<PatientService>();
-// builder.Services.AddScoped<PatientService>();
-
-
-//instanciar todos os repos
-builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+// Add Repositories to dependency scope
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IOperationTypeRepository, OperationTypeRepository>();
+builder.Services.AddScoped<ISpecializationRepository, SpecializationRepository>();
+builder.Services.AddScoped<IStaffRepository, StaffRepository>();
+builder.Services.AddScoped<IUserRepository,UserRepository>();
+
 
 // Configure MySQL as the database provider
 builder.Services.AddDbContext<DDDSample1DbContext>(options =>

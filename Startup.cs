@@ -7,13 +7,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using DDDSample1.Infrastructure;
 using DDDSample1.Infrastructure.Shared;
-using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Infrastructure.Patients;
 using DDDSample1.Domain.Staffs;
 using DDDSample1.Infrastructure.Staffs;
 using DDDSample1.Domain.Specializations;
 using DDDSample1.Infrastructure.Specializations;
+using DDDNetCore.IRepos;
 
 namespace DDDSample1
 {
