@@ -19,7 +19,7 @@ namespace DDDSample1.Domain.Patients
         public string MedicalRecordNumber { get; private set; }
         public List<Appointment> AppointmentHistory { get; private set; } // Added
 
-        public Patient(string firstname, string lastName, string fullName, string gender, List<string> allergies, string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber)
+        public Patient(string firstname, string lastName, string fullName, string gender, List<string>? allergies, string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber)
         {
             Id = new PatientId(Guid.NewGuid());
             Firstname = firstname;
@@ -68,7 +68,7 @@ namespace DDDSample1.Domain.Patients
             this.Allergies = allergies;
         }
 
-        public void ChangeDateOfBirth(DateTime dateOfBirth)
+        public void ChangeDateOfBirth(DateTime? dateOfBirth)
         {
             this.DateOfBirth = dateOfBirth;
         }

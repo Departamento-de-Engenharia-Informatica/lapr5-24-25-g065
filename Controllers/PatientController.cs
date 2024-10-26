@@ -23,7 +23,8 @@ namespace DDDSample1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PatientDto>>> GetAll()
         {
-            return await patientService.GetAllAsync();
+            var patients = await patientService.GetAllAsync();
+            return Ok(patients); // Use Ok() to provide a more descriptive response
         }
 
         // GET: api/Patients/5
@@ -37,7 +38,7 @@ namespace DDDSample1.Controllers
                 return NotFound();
             }
 
-            return patient;
+            return Ok(patient); // Use Ok() to provide a more descriptive response
         }
 
         // POST: api/Patients
@@ -55,31 +56,32 @@ namespace DDDSample1.Controllers
             }
         }
 
-        // PUT: api/Patients/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult<PatientDto>> Update(Guid id, PatientDto dto)
+  [HttpPut("{id}")]
+public async Task<ActionResult<PatientDto>> Update(Guid id, UpdatePatientDTO dto) // Changed to UpdatePatientDTO
+{
+    if (id != dto.Id)
+    {
+        return BadRequest("Patient ID mismatch."); // Added message for clarity
+    }
+
+    try
+    {
+        // Call UpdateAsync with UpdatePatientDTO instead of converting to PatientDto
+        var patient = await patientService.UpdateAsync(dto); // Pass UpdatePatientDTO directly
+
+        if (patient == null)
         {
-            if (id != dto.Id)
-            {
-                return BadRequest();
-            }
-
-            try
-            {
-                var patient = await patientService.UpdateAsync(dto);
-
-                if (patient == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(patient);
-            }
-            catch (BusinessRuleValidationException ex)
-            {
-                return BadRequest(new { Message = ex.Message });
-            }
+            return NotFound();
         }
+
+        return Ok(patient); // Return updated patient
+    }
+    catch (BusinessRuleValidationException ex)
+    {
+        return BadRequest(new { Message = ex.Message });
+    }
+}
+
 
         // DELETE: api/Patients/5/hard
         [HttpDelete("{id}/hard")]
@@ -94,16 +96,16 @@ namespace DDDSample1.Controllers
                     return NotFound();
                 }
 
-                return Ok(patient);
+                return Ok(patient); // Return deleted patient info
             }
             catch (BusinessRuleValidationException ex)
             {
                 return BadRequest(new { Message = ex.Message });
             }
         }
-        
     }
 }
+
 
 /*using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

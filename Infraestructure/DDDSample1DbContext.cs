@@ -131,55 +131,60 @@ namespace DDDSample1.Infrastructure
         }
 
         private void ConfigurePatient(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Patient>()
-                .HasKey(p => p.Id);
+{
+    modelBuilder.Entity<Patient>()
+        .HasKey(p => p.Id);
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.Id)
-                .HasConversion(
-                    v => v.AsGuid(),
-                    v => new PatientId(v)
-                )
-                .HasColumnName("PatientId");
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.Id)
+        .HasConversion(
+            v => v.AsGuid(),
+            v => new PatientId(v)
+        )
+        .HasColumnName("PatientId");
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.Firstname)
-                .IsRequired()
-                .HasMaxLength(150);
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.Firstname)
+        .IsRequired()
+        .HasMaxLength(150);
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.LastName)
-                .IsRequired()
-                .HasMaxLength(150);
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.LastName)
+        .IsRequired()
+        .HasMaxLength(150);
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.FullName)
-                .IsRequired()
-                .HasMaxLength(300);
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.FullName)
+        .IsRequired()
+        .HasMaxLength(300);
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.Gender)
-                .IsRequired()
-                .HasMaxLength(20);
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.Gender)
+        .IsRequired()
+        .HasMaxLength(20);
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.EmergencyContact)
-                .HasMaxLength(150);
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.EmergencyContact)
+        .HasMaxLength(150);
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.DateOfBirth)
-                .IsRequired();
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.DateOfBirth)
+        .IsRequired();
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.MedicalRecordNumber)
-                .IsRequired()
-                .HasMaxLength(50);
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.MedicalRecordNumber)
+        .IsRequired()
+        .HasMaxLength(50);
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.Allergies)
-                .HasMaxLength(500);
-        }
+    var valueConverter = new ValueConverter<List<string>, string>(
+        v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+        v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
+    );
+
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.Allergies)
+        .HasConversion(valueConverter);
+}
 
         private void ConfigureStaff(ModelBuilder modelBuilder)
         {

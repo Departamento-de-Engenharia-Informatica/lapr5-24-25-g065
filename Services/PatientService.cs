@@ -1,7 +1,10 @@
-using System.Threading.Tasks;
+using System;
 using System.Collections.Generic;
-using DDDNetCore.IRepos;
+using System.Linq;
+using System.Threading.Tasks;
 using DDDNetCore.DTOs.Patient;
+using DDDNetCore.IRepos;
+
 namespace DDDSample1.Domain.Patients
 {
     public class PatientService
@@ -18,9 +21,10 @@ namespace DDDSample1.Domain.Patients
         public async Task<List<PatientDto>> GetAllAsync()
         {
             var list = await this.patientRepository.GetAllAsync();
-            
-            List<PatientDto> listDto = list.ConvertAll(patient => 
-                new PatientDto(patient.Id.AsGuid(), patient.Firstname, patient.LastName, patient.FullName, patient.Gender, patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber));
+
+            List<PatientDto> listDto = list.ConvertAll(patient =>
+                new PatientDto(patient.Id.AsGuid(), patient.Firstname, patient.LastName, patient.FullName, patient.Gender,
+                    patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber));
 
             return listDto;
         }
@@ -34,53 +38,119 @@ namespace DDDSample1.Domain.Patients
                 return null;
             }
 
-            return new PatientDto(patient.Id.AsGuid(), patient.Firstname, patient.LastName, patient.FullName, patient.Gender, patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber);
+            return new PatientDto(patient.Id.AsGuid(), patient.Firstname, patient.LastName, patient.FullName, patient.Gender,
+                patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber);
         }
 
         public async Task<PatientDto> AddAsync(CreatePatientDTO dto)
-        {   
-            var patient = new Patient(dto.Firstname, dto.LastName, dto.FullName, dto.Gender, dto.Allergies, dto.EmergencyContact, dto.DateOfBirth, dto.MedicalRecordNumber);
+{
+    // Validate DTO
+    if (dto == null || string.IsNullOrEmpty(dto.Firstname) || string.IsNullOrEmpty(dto.LastName) ||
+        string.IsNullOrEmpty(dto.FullName) || string.IsNullOrEmpty(dto.Gender) ||
+        string.IsNullOrEmpty(dto.EmergencyContact) || string.IsNullOrEmpty(dto.MedicalRecordNumber))
+    {
+        throw new ArgumentException("Invalid patient data");
+    }
 
-            await this.patientRepository.AddAsync(patient);
-            await this.unitOfWork.CommitAsync();
+    // Create a new patient from the DTO
+    var patient = new Patient(
+        dto.Firstname,
+        dto.LastName,
+        dto.FullName,
+        dto.Gender,
+        dto.Allergies, // Directly use the List<string> allergies
+        dto.EmergencyContact,
+        dto.DateOfBirth, // Assuming DateOfBirth is already a DateTime?
+        dto.MedicalRecordNumber
+    );
 
-            return new PatientDto(patient.Id.AsGuid(), patient.Firstname, patient.LastName, patient.FullName, patient.Gender, patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber);
-        }
+    await this.patientRepository.AddAsync(patient);
+    await this.unitOfWork.CommitAsync();
 
-        public async Task<PatientDto> UpdateAsync(PatientDto dto)
-        {
-            var patient = await this.patientRepository.GetByIdAsync(new PatientId(dto.Id));
+    return new PatientDto(
+        patient.Id.AsGuid(),
+        patient.Firstname,
+        patient.LastName,
+        patient.FullName,
+        patient.Gender,
+        patient.Allergies,
+        patient.EmergencyContact,
+        patient.DateOfBirth, // Ensure this is of type DateTime?
+        patient.MedicalRecordNumber
+    );
+}
 
-            if (patient == null)
-                return null;   
+     public async Task<PatientDto> UpdateAsync(UpdatePatientDTO dto)
+{
+    // Validate DTO
+    if (dto == null || string.IsNullOrEmpty(dto.Firstname) || string.IsNullOrEmpty(dto.LastName) ||
+        string.IsNullOrEmpty(dto.FullName) || string.IsNullOrEmpty(dto.Gender) ||
+        string.IsNullOrEmpty(dto.EmergencyContact) || string.IsNullOrEmpty(dto.MedicalRecordNumber))
+    {
+        throw new ArgumentException("Invalid patient data");
+    }
 
-            // Update all fields
-            patient.ChangeFirstName(dto.Firstname);
-            patient.ChangeLastName(dto.LastName);
-            patient.ChangeFullName(dto.FullName);
-            patient.ChangeGender(dto.Gender);
-            patient.ChangeDateOfBirth(dto.DateOfBirth);
-            patient.ChangeAllergies(dto.Allergies);
-            patient.ChangeMedicalRecordNumber(dto.MedicalRecordNumber);
+    // Fetch the patient by ID
+    var patient = await this.patientRepository.GetByIdAsync(new PatientId(dto.Id));
 
-            await this.unitOfWork.CommitAsync();
+    if (patient == null)
+    {
+        return null;
+    }
 
-            return new PatientDto(patient.Id.AsGuid(), patient.Firstname, patient.LastName, patient.FullName, patient.Gender, patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber);
-        }
+    // Update all fields
+    patient.ChangeFirstName(dto.Firstname);
+    patient.ChangeLastName(dto.LastName);
+    patient.ChangeFullName(dto.FullName);
+    patient.ChangeGender(dto.Gender);
+    patient.ChangeEmergencyContact(dto.EmergencyContact);
+
+    // Use the List<string> directly for allergies
+    patient.ChangeAllergies(dto.Allergies); // Ensure dto.Allergies is of type List<string>
+
+    // Assign DateOfBirth directly
+    patient.ChangeDateOfBirth(dto.DateOfBirth); // Assuming this is already of type DateTime?
+
+    patient.ChangeMedicalRecordNumber(dto.MedicalRecordNumber);
+
+    await this.unitOfWork.CommitAsync();
+
+    return new PatientDto(
+        patient.Id.AsGuid(),
+        patient.Firstname,
+        patient.LastName,
+        patient.FullName,
+        patient.Gender,
+        patient.Allergies,
+        patient.EmergencyContact,
+        patient.DateOfBirth,
+        patient.MedicalRecordNumber
+    );
+}
 
         public async Task<PatientDto> DeleteAsync(PatientId id)
         {
             var patient = await this.patientRepository.GetByIdAsync(id);
 
             if (patient == null)
-                return null;   
+            {
+                return null;
+            }
 
             this.patientRepository.Remove(patient);
             await this.unitOfWork.CommitAsync();
 
-            return new PatientDto(patient.Id.AsGuid(), patient.Firstname, patient.LastName, patient.FullName, patient.Gender, patient.Allergies, patient.EmergencyContact, patient.DateOfBirth, patient.MedicalRecordNumber);
+            return new PatientDto(
+                patient.Id.AsGuid(),
+                patient.Firstname,
+                patient.LastName,
+                patient.FullName,
+                patient.Gender,
+                patient.Allergies,
+                patient.EmergencyContact,
+                patient.DateOfBirth,
+                patient.MedicalRecordNumber
+            );
         }
-        
     }
-    
 }
