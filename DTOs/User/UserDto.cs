@@ -1,6 +1,6 @@
 using System;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Specializations;
+using DDDSample1.Domain.Passwords;
 
 namespace DDDSample1.Domain.Users
 {
@@ -10,14 +10,16 @@ namespace DDDSample1.Domain.Users
         public string UserName { get; private set; }
         public string Email { get; private set; }
         public Role Role { get; private set; }
+        public PasswordId PasswordId { get; private set; }
         
 
         // Construtor para criação de um novo usuário
-        public UserDto(Guid id,string userName, string email,Role r){
+        public UserDto(Guid id,string userName, string email,Role r, PasswordId passwordId){
             Id = id;
             UserName = userName;
             Email = email;
             Role = r;
+            PasswordId = passwordId;
         }
     }
 }

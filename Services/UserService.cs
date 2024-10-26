@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using DDDNetCore.IRepos;
+using DDDSample1.Domain.Passwords;
 
 namespace DDDSample1.Domain.Users
 {
@@ -21,19 +22,19 @@ namespace DDDSample1.Domain.Users
             var list = await this._repo.GetAllAsync();
             
             List<UserDto> listDto = list.ConvertAll<UserDto>(user => 
-                new UserDto(user.Id.AsGuid(),user.UserName,user.Email,user.Role));
+                new UserDto(user.Id.AsGuid(),user.UserName,user.Email,user.Role,user.PasswordId));
 
             return listDto;
         }
 
         public async Task<UserDto> AddAsync(CreateUserDto dto)
         {
-            var user = new User(dto.UserName,dto.Email,dto.Role);
+            var user = new User(dto.UserName,dto.Email,dto.Role,dto.PasswordId);
             await this._repo.AddAsync(user);
 
             await this._unitOfWork.CommitAsync();
 
-            return new UserDto(user.Id.AsGuid(),user.UserName,user.Email,user.Role);
+            return new UserDto(user.Id.AsGuid(),user.UserName,user.Email,user.Role,user.PasswordId);
         }
 
         internal async Task<ActionResult<UserDto>> GetByIdAsync(UserId id)
@@ -43,7 +44,16 @@ namespace DDDSample1.Domain.Users
             if(user == null)
                 return null;
 
-            return new UserDto(user.Id.AsGuid(),user.UserName,user.Email,user.Role);
+            return new UserDto(user.Id.AsGuid(),user.UserName,user.Email,user.Role,user.PasswordId);
+        }
+
+        public async Task<UserDto> GetUserByEmailAsync(string email)
+        {
+            var user = await _repo.GetByEmailAsync(email);
+            if (user == null)
+                return null;
+
+            return new UserDto(user.Id.AsGuid(),user.UserName,user.Email,user.Role,user.PasswordId);
         }
 
         public async Task<UserDto> UpdateAsync(UserDto dto)
@@ -60,7 +70,7 @@ namespace DDDSample1.Domain.Users
 
             await this._unitOfWork.CommitAsync();
 
-            return new UserDto(user.Id.AsGuid(),user.UserName,user.Email,user.Role);
+            return new UserDto(user.Id.AsGuid(),user.UserName,user.Email,user.Role,user.PasswordId);
        }
 
         public async Task<UserDto> DeleteAsync(UserId id)
@@ -73,7 +83,27 @@ namespace DDDSample1.Domain.Users
             this._repo.Remove(user);
             await this._unitOfWork.CommitAsync();
 
-            return new UserDto(user.Id.AsGuid(),user.UserName,user.Email,user.Role);
+            return new UserDto(user.Id.AsGuid(),user.UserName,user.Email,user.Role,user.PasswordId);
        }
+        //Método para auntenticar
+    public async Task<UserDto> AuthenticateAsync(string email, string password)
+    {
+        // Procura user pelo seu email
+        var user = await _repo.GetByEmailAsync(email);
+        if (user == null)
+            return null;
+
+        // Verificação de passwords
+        if (user.Password.Verify(password))
+        {
+            // Map User to UserDto before returning
+            return new UserDto(user.Id.AsGuid(), user.UserName, user.Email, user.Role, user.PasswordId);
+        }
+
+        return null;
     }
+
+    }
+
+   
 }

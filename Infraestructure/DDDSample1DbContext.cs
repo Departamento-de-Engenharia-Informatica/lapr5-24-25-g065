@@ -3,11 +3,14 @@ using DDDSample1.Domain.Staffs;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Specializations;
 using DDDSample1.Domain.OperationTypes;
+using DDDSample1.Domain.Passwords;
+using DDDSample1.Domain.Users;
 using DDDSample1.Infrastructure.Patients;
 using DDDSample1.Infrastructure.Staffs;
 using DDDSample1.Infrastructure.Specializations;
 using DDDSample1.Infrastructure.OperationTypes;
-using DDDSample1.Domain.Users;
+using DDDSample1.Infrastructure.Passwords;
+
 using System;
 using DDDNetCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -30,6 +33,7 @@ namespace DDDSample1.Infrastructure
         public DbSet<Specialization> Specializations { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<OperationType> OperationType {get;set;}
+        public DbSet<Password> Passwords { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             ConfigureSpecialization(modelBuilder);  // Call to configure Specialization entity
@@ -37,6 +41,7 @@ namespace DDDSample1.Infrastructure
             ConfigureStaff(modelBuilder);           // Call to configure Staff entity
             ConfigureUser(modelBuilder);
             ConfigureOperationsType(modelBuilder);
+            ConfigurePassword(modelBuilder);
         }
 
         private void ConfigureOperationsType(ModelBuilder modelBuilder)
@@ -231,7 +236,24 @@ namespace DDDSample1.Infrastructure
             )
             .IsRequired()
             .HasMaxLength(50); // Adjust max length based on your enum values
-            }
+        }
+
+        public void ConfigurePassword(ModelBuilder modelBuilder){
+             modelBuilder.Entity<Password>()
+                .HasKey(p => p.Id);
+
+            modelBuilder.Entity<Password>()
+                .Property(p => p.Id)
+                .HasConversion(
+                    v => v.AsGuid(),
+                    v => new PasswordId(v)
+                )
+                .HasColumnName("PasswordId");
+            
+            modelBuilder.Entity<User>()
+                .Property(u => u.UserName)
+                .IsRequired();
+        }
 
     }
 }
