@@ -6,21 +6,25 @@ namespace DDDSample1.Domain.Appointments
 {
     public class AppointmentId : EntityId
     {
+        // Constructor accepting a Guid value
         [JsonConstructor]
         public AppointmentId(Guid value) : base(value)
         {
         }
 
+        // Constructor accepting a string value
         public AppointmentId(string value) : base(value)
         {
         }
 
+        // Create a Guid from a string representation
         override
         protected object createFromString(string text)
         {
             return new Guid(text);
         }
 
+        // Get string representation of the Guid
         override
         public string AsString()
         {
@@ -28,6 +32,7 @@ namespace DDDSample1.Domain.Appointments
             return obj.ToString();
         }
 
+        // Get the Guid value
         public Guid AsGuid()
         {
             return (Guid) base.ObjValue;
