@@ -1,21 +1,23 @@
-using DDDSample1.Domain.Passwords;
 using DDDSample1.Domain.Shared;
 
 namespace DDDSample1.Domain.Users
 {
     public class CreateUserDto
     {
-        public string UserName { get; private set; }
-        public string Email { get; private set; }
-        public Role Role { get; private set; }
-        public Password Password { get; private set; }
-        
+        public string UserName { get; set; } // Changed to set; to allow binding
+        public string Email { get; set; } // Changed to set; to allow binding
+        public Role Role { get; set; } // Changed to set; to allow binding
+        public string Password { get; set; } // Changed to string for easier handling
 
-        // Construtor para criação de um novo usuário
-        public CreateUserDto(string userName, string email,Role r, Password password){
+        // Parameterless constructor for model binding
+        public CreateUserDto() { }
+
+        // Constructor for creating a new user
+        public CreateUserDto(string userName, string email, Role role, string password)
+        {
             UserName = userName;
             Email = email;
-            Role = r;
+            Role = role;
             Password = password;
         }
     }

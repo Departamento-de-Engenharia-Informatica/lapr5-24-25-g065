@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using DDDNetCore.IRepos;
 using DDDSample1.Domain.Passwords;
+using DDDSample1.Domain.Shared;
 
 namespace DDDSample1.Domain.Users
 {
@@ -11,40 +12,48 @@ namespace DDDSample1.Domain.Users
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserRepository _repo;
+
         public UserService(IUnitOfWork unitOfWork, IUserRepository repo)
         {
-            this._unitOfWork = unitOfWork;
-            this._repo = repo;
+            _unitOfWork = unitOfWork;
+            _repo = repo;
         }
 
         public async Task<List<UserDto>> GetAllAsync()
         {
-            var list = await this._repo.GetAllAsync();
-            
-            List<UserDto> listDto = list.ConvertAll<UserDto>(user => 
-                new UserDto(user.Id.AsGuid(),user.UserName,user.Email,user.Role,user.Password));
+            var users = await _repo.GetAllAsync();
+            var userDtos = users.ConvertAll(user => 
+                new UserDto(user.Id.AsGuid(), user.UserName, user.Email, user.Role, user.Password));
 
-            return listDto;
+            return userDtos;
         }
 
-        public async Task<UserDto> AddAsync(CreateUserDto dto)
-        {
-            var user = new User(dto.UserName,dto.Email,dto.Role,dto.Password);
-            await this._repo.AddAsync(user);
+       public async Task<UserDto> AddAsync(CreateUserDto dto)
+{
+    // Add email uniqueness check here
+    var existingUser = await _repo.GetByEmailAsync(dto.Email);
+    if (existingUser != null)
+    {
+        throw new BusinessRuleValidationException("A user with this email already exists.");
+    }
 
-            await this._unitOfWork.CommitAsync();
+    var password = new Password(dto.Password); // Assuming Password has a constructor
+    var user = new User(dto.UserName, dto.Email, dto.Role, password);
 
-            return new UserDto(user.Id.AsGuid(),user.UserName,user.Email,user.Role,user.Password);
-        }
+    await _repo.AddAsync(user);
+    await _unitOfWork.CommitAsync();
+
+    return new UserDto(user.Id.AsGuid(), user.UserName, user.Email, user.Role, user.Password);
+}
+
 
         internal async Task<ActionResult<UserDto>> GetByIdAsync(UserId id)
         {
-            var user = await this._repo.GetByIdAsync(id);
-            
-            if(user == null)
+            var user = await _repo.GetByIdAsync(id);
+            if (user == null)
                 return null;
 
-            return new UserDto(user.Id.AsGuid(),user.UserName,user.Email,user.Role,user.Password);
+            return new UserDto(user.Id.AsGuid(), user.UserName, user.Email, user.Role, user.Password);
         }
 
         public async Task<UserDto> GetUserByEmailAsync(string email)
@@ -53,57 +62,59 @@ namespace DDDSample1.Domain.Users
             if (user == null)
                 return null;
 
-            return new UserDto(user.Id.AsGuid(),user.UserName,user.Email,user.Role,user.Password);
+            return new UserDto(user.Id.AsGuid(), user.UserName, user.Email, user.Role, user.Password);
         }
 
         public async Task<UserDto> UpdateAsync(UserDto dto)
         {
-            var user = await this._repo.GetByIdAsync(new UserId(dto.Id)); 
-
+            var user = await _repo.GetByIdAsync(new UserId(dto.Id)); 
             if (user == null)
                 return null;   
 
-            // change all fields
-            user.ChangeUserName(user.UserName);
-            user.ChangeEmail(user.Email);
-            user.ChangeRole(user.Role);
+            // Update fields - use incoming DTO properties
+            user.ChangeUserName(dto.UserName);
+            user.ChangeEmail(dto.Email);
+            user.ChangeRole(dto.Role);
+            
+            // If the password needs to be changed, handle it here
+            // For instance, if your DTO has a new password, you would verify and change it
+            // if (!string.IsNullOrEmpty(dto.Password)) {
+            //     user.ChangePassword(new Password(dto.Password));
+            // }
 
-            await this._unitOfWork.CommitAsync();
+            await _unitOfWork.CommitAsync();
 
-            return new UserDto(user.Id.AsGuid(),user.UserName,user.Email,user.Role,user.Password);
-       }
-
-        public async Task<UserDto> DeleteAsync(UserId id)
-        {
-            var user = await this._repo.GetByIdAsync(id); 
-
-            if (user == null)
-                return null;   
-
-            this._repo.Remove(user);
-            await this._unitOfWork.CommitAsync();
-
-            return new UserDto(user.Id.AsGuid(),user.UserName,user.Email,user.Role,user.Password);
-       }
-        //Método para auntenticar
-    public async Task<UserDto> AuthenticateAsync(string email, string password)
-    {
-        // Procura user pelo seu email
-        var user = await _repo.GetByEmailAsync(email);
-        if (user == null)
-            return null;
-
-        // Verificação de passwords
-        if (user.Password.Verify(password))
-        {
-            // Map User to UserDto before returning
             return new UserDto(user.Id.AsGuid(), user.UserName, user.Email, user.Role, user.Password);
         }
 
-        return null;
-    }
+        public async Task<UserDto> DeleteAsync(UserId id)
+        {
+            var user = await _repo.GetByIdAsync(id); 
+            if (user == null)
+                return null;   
 
-    }
+            _repo.Remove(user);
+            await _unitOfWork.CommitAsync();
 
-   
+            return new UserDto(user.Id.AsGuid(), user.UserName, user.Email, user.Role, user.Password);
+        }
+
+        // Method for authenticating a user
+        public async Task<UserDto> AuthenticateAsync(string email, string password)
+        {
+            // Find user by email
+            var user = await _repo.GetByEmailAsync(email);
+            if (user == null)
+                return null;
+
+            // Check passwords
+            if (user.Password.Verify(password))
+            {
+                // Map User to UserDto before returning
+                return new UserDto(user.Id.AsGuid(), user.UserName, user.Email, user.Role, user.Password);
+            }
+
+            return null;
+        }
+    }
 }

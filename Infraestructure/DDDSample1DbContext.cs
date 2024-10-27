@@ -10,13 +10,6 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Collections.Generic;
 using System.Text.Json;
 using DDDSample1.Domain.Passwords;
-using DDDSample1.Infrastructure.Patients;
-using DDDSample1.Infrastructure.Staffs;
-using DDDSample1.Infrastructure.Specializations;
-using DDDSample1.Infrastructure.OperationTypes;
-//using DDDSample1.Infrastructure.Passwords;
-using DDDNetCore.Migrations;
-
 
 namespace DDDSample1.Infrastructure
 {
@@ -30,7 +23,7 @@ namespace DDDSample1.Infrastructure
         public DbSet<User> Users { get; set; }
         public DbSet<OperationType> OperationTypes { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
-  	    public DbSet<Password> Passwords { get; set; }
+        public DbSet<Password> Passwords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,52 +33,53 @@ namespace DDDSample1.Infrastructure
             ConfigureUser(modelBuilder);
             ConfigureOperationType(modelBuilder);
             ConfigureAppointment(modelBuilder);
-	        //ConfigurePassword(modelBuilder);
+            // Uncomment if needed
+            // ConfigurePassword(modelBuilder);
         }
 
         private void ConfigureAppointment(ModelBuilder modelBuilder)
-{
-    modelBuilder.Entity<Appointment>()
-        .HasKey(a => a.Id);
+        {
+            modelBuilder.Entity<Appointment>()
+                .HasKey(a => a.Id);
 
-    modelBuilder.Entity<Appointment>()
-        .Property(a => a.Id)
-        .HasConversion(
-            v => v.AsGuid(),
-            v => new AppointmentId(v)
-        )
-        .HasColumnName("AppointmentId");
+            modelBuilder.Entity<Appointment>()
+                .Property(a => a.Id)
+                .HasConversion(
+                    v => v.AsGuid(),
+                    v => new AppointmentId(v)
+                )
+                .HasColumnName("AppointmentId");
 
-    modelBuilder.Entity<Appointment>()
-        .Property(a => a.RequestId)
-        .IsRequired()
-        .HasMaxLength(150);
+            modelBuilder.Entity<Appointment>()
+                .Property(a => a.RequestId)
+                .IsRequired()
+                .HasMaxLength(150);
 
-    modelBuilder.Entity<Appointment>()
-        .Property(a => a.RoomId)
-        .IsRequired()
-        .HasMaxLength(100);
+            modelBuilder.Entity<Appointment>()
+                .Property(a => a.RoomId)
+                .IsRequired()
+                .HasMaxLength(100);
 
-    modelBuilder.Entity<Appointment>()
-        .Property(a => a.Date)
-        .IsRequired();
+            modelBuilder.Entity<Appointment>()
+                .Property(a => a.Date)
+                .IsRequired();
 
-    modelBuilder.Entity<Appointment>()
-        .Property(a => a.Status)
-        .IsRequired()
-        .HasMaxLength(50);
+            modelBuilder.Entity<Appointment>()
+                .Property(a => a.Status)
+                .IsRequired()
+                .HasMaxLength(50);
 
-    // Relationships
-    modelBuilder.Entity<Appointment>()
-        .HasOne<Patient>() // Each Appointment is linked to one Patient
-        .WithMany(p => p.AppointmentHistory) // A Patient can have many Appointments
-        .HasForeignKey(a => a.PatientId);
+            // Relationships
+            modelBuilder.Entity<Appointment>()
+                .HasOne<Patient>() // Each Appointment is linked to one Patient
+                .WithMany(p => p.AppointmentHistory) // A Patient can have many Appointments
+                .HasForeignKey(a => a.PatientId);
 
-    modelBuilder.Entity<Appointment>()
-        .HasOne<Staff>() // Each Appointment is handled by one Staff member
-        .WithMany(s => s.Appointments) // A Staff member can handle many Appointments
-        .HasForeignKey(a => a.StaffId);
-}
+            modelBuilder.Entity<Appointment>()
+                .HasOne<Staff>() // Each Appointment is handled by one Staff member
+                .WithMany(s => s.Appointments) // A Staff member can handle many Appointments
+                .HasForeignKey(a => a.StaffId);
+        }
 
         private void ConfigureOperationType(ModelBuilder modelBuilder)
         {
@@ -141,60 +135,65 @@ namespace DDDSample1.Infrastructure
         }
 
         private void ConfigurePatient(ModelBuilder modelBuilder)
-{
-    modelBuilder.Entity<Patient>()
-        .HasKey(p => p.Id);
+        {
+            modelBuilder.Entity<Patient>()
+                .HasKey(p => p.Id);
 
-    modelBuilder.Entity<Patient>()
-        .Property(p => p.Id)
-        .HasConversion(
-            v => v.AsGuid(),
-            v => new PatientId(v)
-        )
-        .HasColumnName("PatientId");
+            modelBuilder.Entity<Patient>()
+                .Property(p => p.Id)
+                .HasConversion(
+                    v => v.AsGuid(),
+                    v => new PatientId(v)
+                )
+                .HasColumnName("PatientId");
 
-    modelBuilder.Entity<Patient>()
-        .Property(p => p.Firstname)
-        .IsRequired()
-        .HasMaxLength(150);
+            modelBuilder.Entity<Patient>()
+                .Property(p => p.Firstname)
+                .IsRequired()
+                .HasMaxLength(150);
 
-    modelBuilder.Entity<Patient>()
-        .Property(p => p.LastName)
-        .IsRequired()
-        .HasMaxLength(150);
+            modelBuilder.Entity<Patient>()
+                .Property(p => p.LastName)
+                .IsRequired()
+                .HasMaxLength(150);
 
-    modelBuilder.Entity<Patient>()
-        .Property(p => p.FullName)
-        .IsRequired()
-        .HasMaxLength(300);
+            modelBuilder.Entity<Patient>()
+                .Property(p => p.FullName)
+                .IsRequired()
+                .HasMaxLength(300);
 
-    modelBuilder.Entity<Patient>()
-        .Property(p => p.Gender)
-        .IsRequired()
-        .HasMaxLength(20);
+            modelBuilder.Entity<Patient>()
+                .Property(p => p.Gender)
+                .IsRequired()
+                .HasMaxLength(20);
 
-    modelBuilder.Entity<Patient>()
-        .Property(p => p.EmergencyContact)
-        .HasMaxLength(150);
+            modelBuilder.Entity<Patient>()
+                .Property(p => p.EmergencyContact)
+                .HasMaxLength(150);
 
-    modelBuilder.Entity<Patient>()
-        .Property(p => p.DateOfBirth)
-        .IsRequired();
+            modelBuilder.Entity<Patient>()
+                .Property(p => p.DateOfBirth)
+                .IsRequired();
 
-    modelBuilder.Entity<Patient>()
-        .Property(p => p.MedicalRecordNumber)
-        .IsRequired()
-        .HasMaxLength(50);
+            modelBuilder.Entity<Patient>()
+                .Property(p => p.MedicalRecordNumber)
+                .IsRequired()
+                .HasMaxLength(50);
 
-    var valueConverter = new ValueConverter<List<string>, string>(
-        v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-        v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
-    );
+            var valueConverter = new ValueConverter<List<string>, string>(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
+            );
 
-    modelBuilder.Entity<Patient>()
-        .Property(p => p.Allergies)
-        .HasConversion(valueConverter);
-}
+            modelBuilder.Entity<Patient>()
+                .Property(p => p.Allergies)
+                .HasConversion(valueConverter);
+
+            // Add the UserId property mapping if needed
+            modelBuilder.Entity<Patient>()
+                .Property(p => p.UserId)
+                .IsRequired(); // Ensure UserId is required
+        }
 
         private void ConfigureStaff(ModelBuilder modelBuilder)
         {
@@ -283,7 +282,7 @@ namespace DDDSample1.Infrastructure
         /*
         public void ConfigurePassword(ModelBuilder modelBuilder)
         {
-             modelBuilder.Entity<Password>()
+            modelBuilder.Entity<Password>()
                 .HasKey(p => p.Id);
 
             modelBuilder.Entity<Password>()

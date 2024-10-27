@@ -14,27 +14,21 @@ namespace DDDSample1.Domain.Users
 
         protected User() { }
 
-        // Construtor para criação de um novo usuário
-        public User(string userName, string email,Role r,Password password){
+        public User(string userName, string email, Role role, Password password)
+        {
             this.Id = new UserId(Guid.NewGuid());
             UserName = userName;
             Email = email;
-            Role = r;
+            Role = role;
             Password = password;
         }
 
-        public void ChangeUserName(string username){
-            this.UserName = username;
-        }
-        public void ChangeEmail(string email){
-            this.Email = email;
-        }
-        public void ChangeRole(Role role){
-            this.Role = role;
-        }
+        public void ChangeUserName(string username) => UserName = username;
 
-         public void ChangePassword(Password password){
-            this.Password = password;
-        }
+        public void ChangeEmail(string email) => Email = email;
+
+        public void ChangeRole(Role role) => Role = role;
+
+        public void ChangePassword(Password password) => Password = password;
     }
 }

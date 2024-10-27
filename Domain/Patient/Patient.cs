@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using DDDNetCore.IRepos;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Appointments; // Import Appointment domain
+using DDDSample1.Domain.Appointments;
+using DDDNetCore.IRepos;
 
 namespace DDDSample1.Domain.Patients
 {
     public class Patient : Entity<PatientId>, IAggregateRoot
     {
-        public PatientId Id { get; private set; }
         public string Firstname { get; private set; }
         public string LastName { get; private set; }
         public string FullName { get; private set; }
@@ -17,65 +16,59 @@ namespace DDDSample1.Domain.Patients
         public string EmergencyContact { get; private set; }
         public DateTime? DateOfBirth { get; private set; }
         public string MedicalRecordNumber { get; private set; }
-        public List<Appointment> AppointmentHistory { get; private set; } // Added
+        public Guid UserId { get; private set; } // Added UserId
+        public List<Appointment> AppointmentHistory { get; private set; }
 
-        public Patient(string firstname, string lastName, string fullName, string gender, List<string>? allergies, string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber)
+        public Patient(string firstname, string lastName, string fullName, string gender, List<string>? allergies, 
+                       string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber, Guid userId)
         {
-            Id = new PatientId(Guid.NewGuid());
-            Firstname = firstname;
-            LastName = lastName;
-            FullName = fullName;
-            Gender = gender;
+            Id = new PatientId(Guid.NewGuid()); // Use the entity's Id
+            Firstname = firstname ?? throw new ArgumentException("Firstname cannot be null");
+            LastName = lastName ?? throw new ArgumentException("LastName cannot be null");
+            FullName = fullName ?? throw new ArgumentException("FullName cannot be null");
+            Gender = gender ?? throw new ArgumentException("Gender cannot be null");
             Allergies = allergies;
-            EmergencyContact = emergencyContact;
+            EmergencyContact = emergencyContact ?? throw new ArgumentException("EmergencyContact cannot be null");
             DateOfBirth = dateOfBirth;
-            MedicalRecordNumber = medicalRecordNumber;
-            AppointmentHistory = new List<Appointment>(); // Initialize the list
+            MedicalRecordNumber = medicalRecordNumber ?? throw new ArgumentException("MedicalRecordNumber cannot be null");
+            UserId = userId; // Initialize UserId
+            AppointmentHistory = new List<Appointment>();
         }
 
+        // Method to add an appointment to the history
         public void AddAppointment(Appointment appointment)
         {
+            if (appointment == null) throw new ArgumentException("Appointment cannot be null");
             AppointmentHistory.Add(appointment);
         }
 
-        public void ChangeFirstName(string firstname)
+        // Method to remove an appointment from the history
+        public void RemoveAppointment(Appointment appointment)
         {
-            this.Firstname = firstname;
+            if (appointment == null) throw new ArgumentException("Appointment cannot be null");
+            AppointmentHistory.Remove(appointment);
         }
 
-        public void ChangeLastName(string lastName)
+        // Method to change UserId if necessary
+        public void ChangeUserId(Guid userId)
         {
-            this.LastName = lastName;
+            UserId = userId; 
         }
 
-        public void ChangeFullName(string fullName)
+        // Update patient details
+        internal void Update(string firstname, string lastName, string fullName, string gender, 
+                             List<string>? allergies, string emergencyContact, DateTime? dateOfBirth, 
+                             string medicalRecordNumber, Guid userId)
         {
-            this.FullName = fullName;
-        }
-
-        public void ChangeGender(string gender)
-        {
-            this.Gender = gender;
-        }
-
-        public void ChangeEmergencyContact(string emergencyContact)
-        {
-            this.EmergencyContact = emergencyContact;
-        }
-
-        public void ChangeAllergies(List<string>? allergies)
-        {
-            this.Allergies = allergies;
-        }
-
-        public void ChangeDateOfBirth(DateTime? dateOfBirth)
-        {
-            this.DateOfBirth = dateOfBirth;
-        }
-
-        public void ChangeMedicalRecordNumber(string medicalRecordNumber)
-        {
-            this.MedicalRecordNumber = medicalRecordNumber;
+            Firstname = firstname ?? throw new ArgumentException("Firstname cannot be null");
+            LastName = lastName ?? throw new ArgumentException("LastName cannot be null");
+            FullName = fullName ?? throw new ArgumentException("FullName cannot be null");
+            Gender = gender ?? throw new ArgumentException("Gender cannot be null");
+            Allergies = allergies; // Assuming allergies can be null
+            EmergencyContact = emergencyContact ?? throw new ArgumentException("EmergencyContact cannot be null");
+            DateOfBirth = dateOfBirth;
+            MedicalRecordNumber = medicalRecordNumber ?? throw new ArgumentException("MedicalRecordNumber cannot be null");
+            UserId = userId; // Update UserId
         }
     }
 }

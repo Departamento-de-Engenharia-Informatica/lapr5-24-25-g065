@@ -6,7 +6,6 @@ using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Staffs;
 using DDDNetCore.DTOs.Staff;
 
-
 namespace DDDSample1.Controllers
 {
     [Route("api/[controller]")]
@@ -24,83 +23,83 @@ namespace DDDSample1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StaffDto>>> GetAll()
         {
-            return await _service.GetAllAsync();
+            var staffList = await _service.GetAllAsync();
+            return Ok(staffList); // Use Ok() to return a 200 status with the result
         }
 
-        // GET: api/Products/5
+        // GET: api/Staff/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<StaffDto>> GetGetById(Guid id)
+        public async Task<ActionResult<StaffDto>> GetById(Guid id)
         {
-            var prod = await _service.GetByIdAsync(new StaffId(id));
+            var staff = await _service.GetByIdAsync(new StaffId(id));
 
-            if (prod == null)
+            if (staff == null)
             {
-                return NotFound();
+                return NotFound(); // Return 404 if staff not found
             }
 
-            return prod;
+            return Ok(staff); // Use Ok() to return a 200 status with the result
         }
 
-        // POST: api/Staffs
+        // POST: api/Staff
         [HttpPost]
-        public async Task<ActionResult<StaffDto>> Create(CreatingStaffDto dto)
+        public async Task<ActionResult<StaffDto>> Create([FromBody] CreatingStaffDto dto) // Use FromBody to specify where to get the data from
         {
             try
             {
                 var staff = await _service.AddAsync(dto);
-
-                return CreatedAtAction(nameof(GetGetById), new { id = staff.Id }, staff);
+                return CreatedAtAction(nameof(GetById), new { id = staff.Id }, staff); // Use GetById for consistency
             }
-            catch(BusinessRuleValidationException ex)
+            catch (BusinessRuleValidationException ex)
             {
-                return BadRequest(new {Message = ex.Message});
+                return BadRequest(new { Message = ex.Message }); // Return 400 with error message
             }
         }
 
-        
-        // PUT: api/Products/5
+        // PUT: api/Staff/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<StaffDto>> Update(Guid id, StaffDto dto)
+        public async Task<ActionResult<StaffDto>> Update(Guid id, [FromBody] StaffDto dto) // Use FromBody to specify where to get the data from
         {
             if (id != dto.Id)
             {
-                return BadRequest();
+                return BadRequest("ID mismatch."); // Provide more specific error message
             }
 
             try
             {
-                var prod = await _service.UpdateAsync(dto);
+                var updatedStaff = await _service.UpdateAsync(dto);
                 
-                if (prod == null)
+                if (updatedStaff == null)
                 {
-                    return NotFound();
+                    return NotFound(); // Return 404 if staff not found
                 }
-                return Ok(prod);
+
+                return Ok(updatedStaff); // Return updated staff with 200 status
             }
-            catch(BusinessRuleValidationException ex)
+            catch (BusinessRuleValidationException ex)
             {
-                return BadRequest(new {Message = ex.Message});
+                return BadRequest(new { Message = ex.Message }); // Return 400 with error message
             }
         }
-        
-        // DELETE: api/Products/5
+
+        // DELETE: api/Staff/5/hard
         [HttpDelete("{id}/hard")]
         public async Task<ActionResult<StaffDto>> HardDelete(Guid id)
         {
             try
             {
-                var prod = await _service.DeleteAsync(new StaffId(id));
+                var deletedStaff = await _service.DeleteAsync(new StaffId(id));
 
-                if (prod == null)
+                if (deletedStaff == null)
                 {
-                    return NotFound();
+                    return NotFound(); // Return 404 if staff not found
                 }
 
-                return Ok(prod);
+                return Ok(deletedStaff); // Return deleted staff with 200 status
             }
-            catch(BusinessRuleValidationException ex)
+            catch (BusinessRuleValidationException ex)
             {
-               return BadRequest(new {Message = ex.Message});
+                return BadRequest(new { Message = ex.Message }); // Return 400 with error message
             }
         }
     }

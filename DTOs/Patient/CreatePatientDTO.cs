@@ -9,13 +9,13 @@ namespace DDDNetCore.DTOs.Patient
         public string LastName { get; set; }
         public string FullName { get; set; }
         public string Gender { get; set; }
-        public List<string>? Allergies { get; set; } // Changed to List<string>
+        public List<string>? Allergies { get; set; }
         public string EmergencyContact { get; set; }
-        public DateTime? DateOfBirth { get; set; } // Nullable DateTime
+        public DateTime? DateOfBirth { get; set; }
         public string MedicalRecordNumber { get; set; }
+        public Guid UserId { get; set; } // Add UserId
 
-        // Optional constructor to initialize properties
-        public CreatePatientDTO(string firstname, string lastName, string fullName, string gender, List<string>? allergies, string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber)
+        public CreatePatientDTO(string firstname, string lastName, string fullName, string gender, List<string>? allergies, string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber, Guid userId)
         {
             Firstname = firstname;
             LastName = lastName;
@@ -25,9 +25,9 @@ namespace DDDNetCore.DTOs.Patient
             EmergencyContact = emergencyContact;
             DateOfBirth = dateOfBirth;
             MedicalRecordNumber = medicalRecordNumber;
+            UserId = userId; // Initialize UserId
         }
 
-        // Default constructor for serialization
         public CreatePatientDTO() { }
     }
 }

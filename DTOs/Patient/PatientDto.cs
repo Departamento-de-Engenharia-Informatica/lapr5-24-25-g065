@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using DDDSample1.Domain.Shared;
 
 namespace DDDNetCore.DTOs.Patient
 {
@@ -15,8 +14,9 @@ namespace DDDNetCore.DTOs.Patient
         public string EmergencyContact { get; private set; }
         public DateTime? DateOfBirth { get; private set; }
         public string MedicalRecordNumber { get; private set; }
+        public Guid UserId { get; private set; } // Added UserId
 
-        public PatientDto(Guid id, string firstname, string lastName, string fullName, string gender, List<string>? allergies, string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber)
+        public PatientDto(Guid id, string firstname, string lastName, string fullName, string gender, List<string>? allergies, string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber, Guid userId)
         {
             Id = id;
             Firstname = firstname;
@@ -27,18 +27,7 @@ namespace DDDNetCore.DTOs.Patient
             EmergencyContact = emergencyContact;
             DateOfBirth = dateOfBirth;
             MedicalRecordNumber = medicalRecordNumber;
-        }
-
-        public PatientDto(Guid id, string firstname, string lastName, string fullName, string gender, string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber)
-        {
-            Id = id;
-            Firstname = firstname;
-            LastName = lastName;
-            FullName = fullName;
-            Gender = gender;
-            EmergencyContact = emergencyContact;
-            DateOfBirth = dateOfBirth;
-            MedicalRecordNumber = medicalRecordNumber;
+            UserId = userId; // Initialize UserId
         }
     }
 }

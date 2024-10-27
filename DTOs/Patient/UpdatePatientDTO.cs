@@ -18,6 +18,7 @@ namespace DDDNetCore.DTOs.Patient
         // Fields from User class
         public string UserName { get; set; }
         public string Email { get; set; }
+        public Guid UserId { get; set; } // Add UserId property
 
         // Optional: Add properties for tracking additional verification if needed
         public bool EmailVerificationRequired { get; set; }
