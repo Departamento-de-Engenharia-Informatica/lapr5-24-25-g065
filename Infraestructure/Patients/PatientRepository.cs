@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DDDNetCore.IRepos;
@@ -33,18 +34,25 @@ namespace DDDSample1.Infrastructure.Patients
         public async Task AddAsync(Patient patient)
         {
             await _context.Patients.AddAsync(patient);
+            await _context.SaveChangesAsync(); // Ensure changes are saved to the database
         }
 
         public async Task UpdateAsync(Patient patient)
         {
             _context.Patients.Update(patient);
-            await Task.CompletedTask; // Simulating async operation, you might not need this line
+            await _context.SaveChangesAsync(); // Ensure changes are saved to the database
         }
 
         public async Task DeleteAsync(Patient patient)
         {
             _context.Patients.Remove(patient);
-            await Task.CompletedTask; // Simulating async operation, you might not need this line
+            await _context.SaveChangesAsync(); // Ensure changes are saved to the database
+        }
+
+        public async Task<Patient> GetByUserIDAsync(Guid userId)
+        {
+            return await _context.Patients
+                .FirstOrDefaultAsync(p => p.UserId == userId);
         }
     }
 }

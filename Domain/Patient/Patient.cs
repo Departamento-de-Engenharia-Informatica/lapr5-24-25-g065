@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Appointments;
 using DDDNetCore.IRepos;
@@ -12,7 +13,7 @@ namespace DDDSample1.Domain.Patients
         public string LastName { get; private set; }
         public string FullName { get; private set; }
         public string Gender { get; private set; }
-        public List<string>? Allergies { get; private set; }
+        public List<string>? Allergies { get; set; }
         public string EmergencyContact { get; private set; }
         public DateTime? DateOfBirth { get; private set; }
         public string MedicalRecordNumber { get; private set; }
@@ -27,7 +28,7 @@ namespace DDDSample1.Domain.Patients
             LastName = lastName ?? throw new ArgumentException("LastName cannot be null");
             FullName = fullName ?? throw new ArgumentException("FullName cannot be null");
             Gender = gender ?? throw new ArgumentException("Gender cannot be null");
-            Allergies = allergies;
+            Allergies = allergies != null ? new List<string>(allergies) : null; // Ensure read-only collection
             EmergencyContact = emergencyContact ?? throw new ArgumentException("EmergencyContact cannot be null");
             DateOfBirth = dateOfBirth;
             MedicalRecordNumber = medicalRecordNumber ?? throw new ArgumentException("MedicalRecordNumber cannot be null");
@@ -49,12 +50,6 @@ namespace DDDSample1.Domain.Patients
             AppointmentHistory.Remove(appointment);
         }
 
-        // Method to change UserId if necessary
-        public void ChangeUserId(Guid userId)
-        {
-            UserId = userId; 
-        }
-
         // Update patient details
         internal void Update(string firstname, string lastName, string fullName, string gender, 
                              List<string>? allergies, string emergencyContact, DateTime? dateOfBirth, 
@@ -64,11 +59,13 @@ namespace DDDSample1.Domain.Patients
             LastName = lastName ?? throw new ArgumentException("LastName cannot be null");
             FullName = fullName ?? throw new ArgumentException("FullName cannot be null");
             Gender = gender ?? throw new ArgumentException("Gender cannot be null");
-            Allergies = allergies; // Assuming allergies can be null
+            Allergies = allergies != null ? new List<string>(allergies) : null; // Update to read-only
             EmergencyContact = emergencyContact ?? throw new ArgumentException("EmergencyContact cannot be null");
             DateOfBirth = dateOfBirth;
             MedicalRecordNumber = medicalRecordNumber ?? throw new ArgumentException("MedicalRecordNumber cannot be null");
-            UserId = userId; // Update UserId
+            UserId = userId; // Update UserId directly
         }
+
+        // Additional methods for validation or any other functionalities can be added here
     }
 }

@@ -76,5 +76,17 @@ namespace DDDSample1.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
         }
+        // New method for searching patients
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<PatientDto>>> SearchPatients(
+            [FromQuery] string name = null,
+            [FromQuery] DateTime? dateOfBirth = null,
+            [FromQuery] string medicalRecordNumber = null,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
+        {
+            var patients = await patientService.SearchPatientsAsync(name, dateOfBirth, medicalRecordNumber, pageNumber, pageSize);
+            return Ok(patients);
+        }
     }
 }
