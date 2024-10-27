@@ -110,7 +110,7 @@ package "Appointment Aggregate" {
 }
 
 
-OperationRequest "1" -up- "1" OperationType : is for >
+OperationRequest "1" -up- "1" OperationType : is of >
 Patient "1" -- "0..*" Appointment : has >
 Patient "1" -- "1" PatientInfoLog : includes >
 User "1" -- "1" Patient : can be >
