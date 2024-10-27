@@ -1,95 +1,99 @@
-/*using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TodoApi.Models;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using DDDSample1.Domain.Specializations; // Ensure correct namespace for Specialization and DTOs
+using DDDSample1.Domain.Shared; // Ensure the DTO namespace is correct
 
-[Route("api/[controller]")]
-[ApiController]
-public class SpecializationController : ControllerBase
+namespace DDDSample1.Controllers
 {
-    private readonly UserContext _context;
-
-    public SpecializationController(UserContext context)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class SpecializationController : ControllerBase
     {
-        _context = context;
-    }
+        private readonly SpecializationService _service;
 
-    // GET: api/Specialization
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Specialization>>> GetSpecialization()
-    {
-        return await _context.Specializations.ToListAsync();
-    }
-
-    // GET: api/Specialization/{id}
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Specialization>> GetSpecialization(long id)
-    {
-        var specialization = await _context.Specializations.FindAsync(id);
-
-        if (specialization == null)
+        public SpecializationController(SpecializationService service)
         {
-            return NotFound();
+            _service = service;
         }
 
-        return specialization;
-    }
-
-
-    //POST: api/Specialization
-
-    [HttpPost]
-    public async Task<ActionResult<Specialization>> PostSpecialization(Specialization specialization)
-    {
-        _context.Specializations.Add(specialization);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction("GetSpecialization", new { id = specialization.SpecId }, specialization);
-    }
-
-    // |===============================================|
-    // | Following methods regarding Specialized Staff |
-    // |===============================================|
-
-    // GET: api/Specialization/staff
-    [HttpGet("staff")]
-    public async Task<ActionResult<IEnumerable<SpecializedStaff>>> GetSpecializedStaff()
-    {
-        return await _context.SpecializedStaff.ToListAsync();
-    }
-
-    // GET: api/Specialization/{id}
-    [HttpGet("staff/{id}")]
-    public async Task<ActionResult<SpecializedStaff>> GetSpecializedStaff(long id)
-    {
-        var specialization = await _context.SpecializedStaff.FindAsync(id);
-
-        if (specialization == null)
+        // GET: api/Specialization
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<SpecializationDto>>> GetSpecialization()
         {
-            return NotFound();
+            var specializations = await _service.GetAllAsync();
+            return Ok(specializations); // Return the list of users
         }
 
-        return specialization;
-    }
+        /*// GET: api/Specialization/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<SpecializationDto>> GetSpecialization(Guid id)
+        {
+            var specialization = await _service.GetByIdAsync(new SpecializationId(id)); // Get user by ID
 
+            if (specialization == null)
+            {
+                return NotFound();
+            }
 
-    //POST: api/Specialization
+            return Ok(specialization); // Return the found user
+        }*/
 
-    [HttpPost("staff")]
-    public async Task<ActionResult<SpecializedStaff>> PostSpecializedStaff(SpecializedStaff staff)
-    {
-        var specialization = await _context.Specializations.FindAsync(staff.SpecializationId);
+       /* // PUT: api/Specialization/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutSpecialization(Guid id, SpecializationDto dto)
+        {
+            if (id != dto.Id)
+            {
+                return BadRequest();
+            }
 
-        if(specialization == null){
-            return BadRequest("The specified Specialization doesn't exist");
+            try
+            {
+                var updatedUser = await _service.UpdateAsync(dto);
+
+                if (updatedUser == null)
+                {
+                    return NotFound();
+                }
+
+                return NoContent();
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }*/
+
+        // POST: api/Specialization
+        [HttpPost]
+        public async Task<ActionResult<SpecializationDto>> PostSpecialization(CreateSpecializationDto dto) // Changed to CreateUserDto
+        {
+            try
+            {
+                var specialization = await _service.AddAsync(dto);
+                return CreatedAtAction(nameof(GetSpecialization), new { id = specialization.Id }, specialization); // Return created specialization
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
         }
 
+       /* // DELETE: api/Specialization/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteSpecialization(Guid id)
+        {
+            var deletedSpecialization = await _service.DeleteAsync(new SpecializationId(id)); // Delete Specialization by ID
 
-        _context.SpecializedStaff.Add(staff);
-        await _context.SaveChangesAsync();
+            if (deletedSpecialization == null)
+            {
+                return NotFound();
+            }
 
-        return CreatedAtAction("GetSpecializedStaff", new { id = staff.Id }, staff);
+            return NoContent(); // Return no content on successful deletion
+        }
+        */
     }
-
-
-
-}*/
+}
