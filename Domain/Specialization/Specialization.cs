@@ -15,6 +15,7 @@ namespace DDDSample1.Domain.Specializations
 
         public Specialization(string type, string description)
         {
+            this.Id = new SpecializationId();
             Type = type;
             Description = description;
             StaffMembers = new List<Staff>(); // Initialize the collection

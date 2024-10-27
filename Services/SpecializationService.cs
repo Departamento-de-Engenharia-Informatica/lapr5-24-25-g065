@@ -25,7 +25,7 @@ namespace DDDSample1.Domain.Specializations
             return listDto;
         }
 
-        public async Task<SpecializationDto> AddAsync(CreatingSpecializationDto dto)
+        public async Task<SpecializationDto> AddAsync(CreateSpecializationDto dto)
         {
             var spec = new Specialization(dto.Type, dto.Description);
 
