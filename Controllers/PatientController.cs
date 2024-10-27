@@ -96,3 +96,4 @@ public async Task<ActionResult<IEnumerable<PatientDto>>> SearchPatients(
 }
 
 }
+}
