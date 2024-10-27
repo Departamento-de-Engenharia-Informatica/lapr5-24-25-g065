@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Appointments;
+using DDDNetCore.IRepos;
 
 namespace DDDSample1.Domain.Patients
 {
