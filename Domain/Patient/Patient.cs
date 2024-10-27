@@ -16,7 +16,7 @@ namespace DDDSample1.Domain.Patients
         public string FullName { get; private set; }
         public string Gender { get; private set; }
         public List<string>? Allergies { get; private set; }
-        
+
         // PhoneNumber property with validation
         public string PhoneNumber
         {
@@ -35,7 +35,7 @@ namespace DDDSample1.Domain.Patients
             get => _emergencyContact;
             set
             {
-                if (!IsValidEmergencyContact(value))
+                if (!IsValidPhoneNumber(value)) // Validate as a phone number
                     throw new ArgumentException("Emergency contact must be a valid phone number.");
                 _emergencyContact = value;
             }
@@ -46,7 +46,7 @@ namespace DDDSample1.Domain.Patients
         public Guid UserId { get; private set; } // Added UserId
         public List<Appointment> AppointmentHistory { get; private set; }
 
-        public Patient(string firstname, string lastName, string fullName, string gender, List<string>? allergies, 
+        public Patient(string firstname, string lastName, string fullName, string gender, List<string>? allergies,
                        string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber, Guid userId, string phoneNumber)
         {
             Id = new PatientId(Guid.NewGuid()); // Use the entity's Id
@@ -54,8 +54,8 @@ namespace DDDSample1.Domain.Patients
             LastName = lastName ?? throw new ArgumentException("LastName cannot be null");
             FullName = fullName ?? throw new ArgumentException("FullName cannot be null");
             Gender = gender ?? throw new ArgumentException("Gender cannot be null");
-            Allergies = allergies != null ? new List<string>(allergies) : null; // Ensure read-only collection
-            
+            Allergies = allergies != null ? new List<string>(allergies) : null;
+
             EmergencyContact = emergencyContact ?? throw new ArgumentException("EmergencyContact cannot be null");
             PhoneNumber = phoneNumber ?? throw new ArgumentException("PhoneNumber cannot be null"); // Initialize PhoneNumber
             DateOfBirth = dateOfBirth;
@@ -79,8 +79,8 @@ namespace DDDSample1.Domain.Patients
         }
 
         // Update patient details
-        internal void Update(string firstname, string lastName, string fullName, string gender, 
-                             List<string>? allergies, string emergencyContact, DateTime? dateOfBirth, 
+        internal void Update(string firstname, string lastName, string fullName, string gender,
+                             List<string>? allergies, string emergencyContact, DateTime? dateOfBirth,
                              string medicalRecordNumber, Guid userId, string phoneNumber)
         {
             Firstname = firstname ?? throw new ArgumentException("Firstname cannot be null");
@@ -88,7 +88,7 @@ namespace DDDSample1.Domain.Patients
             FullName = fullName ?? throw new ArgumentException("FullName cannot be null");
             Gender = gender ?? throw new ArgumentException("Gender cannot be null");
             Allergies = allergies != null ? new List<string>(allergies) : null; // Update to read-only
-            
+
             EmergencyContact = emergencyContact ?? throw new ArgumentException("EmergencyContact cannot be null");
             PhoneNumber = phoneNumber ?? throw new ArgumentException("PhoneNumber cannot be null"); // Update PhoneNumber
             DateOfBirth = dateOfBirth;
@@ -97,14 +97,16 @@ namespace DDDSample1.Domain.Patients
         }
 
         // Validation methods
-        private bool IsValidPhoneNumber(string phone)
-        {
-            return phone.Length == 9 && long.TryParse(phone, out _); // Ensure it's a 9-digit number
-        }
+       private bool IsValidPhoneNumber(string phone)
+{
+    if (string.IsNullOrWhiteSpace(phone))
+    {
+        return false; // Check if the string is null or empty
+    }
+    
+    // Check if it's a 9-digit number and contains only digits
+    return phone.Length == 9 && long.TryParse(phone, out _);
+}
 
-        private bool IsValidEmergencyContact(string contact)
-        {
-            return IsValidPhoneNumber(contact); // Assuming emergency contact is also a phone number
-        }
     }
 }
