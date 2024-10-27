@@ -1,4 +1,4 @@
-﻿using DDDSample1.Domain.OperationTypes;
+﻿/*using DDDSample1.Domain.OperationTypes;
 using System;
 
 namespace DDDNetCore.DTOs.OperationRequest
@@ -14,3 +14,4 @@ namespace DDDNetCore.DTOs.OperationRequest
         public OperationRequestDTO(string patientID, string doctorID, OperationTypeID, string operationDateTime, string) { }
     }
 }
+*/

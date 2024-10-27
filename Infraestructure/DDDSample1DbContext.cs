@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using DDDSample1.Domain.Staffs;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Specializations;
-using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Domain.Users;
 using DDDSample1.Domain.Appointments;
 using System;
@@ -21,7 +20,7 @@ namespace DDDSample1.Infrastructure
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Specialization> Specializations { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<OperationType> OperationTypes { get; set; }
+        /*public DbSet<OperationType> OperationTypes { get; set; }*/
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Password> Passwords { get; set; }
 
@@ -31,7 +30,7 @@ namespace DDDSample1.Infrastructure
             ConfigurePatient(modelBuilder);
             ConfigureStaff(modelBuilder);
             ConfigureUser(modelBuilder);
-            ConfigureOperationType(modelBuilder);
+           /* ConfigureOperationType(modelBuilder);*/
             ConfigureAppointment(modelBuilder);
             // Uncomment if needed
             // ConfigurePassword(modelBuilder);
@@ -81,7 +80,7 @@ namespace DDDSample1.Infrastructure
                 .HasForeignKey(a => a.StaffId);
         }
 
-        private void ConfigureOperationType(ModelBuilder modelBuilder)
+        /*private void ConfigureOperationType(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<OperationType>()
                 .HasKey(ot => ot.Id);
@@ -109,7 +108,7 @@ namespace DDDSample1.Infrastructure
 
             modelBuilder.Entity<OperationType>()
                 .Property(ot => ot.IsActive);
-        }
+        }*/
 
         private void ConfigureSpecialization(ModelBuilder modelBuilder)
         {

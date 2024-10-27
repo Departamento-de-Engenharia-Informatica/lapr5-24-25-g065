@@ -1,4 +1,4 @@
-using DDDNetCore.DTOs.OperationType;
+/*using DDDNetCore.DTOs.OperationType;
 using DDDNetCore.IRepos;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -18,4 +18,4 @@ namespace DDDSample1.Domain.Patients
             throw new NotImplementedException();
         }
     }
-}
+}*/

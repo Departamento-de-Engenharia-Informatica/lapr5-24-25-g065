@@ -20,7 +20,7 @@ using DDDSample1.Domain.Specializations;
 using DDDSample1.Domain.Staffs;
 using DDDSample1.Domain.Users;
 using DDDSample1.Domain.Passwords;
-using DDDSample1.Infrastructure.OperationTypes;
+/*using DDDSample1.Infrastructure.OperationTypes;*/
 using DDDSample1.Infrastructure.Specializations;
 using DDDSample1.Infrastructure.Staffs;
 using DDDSample1.Infrastructure.Users;
@@ -32,7 +32,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to dependency scope.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<PatientService>();
-builder.Services.AddScoped<OperationTypeService>();
+/*builder.Services.AddScoped<OperationTypeService>();*/
 builder.Services.AddScoped<SpecializationService>();
 builder.Services.AddScoped<StaffService>();
 builder.Services.AddScoped<UserService>();
@@ -41,7 +41,7 @@ builder.Services.AddScoped<UserService>();
 // Add Repositories to dependency scope
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
-builder.Services.AddScoped<IOperationTypeRepository, OperationTypeRepository>();
+/*builder.Services.AddScoped<IOperationTypeRepository, OperationTypeRepository>();*/
 builder.Services.AddScoped<ISpecializationRepository, SpecializationRepository>();
 builder.Services.AddScoped<IStaffRepository, StaffRepository>();
 builder.Services.AddScoped<IUserRepository,UserRepository>();

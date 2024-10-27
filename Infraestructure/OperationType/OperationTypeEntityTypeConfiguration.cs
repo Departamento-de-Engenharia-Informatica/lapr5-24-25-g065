@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+/*using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using DDDSample1.Domain.OperationTypes;
 
@@ -12,4 +12,4 @@ namespace DDDSample1.Infrastructure.OperationTypes
             builder.HasKey(b => b.Id);
         }
     }
-}
+}*/

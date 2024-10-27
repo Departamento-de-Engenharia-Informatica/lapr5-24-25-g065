@@ -1,4 +1,4 @@
-﻿using DDDNetCore.Domain.OperationRequest;
+﻿/*using DDDNetCore.Domain.OperationRequest;
 using DDDNetCore.DTOs.OperationRequest;
 using DDDNetCore.DTOs.Patient;
 using DDDNetCore.IRepos;
@@ -80,3 +80,4 @@ namespace DDDNetCore.Services
         }
     }
 
+*/

@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using DDDSample1.Domain.Shared;
 using Newtonsoft.Json;
 
@@ -27,4 +27,4 @@ public class  OperationTypeID : EntityId{
             return (Guid) base.ObjValue;
         }
     }
-}
+}*/

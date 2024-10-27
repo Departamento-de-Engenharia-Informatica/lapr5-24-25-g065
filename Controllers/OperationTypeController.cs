@@ -1,4 +1,4 @@
-using DDDNetCore.DTOs.OperationType;
+/*using DDDNetCore.DTOs.OperationType;
 using DDDNetCore.DTOs.Patient;
 using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Domain.Patients;
@@ -48,4 +48,4 @@ namespace DDDSample1.Controllers
 
 
     }
-}
+}*/

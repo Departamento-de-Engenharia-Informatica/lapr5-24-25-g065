@@ -1,4 +1,4 @@
-using System;
+/*sing System;
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Specializations;
@@ -25,4 +25,4 @@ namespace DDDNetCore.DTOs.OperationType
         }
 
     }
-}
+}*/
