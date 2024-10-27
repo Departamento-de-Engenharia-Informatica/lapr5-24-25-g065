@@ -35,6 +35,10 @@ namespace DDDSample1.Infrastructure.Patients
                 .IsRequired() // Make required if necessary
                 .HasMaxLength(100); // Set maximum length
 
+            builder.Property(b => b.PhoneNumber) // Configure PhoneNumber property
+                .IsRequired() // Make required if necessary
+                .HasMaxLength(15); // Set maximum length (adjust based on your phone number format)
+
             builder.Property(b => b.DateOfBirth)
                 .IsRequired(false); // Nullable field
 

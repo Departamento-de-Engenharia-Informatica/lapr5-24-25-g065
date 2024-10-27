@@ -15,8 +15,9 @@ namespace DDDNetCore.DTOs.Patient
         public DateTime? DateOfBirth { get; private set; }
         public string MedicalRecordNumber { get; private set; }
         public Guid UserId { get; private set; } // Added UserId
+        public string PhoneNumber { get; private set; } // Added PhoneNumber
 
-        public PatientDto(Guid id, string firstname, string lastName, string fullName, string gender, List<string>? allergies, string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber, Guid userId)
+        public PatientDto(Guid id, string firstname, string lastName, string fullName, string gender, List<string>? allergies, string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber, Guid userId, string phoneNumber)
         {
             Id = id;
             Firstname = firstname;
@@ -28,6 +29,7 @@ namespace DDDNetCore.DTOs.Patient
             DateOfBirth = dateOfBirth;
             MedicalRecordNumber = medicalRecordNumber;
             UserId = userId; // Initialize UserId
+            PhoneNumber = phoneNumber; // Initialize PhoneNumber
         }
     }
 }

@@ -94,7 +94,7 @@ namespace DDDSample1.Infrastructure
                 )
                 .HasColumnName("OperationTypeId");
 
-            var valueConverter = new ValueConverter<List<Specialization>, string>(
+            var valueConverter = new ValueConverter<List<Specialization>, string>( // Adjust based on your needs
                 v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
                 v => JsonSerializer.Deserialize<List<Specialization>>(v, (JsonSerializerOptions)null)
             );
@@ -172,6 +172,11 @@ namespace DDDSample1.Infrastructure
                 .HasMaxLength(150);
 
             modelBuilder.Entity<Patient>()
+                .Property(p => p.PhoneNumber) // Configure PhoneNumber property
+                .IsRequired() // Make required if necessary
+                .HasMaxLength(15); // Set maximum length (adjust based on your phone number format)
+
+            modelBuilder.Entity<Patient>()
                 .Property(p => p.DateOfBirth)
                 .IsRequired();
 
@@ -189,7 +194,7 @@ namespace DDDSample1.Infrastructure
                 .Property(p => p.Allergies)
                 .HasConversion(valueConverter);
 
-            // Add the UserId property mapping if needed
+            // Add the UserId property mapping
             modelBuilder.Entity<Patient>()
                 .Property(p => p.UserId)
                 .IsRequired(); // Ensure UserId is required
