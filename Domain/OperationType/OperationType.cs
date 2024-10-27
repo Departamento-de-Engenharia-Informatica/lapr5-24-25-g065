@@ -7,17 +7,16 @@ namespace DDDSample1.Domain.OperationTypes
 {
 public class OperationType: Entity<OperationTypeID> {
     public string Name { get; set; }
-    public Specialization Specialization { get; set; }
-    public List<Specialization> RequiredStaffBySpecialization { get; set; }
+    public List<string> RequiredStaffBySpecialization { get; set; }
     public TimeSpan EstimatedDuration { get; set; }
     public bool IsActive { get; set; } = true;
 
     public OperationType()
     {
-        RequiredStaffBySpecialization = new List<Specialization>();
+        RequiredStaffBySpecialization = new List<string>();
     }
 
-    public OperationType(OperationTypeID id, string name, List<Specialization> requiredStaffBySpecialization, TimeSpan estimatedDuration, bool isActive = true)
+    public OperationType(OperationTypeID id, string name, List<string> requiredStaffBySpecialization, TimeSpan estimatedDuration, bool isActive = true)
     {
     Id = id;
     Name = name;
@@ -30,7 +29,7 @@ public class OperationType: Entity<OperationTypeID> {
             this.Name = name;
         }
 
-        public void ChangeRequiredStaffBySpecialization(List<Specialization> requiredStaffBySpecialization)
+        public void ChangeRequiredStaffBySpecialization(List<string> requiredStaffBySpecialization)
         {
             this.RequiredStaffBySpecialization = requiredStaffBySpecialization;
         }
