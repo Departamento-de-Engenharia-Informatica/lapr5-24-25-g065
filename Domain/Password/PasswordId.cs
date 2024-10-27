@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using DDDSample1.Domain.Shared;
 using Newtonsoft.Json;
 
@@ -10,6 +10,7 @@ namespace DDDSample1.Domain.Passwords
         public PasswordId(Guid value) : base(value)
         {
         }
+        
 
         override
         protected  Object createFromString(String text){
@@ -26,3 +27,4 @@ namespace DDDSample1.Domain.Passwords
         }
     }
 }
+*/

@@ -10,18 +10,17 @@ namespace DDDSample1.Domain.Users
         public string UserName { get; private set; }
         public string Email { get; private set; }
         public Role Role { get; private set; }
-        public PasswordId PasswordId { get;  private set; }
         public Password Password { get; private set; }
 
         protected User() { }
 
         // Construtor para criação de um novo usuário
-        public User(string userName, string email,Role r,PasswordId passwordId){
+        public User(string userName, string email,Role r,Password password){
             this.Id = new UserId(Guid.NewGuid());
             UserName = userName;
             Email = email;
             Role = r;
-            PasswordId = passwordId;
+            Password = password;
         }
 
         public void ChangeUserName(string username){
@@ -34,8 +33,8 @@ namespace DDDSample1.Domain.Users
             this.Role = role;
         }
 
-         public void ChangePassword(PasswordId passwordId){
-            this.PasswordId = passwordId;
+         public void ChangePassword(Password password){
+            this.Password = password;
         }
     }
 }

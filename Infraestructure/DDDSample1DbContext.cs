@@ -14,7 +14,7 @@ using DDDSample1.Infrastructure.Patients;
 using DDDSample1.Infrastructure.Staffs;
 using DDDSample1.Infrastructure.Specializations;
 using DDDSample1.Infrastructure.OperationTypes;
-using DDDSample1.Infrastructure.Passwords;
+//using DDDSample1.Infrastructure.Passwords;
 using DDDNetCore.Migrations;
 
 
@@ -30,7 +30,7 @@ namespace DDDSample1.Infrastructure
         public DbSet<User> Users { get; set; }
         public DbSet<OperationType> OperationTypes { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
-  	public DbSet<Password> Passwords { get; set; }
+  	    public DbSet<Password> Passwords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,7 +40,7 @@ namespace DDDSample1.Infrastructure
             ConfigureUser(modelBuilder);
             ConfigureOperationType(modelBuilder);
             ConfigureAppointment(modelBuilder);
-	        ConfigurePassword(modelBuilder);
+	        //ConfigurePassword(modelBuilder);
         }
 
         private void ConfigureAppointment(ModelBuilder modelBuilder)
@@ -277,9 +277,12 @@ namespace DDDSample1.Infrastructure
                 )
                 .IsRequired()
                 .HasMaxLength(50);
+            modelBuilder.Entity<User>().OwnsOne(u => u.Password);
         }
 
-        public void ConfigurePassword(ModelBuilder modelBuilder){
+        /*
+        public void ConfigurePassword(ModelBuilder modelBuilder)
+        {
              modelBuilder.Entity<Password>()
                 .HasKey(p => p.Id);
 
@@ -291,10 +294,10 @@ namespace DDDSample1.Infrastructure
                 )
                 .HasColumnName("PasswordId");
             
-            modelBuilder.Entity<User>()
-                .Property(u => u.UserName)
+            modelBuilder.Entity<Password>()
+                .Property(p => p.Pass)
                 .IsRequired();
         }
-
+        */
     }
 }

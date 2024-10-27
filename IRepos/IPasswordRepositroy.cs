@@ -1,3 +1,4 @@
+/*
 using DDDSample1.Domain.Passwords;
 
 namespace DDDNetCore.IRepos
@@ -6,3 +7,4 @@ namespace DDDNetCore.IRepos
     {
     }
 }
+*/

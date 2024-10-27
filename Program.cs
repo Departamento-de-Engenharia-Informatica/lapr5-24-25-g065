@@ -24,7 +24,7 @@ using DDDSample1.Infrastructure.OperationTypes;
 using DDDSample1.Infrastructure.Specializations;
 using DDDSample1.Infrastructure.Staffs;
 using DDDSample1.Infrastructure.Users;
-using DDDSample1.Infrastructure.Passwords;
+//using DDDSample1.Infrastructure.Passwords;
 using DDDNetCore.IRepos;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,7 +36,7 @@ builder.Services.AddScoped<OperationTypeService>();
 builder.Services.AddScoped<SpecializationService>();
 builder.Services.AddScoped<StaffService>();
 builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<PasswordService>();
+//builder.Services.AddScoped<PasswordService>();
 
 // Add Repositories to dependency scope
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -45,7 +45,7 @@ builder.Services.AddScoped<IOperationTypeRepository, OperationTypeRepository>();
 builder.Services.AddScoped<ISpecializationRepository, SpecializationRepository>();
 builder.Services.AddScoped<IStaffRepository, StaffRepository>();
 builder.Services.AddScoped<IUserRepository,UserRepository>();
-builder.Services.AddScoped<IPasswordRepository,PasswordRepository>();
+//builder.Services.AddScoped<IPasswordRepository,PasswordRepository>();
 
 
 // Configure MySQL as the database provider

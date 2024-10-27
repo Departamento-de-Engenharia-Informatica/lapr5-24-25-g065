@@ -10,16 +10,16 @@ namespace DDDSample1.Domain.Users
         public string UserName { get; private set; }
         public string Email { get; private set; }
         public Role Role { get; private set; }
-        public PasswordId PasswordId { get; private set; }
+        public Password Password { get; private set; }
         
 
         // Construtor para criação de um novo usuário
-        public UserDto(Guid id,string userName, string email,Role r, PasswordId passwordId){
+        public UserDto(Guid id,string userName, string email,Role r, Password password){
             Id = id;
             UserName = userName;
             Email = email;
             Role = r;
-            PasswordId = passwordId;
+            Password = password;
         }
     }
 }
