@@ -97,16 +97,15 @@ namespace DDDSample1.Domain.Patients
         }
 
         // Validation methods
-       private bool IsValidPhoneNumber(string phone)
-{
-    if (string.IsNullOrWhiteSpace(phone))
-    {
-        return false; // Check if the string is null or empty
-    }
-    
-    // Check if it's a 9-digit number and contains only digits
-    return phone.Length == 9 && long.TryParse(phone, out _);
-}
-
+        private bool IsValidPhoneNumber(string phone)
+        {
+            if (string.IsNullOrWhiteSpace(phone))
+            {
+                return false; // Check if the string is null or empty
+            }
+            
+            // Check if it's a 9-digit number and contains only digits
+            return phone.Length == 9 && long.TryParse(phone, out _);
+        }
     }
 }
