@@ -26,7 +26,7 @@ namespace DDDSample1.Controllers
             return Ok(specializations); // Return the list of users
         }
 
-        /*// GET: api/Specialization/5
+        // GET: api/Specialization/5
         [HttpGet("{id}")]
         public async Task<ActionResult<SpecializationDto>> GetSpecialization(Guid id)
         {
@@ -37,8 +37,8 @@ namespace DDDSample1.Controllers
                 return NotFound();
             }
 
-            return Ok(specialization); // Return the found user
-        }*/
+            return Ok(specialization); // Return the found specialization
+        }
 
        /* // PUT: api/Specialization/5
         [HttpPut("{id}")]

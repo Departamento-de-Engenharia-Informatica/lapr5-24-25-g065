@@ -36,6 +36,20 @@ namespace DDDSample1.Domain.Specializations
             return new SpecializationDto(spec.Id.AsGuid(),spec.Type,spec.Description);
         }
 
+     public async Task<SpecializationDto> GetByIdAsync(SpecializationId id) // Made this method public instead of internal
+        {
+            var specialization = await this._repo.GetByIdAsync(id);
+            
+            if (specialization == null)
+                return null;
+
+            return new SpecializationDto(
+                specialization.Id.AsGuid(),
+                specialization.Type,
+                specialization.Description);
+                
+        }
+
         /*public async Task<BackOfficeUserDto> UpdateAsync(BackOfficeUserDto dto)
         {
             await checkCategoryIdAsync(dto.CategoryId);

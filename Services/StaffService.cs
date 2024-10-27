@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using DDDNetCore.IRepos;
 using DDDNetCore.DTOs.Staff;
 using DDDSample1.Domain.Staffs;
@@ -21,7 +22,7 @@ namespace DDDSample1.Domain.Staffs
         {
             _unitOfWork = unitOfWork;
             _repo = repo;
-            _specRepo = specRepo; 
+            _specRepo = specRepo;
         }
 
         public async Task<List<StaffDto>> GetAllAsync()
@@ -30,28 +31,28 @@ namespace DDDSample1.Domain.Staffs
             return staffList.ConvertAll(CreateStaffDto);
         }
 
-       public async Task<StaffDto> AddAsync(CreatingStaffDto dto)
-{
-    ValidateCreatingStaffDto(dto);
+        public async Task<StaffDto> AddAsync(CreatingStaffDto dto)
+        {
+            ValidateCreatingStaffDto(dto);
 
-    var staff = new Staff(
-        dto.Firstname,
-        dto.LastName,
-        dto.FullName,
-        dto.Gender,
-        new SpecializationId(dto.SpecializationId),
-        dto.Type,
-        dto.LicenseNumber,
-        new UserId(dto.UserId),
-        dto.AvailabilitySlot,
-        dto.PhoneNumber,
-        dto.Email);
+            var staff = new Staff(
+                dto.Firstname,
+                dto.LastName,
+                dto.FullName,
+                dto.Gender,
+                new SpecializationId(dto.SpecializationId),
+                dto.Type,
+                dto.LicenseNumber,
+                new UserId(dto.UserId),
+                dto.AvailabilitySlot,
+                dto.PhoneNumber,
+                dto.Email);
 
-    await _repo.AddAsync(staff);
-    await _unitOfWork.CommitAsync();
+            await _repo.AddAsync(staff);
+            await _unitOfWork.CommitAsync();
 
-    return CreateStaffDto(staff);
-}
+            return CreateStaffDto(staff);
+        }
 
         public async Task<StaffDto> GetByIdAsync(StaffId id)
         {
@@ -95,7 +96,7 @@ namespace DDDSample1.Domain.Staffs
             }
         }
 
-        private StaffDto CreateStaffDto(Staff staff) 
+        private StaffDto CreateStaffDto(Staff staff)
         {
             return new StaffDto(
                 staff.Id.AsGuid(),
@@ -124,6 +125,57 @@ namespace DDDSample1.Domain.Staffs
             staff.ChangeAvailabilitySlot(dto.AvailabilitySlot);
             staff.ChangePhoneNumber(dto.PhoneNumber);
             staff.ChangeEmail(dto.Email);
+        }
+
+        public async Task<List<StaffDto>> SearchStaffsAsync(string name, string licenseNumber, string phoneNumber,string email, int pageNumber, int pageSize)
+        {
+            var staffList = await _repo.GetAllAsync();
+            
+            
+            if (!string.IsNullOrEmpty(name))
+            {
+                staffList = staffList.Where(s =>
+                    s.Firstname.Contains(name, StringComparison.OrdinalIgnoreCase) ||
+                    s.LastName.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            
+            
+            if (!string.IsNullOrEmpty(licenseNumber))
+            {
+                staffList = staffList.Where(s => s.LicenseNumber == licenseNumber).ToList();
+            }
+
+            // Filter by phone number if provided
+            if (!string.IsNullOrEmpty(phoneNumber))
+            {
+                staffList = staffList.Where(s => s.PhoneNumber == phoneNumber).ToList();
+            }
+
+            // Implement pagination
+            var paginatedStaffs = staffList
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(staff => new StaffDto(
+                                staff.Id.AsGuid(),
+                                staff.Firstname,
+                                staff.LastName,
+                                staff.FullName,
+                                staff.Gender,
+                                staff.SpecializationId,
+                                staff.Type,
+                                staff.LicenseNumber,
+                                staff.UserId,
+                                staff.AvailabilitySlot,
+                                staff.PhoneNumber,
+                                staff.Email
+
+
+
+))
+                .ToList();
+
+            return paginatedStaffs;
         }
     }
 }

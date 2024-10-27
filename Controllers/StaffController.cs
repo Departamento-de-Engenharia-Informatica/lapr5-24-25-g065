@@ -68,7 +68,7 @@ namespace DDDSample1.Controllers
             try
             {
                 var updatedStaff = await _service.UpdateAsync(dto);
-                
+
                 if (updatedStaff == null)
                 {
                     return NotFound(); // Return 404 if staff not found
@@ -101,6 +101,18 @@ namespace DDDSample1.Controllers
             {
                 return BadRequest(new { Message = ex.Message }); // Return 400 with error message
             }
+        }
+[HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<StaffDto>>> SearchStaff(
+    [FromQuery] string name = null,
+    [FromQuery] string licenseNumber = null,
+    [FromQuery] string phoneNumber = null,
+    [FromQuery] string email = null, 
+    [FromQuery] int pageNumber = 1,
+    [FromQuery] int pageSize = 10)
+        {
+            var staffs = await _service.SearchStaffsAsync(name,licenseNumber, phoneNumber, email,pageNumber, pageSize);
+            return Ok(staffs);
         }
     }
 }
