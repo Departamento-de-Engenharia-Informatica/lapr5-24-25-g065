@@ -14,6 +14,7 @@ using DDDSample1.Infrastructure.Staffs;
 using DDDSample1.Domain.Specializations;
 using DDDSample1.Infrastructure.Specializations;
 using DDDNetCore.IRepos;
+using Microsoft.OpenApi.Models; // Add this for Swagger
 
 namespace DDDSample1
 {
@@ -34,9 +35,15 @@ namespace DDDSample1
                 .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
 
             ConfigureMyServices(services);
-            
 
             services.AddControllers().AddNewtonsoftJson();
+
+            // Add Swagger services
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "DDDSample1 API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +52,17 @@ namespace DDDSample1
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                // Enable middleware to serve generated Swagger as a JSON endpoint.
+                app.UseSwagger();
+
+                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+                // specifying the Swagger JSON endpoint.
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "DDDSample1 API v1");
+                    c.RoutePrefix = string.Empty; // Sets Swagger UI at the app's root (e.g., https://localhost:5001/)
+                });
             }
             else
             {
@@ -66,17 +84,16 @@ namespace DDDSample1
 
         public void ConfigureMyServices(IServiceCollection services)
         {
-            services.AddTransient<IUnitOfWork,UnitOfWork>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-            services.AddTransient<IPatientRepository,PatientRepository>();
+            services.AddTransient<IPatientRepository, PatientRepository>();
             services.AddTransient<PatientService>();
 
-            services.AddTransient<IStaffRepository,StaffRepository>();
+            services.AddTransient<IStaffRepository, StaffRepository>();
             services.AddTransient<StaffService>();
 
-            services.AddTransient<ISpecializationRepository,SpecializationRepository>();
+            services.AddTransient<ISpecializationRepository, SpecializationRepository>();
             services.AddTransient<SpecializationService>();
-
         }
     }
 }
