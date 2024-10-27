@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace DDDNetCore.DTOs.Patient
@@ -8,31 +9,25 @@ namespace DDDNetCore.DTOs.Patient
         public string LastName { get; set; }
         public string FullName { get; set; }
         public string Gender { get; set; }
-        public string Allergies { get; set; }
-        public string EmergencyContact { get; private set; }
-        public string DateOfBirth { get; set; }
+        public List<string>? Allergies { get; set; } // Changed to List<string>
+        public string EmergencyContact { get; set; }
+        public DateTime? DateOfBirth { get; set; } // Nullable DateTime
         public string MedicalRecordNumber { get; set; }
-        /*public List<Appointement> AppointmentHistory { get;  private set; }*/
 
-        // public CreatingPatientDto(string firstname, string lastName,string fullName, string gender, string allergies, string emergencyContact, string dateOfBirth, string medicalRecordNumber ){
-        //     Firstname = firstname;
-        //     LastName = lastName;
-        //     FullName = fullName;
-        //     Gender = gender;
-        //     Allergies = allergies;
-        //     EmergencyContact = emergencyContact;
-        //     DateOfBirth = dateOfBirth;
-        //     MedicalRecordNumber = medicalRecordNumber;
-        // }
+        // Optional constructor to initialize properties
+        public CreatePatientDTO(string firstname, string lastName, string fullName, string gender, List<string>? allergies, string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber)
+        {
+            Firstname = firstname;
+            LastName = lastName;
+            FullName = fullName;
+            Gender = gender;
+            Allergies = allergies;
+            EmergencyContact = emergencyContact;
+            DateOfBirth = dateOfBirth;
+            MedicalRecordNumber = medicalRecordNumber;
+        }
 
-        // public CreatingPatientDto(string firstname, string lastName,string fullName, string gender, string emergencyContact, string dateOfBirth, string medicalRecordNumber ){
-        //     Firstname = firstname;
-        //     LastName = lastName;
-        //     FullName = fullName;
-        //     Gender = gender;
-        //     EmergencyContact = emergencyContact;
-        //     DateOfBirth = dateOfBirth;
-        //     MedicalRecordNumber = medicalRecordNumber;
-        // }
+        // Default constructor for serialization
+        public CreatePatientDTO() { }
     }
 }

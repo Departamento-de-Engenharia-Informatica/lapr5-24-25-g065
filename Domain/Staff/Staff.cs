@@ -1,40 +1,35 @@
 using System;
+using System.Collections.Generic; // Added for List
 using DDDNetCore.IRepos;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Specializations;
 using DDDSample1.Domain.Users;
+using DDDSample1.Domain.Appointments; // Added for Appointment
 
 namespace DDDSample1.Domain.Staffs
 {
     public class Staff : Entity<StaffId>, IAggregateRoot
     {
-        public string Gender { get;  private set; }
-        public string Type{ get;  private set; }
-
-        public SpecializationId SpecializationId { get;  private set; }
-
+        public string Gender { get; private set; }
+        public string Type { get; private set; }
+        public SpecializationId SpecializationId { get; private set; }
         public Specialization Specialization { get; private set; }
-
-        public string Firstname { get;  private set; }
-
-        public string LastName { get;  private set; }
-        public string FullName { get;  private set; }
-
-        public string LicenseNumber { get;  private set; }
-
-         public UserId UserId { get;  private set; }
-
+        public string Firstname { get; private set; }
+        public string LastName { get; private set; }
+        public string FullName { get; private set; }
+        public string LicenseNumber { get; private set; }
+        public UserId UserId { get; private set; }
         public User User { get; private set; }
-
         public string AvailabilitySlot { get; private set; }
-
         public string PhoneNumber { get; private set; }
-
         public string Email { get; private set; }
 
-        public Staff(string firstname, string lastName,string fullName, string gender, SpecializationId specializationId,
-                     string type, string licenseNumber, UserId userId, string availabilitySlot, string phoneNumber, string email){
+        // Added collection of Appointments
+        public List<Appointment> Appointments { get; private set; }
 
+        public Staff(string firstname, string lastName, string fullName, string gender, SpecializationId specializationId,
+                     string type, string licenseNumber, UserId userId, string availabilitySlot, string phoneNumber, string email)
+        {
             this.Id = new StaffId(Guid.NewGuid());
             this.Firstname = firstname;
             this.LastName = lastName;
@@ -44,43 +39,60 @@ namespace DDDSample1.Domain.Staffs
             this.Type = type;
             this.LicenseNumber = licenseNumber;
             this.UserId = userId;
-            this.AvailabilitySlot=availabilitySlot;
-            this.PhoneNumber=phoneNumber;
-            this.Email=email;
+            this.AvailabilitySlot = availabilitySlot;
+            this.PhoneNumber = phoneNumber;
+            this.Email = email;
+            this.Appointments = new List<Appointment>(); // Initialize list
         }
 
-        public void ChangeFirstName(string firstname){
+        public void ChangeFirstName(string firstname)
+        {
             this.Firstname = firstname;
         }
-        public void ChangeLastName(string lastName){
+
+        public void ChangeLastName(string lastName)
+        {
             this.LastName = lastName;
         }
-        public void ChangeFullName(string fullName){
+
+        public void ChangeFullName(string fullName)
+        {
             this.FullName = fullName;
         }
-        public void ChangeGender(string gender){
+
+        public void ChangeGender(string gender)
+        {
             this.Gender = gender;
         }
-        public void ChangeSpecialization(SpecializationId specializationId){
+
+        public void ChangeSpecialization(SpecializationId specializationId)
+        {
             this.SpecializationId = specializationId;
         }
-        public void ChangeType(string type){
+
+        public void ChangeType(string type)
+        {
             this.Type = type;
         }
-        public void ChangeLicenseNumber(string licenseNumber){
+
+        public void ChangeLicenseNumber(string licenseNumber)
+        {
             this.LicenseNumber = licenseNumber;
         }
 
-        public void ChangeAvailabilitySlot(string availabilitySlot){
+        public void ChangeAvailabilitySlot(string availabilitySlot)
+        {
             this.AvailabilitySlot = availabilitySlot;
         }
 
-        public void ChangePhoneNumber(string phoneNumber){
-            this.PhoneNumber=phoneNumber;
+        public void ChangePhoneNumber(string phoneNumber)
+        {
+            this.PhoneNumber = phoneNumber;
         }
 
-        public void ChangeEmail(string email){
-            this.Email=email;
+        public void ChangeEmail(string email)
+        {
+            this.Email = email;
         }
     }
 }
