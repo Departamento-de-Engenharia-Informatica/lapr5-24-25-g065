@@ -14,7 +14,7 @@ public class UserTest
         // Create Password instance
         var password = new Password(passwordString);
         var userRole = Enum.Parse<Role>(role);
-        var user = new User(email, username, userRole, password); // Pass Password object
+        var user = new User(username,email,  userRole, password); // Pass Password object
 
         Assert.Equal(email, user.Email);
         Assert.Equal(username, user.UserName);
@@ -33,7 +33,7 @@ public class UserTest
         Assert.Throws<ArgumentException>(() =>
         {
             var userRole = Enum.Parse<Role>(role);
-            _ = new User(email, username, userRole, password); // Pass Password object
+            _ = new User(username,email,  userRole, password); // Pass Password object
         });
     }
 
@@ -48,7 +48,7 @@ public class UserTest
         Assert.Throws<ArgumentException>(() =>
         {
             var userRole = Enum.Parse<Role>(role);
-            _ = new User(email, username, userRole, password); // Pass Password object
+            _ = new User(username,email,  userRole, password); // Pass Password object
         });
     }
 
@@ -64,7 +64,7 @@ public class UserTest
         {
             // Attempt to parse role from enum will fail and throw exception before constructing the user
          var userRole = Enum.Parse<Role>(role, ignoreCase: true);
-            _ = new User(email, username, userRole, password); // Pass Password object
+            _ = new User(username,email,  userRole, password); // Pass Password object
         });
     }
 
@@ -79,7 +79,7 @@ public class UserTest
         Assert.Throws<ArgumentException>(() =>
         {
             var userRole = Enum.Parse<Role>(role, ignoreCase: true);
-            _ = new User(email, username, userRole, password); // Pass Password object
+            _ = new User(username,email,  userRole, password); // Pass Password object
         });
     }
 }
