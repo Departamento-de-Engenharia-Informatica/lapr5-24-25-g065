@@ -80,3 +80,52 @@ public class LoginController : Controller
             return Json(claims);
         }
 }
+/*using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Mvc;
+
+namespace YourNamespace.Controllers // Update with your actual namespace
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class LoginController : ControllerBase
+    {
+        // Initiate Google authentication
+        [HttpGet("google")]
+        public IActionResult GoogleLogin()
+        {
+            var redirectUrl = Url.Action(nameof(GoogleResponse), "Login"); // Redirect after login
+            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        }
+
+        // Handle Google authentication response
+        [HttpGet("google-response")]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            if (result.Succeeded)
+            {
+                var claims = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
+                {
+                    claim.Issuer,
+                    claim.OriginalIssuer,
+                    claim.Type,
+                    claim.Value
+                });
+
+                // Here, you can also create or update a patient profile based on the claims received
+                // For example, using the email to find or create a patient in your system
+
+                return Ok(claims); // Return claims as JSON
+            }
+            
+            return BadRequest("Authentication failed.");
+        }
+    }
+}
+*/

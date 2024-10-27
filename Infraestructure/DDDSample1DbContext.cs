@@ -44,6 +44,50 @@ namespace DDDSample1.Infrastructure
             ConfigurePassword(modelBuilder);
         }
 
+private void ConfigureAppointment(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Appointment>()
+        .HasKey(a => a.Id);
+
+    modelBuilder.Entity<Appointment>()
+        .Property(a => a.Id)
+        .HasConversion(
+            v => v.AsGuid(),
+            v => new AppointmentId(v)
+        )
+        .HasColumnName("AppointmentId");
+
+    modelBuilder.Entity<Appointment>()
+        .Property(a => a.RequestId)
+        .IsRequired()
+        .HasMaxLength(150);
+
+    modelBuilder.Entity<Appointment>()
+        .Property(a => a.RoomId)
+        .IsRequired()
+        .HasMaxLength(100);
+
+    modelBuilder.Entity<Appointment>()
+        .Property(a => a.Date)
+        .IsRequired();
+
+    modelBuilder.Entity<Appointment>()
+        .Property(a => a.Status)
+        .IsRequired()
+        .HasMaxLength(50);
+
+    // Relationships
+    modelBuilder.Entity<Appointment>()
+        .HasOne<Patient>() // Each Appointment is linked to one Patient
+        .WithMany(p => p.AppointmentHistory) // A Patient can have many Appointments
+        .HasForeignKey(a => a.PatientId);
+
+    modelBuilder.Entity<Appointment>()
+        .HasOne<Staff>() // Each Appointment is handled by one Staff member
+        .WithMany(s => s.Appointments) // A Staff member can handle many Appointments
+        .HasForeignKey(a => a.StaffId);
+}
+
         private void ConfigureOperationsType(ModelBuilder modelBuilder)
         {
              modelBuilder.Entity<OperationType>()

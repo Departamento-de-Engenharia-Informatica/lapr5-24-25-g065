@@ -20,6 +20,9 @@ namespace DDDSample1.Controllers
         }
 
         // GET: api/Patients
+        /// <summary>
+        /// Retrieves all patients.
+        /// </summary>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PatientDto>>> GetAll()
         {
@@ -28,6 +31,10 @@ namespace DDDSample1.Controllers
         }
 
         // GET: api/Patients/5
+        /// <summary>
+        /// Retrieves a patient by their ID.
+        /// </summary>
+        /// <param name="id">The ID of the patient.</param>
         [HttpGet("{id}")]
         public async Task<ActionResult<PatientDto>> GetById(Guid id)
         {
@@ -42,6 +49,10 @@ namespace DDDSample1.Controllers
         }
 
         // POST: api/Patients
+        /// <summary>
+        /// Creates a new patient.
+        /// </summary>
+        /// <param name="dto">The data transfer object containing patient details.</param>
         [HttpPost]
         public async Task<ActionResult<PatientDto>> Create(CreatePatientDTO dto)
         {
@@ -56,34 +67,43 @@ namespace DDDSample1.Controllers
             }
         }
 
-  [HttpPut("{id}")]
-public async Task<ActionResult<PatientDto>> Update(Guid id, UpdatePatientDTO dto) // Changed to UpdatePatientDTO
-{
-    if (id != dto.Id)
-    {
-        return BadRequest("Patient ID mismatch."); // Added message for clarity
-    }
-
-    try
-    {
-        // Call UpdateAsync with UpdatePatientDTO instead of converting to PatientDto
-        var patient = await patientService.UpdateAsync(dto); // Pass UpdatePatientDTO directly
-
-        if (patient == null)
+        // PUT: api/Patients/5
+        /// <summary>
+        /// Updates an existing patient.
+        /// </summary>
+        /// <param name="id">The ID of the patient to update.</param>
+        /// <param name="dto">The data transfer object containing updated patient details.</param>
+        [HttpPut("{id}")]
+        public async Task<ActionResult<PatientDto>> Update(Guid id, UpdatePatientDTO dto) // Changed to UpdatePatientDTO
         {
-            return NotFound();
+            if (id != dto.Id)
+            {
+                return BadRequest("Patient ID mismatch."); // Added message for clarity
+            }
+
+            try
+            {
+                // Call UpdateAsync with UpdatePatientDTO instead of converting to PatientDto
+                var patient = await patientService.UpdateAsync(dto); // Pass UpdatePatientDTO directly
+
+                if (patient == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(patient); // Return updated patient
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
         }
 
-        return Ok(patient); // Return updated patient
-    }
-    catch (BusinessRuleValidationException ex)
-    {
-        return BadRequest(new { Message = ex.Message });
-    }
-}
-
-
         // DELETE: api/Patients/5/hard
+        /// <summary>
+        /// Permanently deletes a patient by their ID.
+        /// </summary>
+        /// <param name="id">The ID of the patient to delete.</param>
         [HttpDelete("{id}/hard")]
         public async Task<ActionResult<PatientDto>> HardDelete(Guid id)
         {
@@ -103,8 +123,10 @@ public async Task<ActionResult<PatientDto>> Update(Guid id, UpdatePatientDTO dto
                 return BadRequest(new { Message = ex.Message });
             }
         }
+        
     }
 }
+
 
 
 /*using Microsoft.AspNetCore.Mvc;
