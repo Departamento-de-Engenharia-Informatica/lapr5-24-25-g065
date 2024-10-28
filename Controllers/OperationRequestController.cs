@@ -1,188 +1,226 @@
-using DDDNetCore.Domain.OperationRequest;
 using DDDNetCore.DTOs.OperationRequest;
 using DDDNetCore.DTOs.Patient;
 using DDDNetCore.Services;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Shared;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-[Route("api/[controller]")]
-[ApiController]
-public class OperationRequestController : ControllerBase{
-    private readonly OperationRequestService operationRequestService;
-
-    public OperationRequestController(OperationRequestService service){
-        operationRequestService = service;
-    }
-
-    // GET: api/operationRequest
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<OperationRequestDTO>>> GetAllOperationRequest(){
-        var operationRequestList = await operationRequestService.GetAllOperationRequest();
-        return operationRequestList;
-    }
-
-    // GET: api/operationRequest/{priority}
-    [HttpGet("{priority}")]
-    public async Task<ActionResult<OperationRequestDTO>> GetOperationRequestByPriority(int priority){
-        var operationRequest = await operationRequestService.GetOperationRequestByPriority(priority);
-
-        if (operationRequest == null)
-        {
-            return NotFound();
-        }
-
-        return operationRequest;
-    }
-
-
-    //POST: api/operationRequest
-    [HttpPost]
-    public async Task<ActionResult<OperationRequestDTO>> AddOperationRequest(OperationRequestDTO operationRequestDTO){
-        var prio = await operationRequestService.AddOperationRequest(operationRequestDTO);
-        return CreatedAtAction("Priority", new {operationRequestDTO.priority }, operationRequestDTO);
-    }
-
-   
-    /*
-    // |=============================================|
-    // | Following methods regarding Operation Types |
-    // |=============================================|
-
-    // GET: api/operation/type
-    [HttpGet("type")]
-
-    public async Task<ActionResult<IEnumerable<OperationType>>> GetTypes()
+namespace DDDSample1.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class OperationRequestController : ControllerBase
     {
-        return await _service.GetAllTypeAsync();
-    }
+        private readonly OperationRequestService operationRequestService;
 
-
-    // GET: api/operation/type/{id}
-    [HttpGet("type/{id}")]
-    public async Task<ActionResult<OperationType>> GetType(long id)
-    {
-        var type = await _service.GetTypeByIdAsync(id);
-
-        if (type == null)
+        public OperationRequestController(OperationRequestService service)
         {
-            return NotFound();
+            operationRequestService = service;
         }
 
-        return type;
-    }
-    // GET: api/operation/filter
-    [Authorize(Policy ="AdminOnly")]
-    [HttpGet("type/filter")]
-
-    public async Task<ActionResult<IEnumerable<OperationTypeGetDTO>>> GetTypeFilter(OperationTypeSearch search)
-    {
-        var type = await _service.GetAllTypeFilterAsync(search);
-
-        if (type == null)
+        // GET: api/operationRequest
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<OperationRequestDTO>>> GetAllOperationRequest()
         {
-            return NotFound();
+            var operationRequestList = await operationRequestService.GetAllOperationRequest();
+            return operationRequestList;
         }
 
-        return type;
-    }
-
-    //POST: api/operation/type
-    [Authorize(Policy = "AdminOnly")]
-    [HttpPost("type")]
-    public async Task<ActionResult<OperationTypeDTO>> PostType(OperationTypeDTO typeDTO)
-    {
-
-        // The following try/catch clause catches the cases where there is already a type with the same name
-        try
+        // GET: api/operationRequest/{priority}
+        [HttpGet("{priority}")]
+        public async Task<ActionResult<OperationRequestDTO>> GetOperationRequestByPriority(int priority)
         {
-            var type = await _service.AddTypeAsync(typeDTO);
-            return CreatedAtAction("GetType", new { id = type.Id }, type);
-        }
-        catch (FormatException)
-        {
-            return BadRequest("Input duration format must be HH:mm:ss");
-        }
-        catch (NotFoundResource)
-        {
-            return BadRequest("Specialized staff id doesn't exist");
-        }
-        catch (Exception)
-        {
-            return BadRequest("Operation type name already registered in the data base");
-        }
+            var operationRequest = await operationRequestService.GetOperationRequestByPriority(priority);
 
-
-    }
-
-    // PUT: api/Operation/type/activate/{id}
-
-    [HttpPut("type/activate/{id}")]
-
-    public async Task<ActionResult<OperationType>> ActivateType(long id)
-    {
-
-        try
-        {
-            var prod = await _service.ActivateTypeAsync(id);
-
-            if (prod == null)
+            if (operationRequest == null)
             {
                 return NotFound();
             }
-            return Ok(prod);
+
+            return operationRequest;
         }
-        catch (InvalidDataException ex)
+
+
+        //POST: api/operationRequest
+        [HttpPost]
+        public async Task<ActionResult<OperationRequestDTO>> AddOperationRequest(OperationRequestDTO operationRequestDTO)
         {
-            return BadRequest("This type is already active");
+            var prio = await operationRequestService.AddOperationRequest(operationRequestDTO);
+            return CreatedAtAction("Priority", new { operationRequestDTO.priority }, operationRequestDTO);
         }
-    }
 
 
-    // PUT: api/Operation/type/inactivate/{id}
+        // PUT: api/operationRequest/{priority}
+        [HttpPut("{priority}")]
+        public async Task<ActionResult<OperationRequestDTO>> Update(int priority, OperationRequestDTO operationRequestDTO){
+            if (priority != operationRequestDTO.priority) return BadRequest("Operation Request priority mismatch");
 
-    [HttpPut("type/deactivate/{id}")]
+            try
+            {
+                var operationRequest = await operationRequestService.UpdateOperationRequest(operationRequestDTO);
+                return operationRequestDTO == null ? NotFound() : Ok(operationRequestDTO);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
 
-    public async Task<ActionResult<OperationType>> InactivateType(long id)
-    {
+        // DELETE: api/operationRequest/{priority}/hard
+        [HttpDelete("{priority}/hard")]
+        public async Task<ActionResult<OperationRequestDTO>> DeleteOperationRequestByID(int priority){
+            
+            try{
+                var operationRequest = await operationRequestService.DeleteOperationRequestByID(priority);
+                return operationRequest == null ? NotFound() : Ok(operationRequest);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
 
-        try
+
+        /*
+        // |=============================================|
+        // | Following methods regarding Operation Types |
+        // |=============================================|
+
+        // GET: api/operation/type
+        [HttpGet("type")]
+
+        public async Task<ActionResult<IEnumerable<OperationType>>> GetTypes()
         {
-            var prod = await _service.InactivateTypeAsync(id);
+            return await _service.GetAllTypeAsync();
+        }
 
-            if (prod == null)
+
+        // GET: api/operation/type/{id}
+        [HttpGet("type/{id}")]
+        public async Task<ActionResult<OperationType>> GetType(long id)
+        {
+            var type = await _service.GetTypeByIdAsync(id);
+
+            if (type == null)
             {
                 return NotFound();
             }
-            return Ok(prod);
+
+            return type;
         }
-        catch (InvalidDataException ex)
+        // GET: api/operation/filter
+        [Authorize(Policy ="AdminOnly")]
+        [HttpGet("type/filter")]
+
+        public async Task<ActionResult<IEnumerable<OperationTypeGetDTO>>> GetTypeFilter(OperationTypeSearch search)
         {
-            return BadRequest("This type is already inactive");
+            var type = await _service.GetAllTypeFilterAsync(search);
+
+            if (type == null)
+            {
+                return NotFound();
+            }
+
+            return type;
         }
+
+        //POST: api/operation/type
+        [Authorize(Policy = "AdminOnly")]
+        [HttpPost("type")]
+        public async Task<ActionResult<OperationTypeDTO>> PostType(OperationTypeDTO typeDTO)
+        {
+
+            // The following try/catch clause catches the cases where there is already a type with the same name
+            try
+            {
+                var type = await _service.AddTypeAsync(typeDTO);
+                return CreatedAtAction("GetType", new { id = type.Id }, type);
+            }
+            catch (FormatException)
+            {
+                return BadRequest("Input duration format must be HH:mm:ss");
+            }
+            catch (NotFoundResource)
+            {
+                return BadRequest("Specialized staff id doesn't exist");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Operation type name already registered in the data base");
+            }
+
+
+        }
+
+        // PUT: api/Operation/type/activate/{id}
+
+        [HttpPut("type/activate/{id}")]
+
+        public async Task<ActionResult<OperationType>> ActivateType(long id)
+        {
+
+            try
+            {
+                var prod = await _service.ActivateTypeAsync(id);
+
+                if (prod == null)
+                {
+                    return NotFound();
+                }
+                return Ok(prod);
+            }
+            catch (InvalidDataException ex)
+            {
+                return BadRequest("This type is already active");
+            }
+        }
+
+
+        // PUT: api/Operation/type/inactivate/{id}
+
+        [HttpPut("type/deactivate/{id}")]
+
+        public async Task<ActionResult<OperationType>> InactivateType(long id)
+        {
+
+            try
+            {
+                var prod = await _service.InactivateTypeAsync(id);
+
+                if (prod == null)
+                {
+                    return NotFound();
+                }
+                return Ok(prod);
+            }
+            catch (InvalidDataException ex)
+            {
+                return BadRequest("This type is already inactive");
+            }
+        }
+
+        // |=============================================|
+        // | Following methods regard Operation Requests |
+        // |=============================================|
+
+
+        [Authorize(Policy="DoctorOnly")]
+        [HttpGet("request/filter")]
+
+        public async Task<ActionResult<IEnumerable<OperationRequestDTO>>> GetRequestFilter(OperationRequestSearch search)
+        {
+            var requests = await _service.GetAllRequestFilterAsync(search);
+
+            if (requests == null)
+            {
+                return NotFound();
+            }
+
+            return requests;
+        }*/
+
     }
-
-    // |=============================================|
-    // | Following methods regard Operation Requests |
-    // |=============================================|
-
-
-    [Authorize(Policy="DoctorOnly")]
-    [HttpGet("request/filter")]
-
-    public async Task<ActionResult<IEnumerable<OperationRequestDTO>>> GetRequestFilter(OperationRequestSearch search)
-    {
-        var requests = await _service.GetAllRequestFilterAsync(search);
-
-        if (requests == null)
-        {
-            return NotFound();
-        }
-
-        return requests;
-    }*/
-
 }
