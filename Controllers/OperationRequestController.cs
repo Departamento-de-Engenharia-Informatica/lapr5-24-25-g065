@@ -1,55 +1,53 @@
-/*using System.Text.RegularExpressions;
+using DDDNetCore.Domain.OperationRequest;
+using DDDNetCore.DTOs.OperationRequest;
+using DDDNetCore.DTOs.Patient;
+using DDDNetCore.Services;
+using DDDSample1.Domain.Patients;
+using DDDSample1.Domain.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using TodoApi.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 [Route("api/[controller]")]
 [ApiController]
+public class OperationRequestController : ControllerBase{
+    private readonly OperationRequestService operationRequestService;
 
-public class OperationController : ControllerBase
-{
-    private readonly OperationService _service;
-    private const string DatePattern = @"^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/(\\d{4})$";
-
-
-    public OperationController(OperationService service)
-    {
-        _service = service;
+    public OperationRequestController(OperationRequestService service){
+        operationRequestService = service;
     }
 
-    // GET: api/operation/priority
-    [HttpGet("priority")]
-    public async Task<ActionResult<IEnumerable<OperationPriority>>> GetPriorities()
-    {
-        return await _service.GetAllPrioAsync();
+    // GET: api/operationRequest
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<OperationRequestDTO>>> GetAllOperationRequest(){
+        var operationRequestList = await operationRequestService.GetAllOperationRequest();
+        return operationRequestList;
     }
 
-    // GET: api/operation/priority/{id}
-    [HttpGet("priority/{id}")]
-    public async Task<ActionResult<OperationPriority>> GetPriority(long id)
-    {
-        var priority = await _service.GetPrioByIdAsync(id);
+    // GET: api/operationRequest/{priority}
+    [HttpGet("{priority}")]
+    public async Task<ActionResult<OperationRequestDTO>> GetOperationRequestByPriority(int priority){
+        var operationRequest = await operationRequestService.GetOperationRequestByPriority(priority);
 
-        if (priority == null)
+        if (operationRequest == null)
         {
             return NotFound();
         }
 
-        return priority;
+        return operationRequest;
     }
 
 
-    //POST: api/operation/priority
-
-    [HttpPost("priority")]
-    public async Task<ActionResult<OperationPriority>> PostPriority(OperationPriority priority)
-    {
-        var prio = await _service.AddPrioAsync(priority);
-        return CreatedAtAction("GetPriority", new { id = priority.Id }, priority);
+    //POST: api/operationRequest
+    [HttpPost]
+    public async Task<ActionResult<OperationRequestDTO>> AddOperationRequest(OperationRequestDTO operationRequestDTO){
+        var prio = await operationRequestService.AddOperationRequest(operationRequestDTO);
+        return CreatedAtAction("Priority", new {operationRequestDTO.priority }, operationRequestDTO);
     }
 
+   
+    /*
     // |=============================================|
     // | Following methods regarding Operation Types |
     // |=============================================|
@@ -185,6 +183,6 @@ public class OperationController : ControllerBase
         }
 
         return requests;
-    }
+    }*/
 
-}*/
+}
