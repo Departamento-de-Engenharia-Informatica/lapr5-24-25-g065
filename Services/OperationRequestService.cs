@@ -1,4 +1,4 @@
-﻿/*using DDDNetCore.Domain.OperationRequest;
+﻿using DDDNetCore.Domain.OperationRequest;
 using DDDNetCore.DTOs.OperationRequest;
 using DDDNetCore.IRepos;
 using DDDSample1.Domain.Shared;
@@ -61,5 +61,3 @@ namespace DDDNetCore.Services
         }
         }
     }
-
-*/
