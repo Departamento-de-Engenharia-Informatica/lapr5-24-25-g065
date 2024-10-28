@@ -1,5 +1,4 @@
-﻿/*using DDDSample1.Domain.OperationTypes;
-using System;
+﻿using System;
 
 namespace DDDNetCore.DTOs.OperationRequest
 {
@@ -21,4 +20,3 @@ namespace DDDNetCore.DTOs.OperationRequest
         }
     }
 }
-*/
