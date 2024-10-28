@@ -1,5 +1,6 @@
 /*using DDDNetCore.DTOs.OperationType;
 using DDDNetCore.IRepos;
+using DDDSample1.Domain.OperationTypes;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,11 @@ namespace DDDSample1.Domain.Patients
     private readonly IOperationTypeRepository operationTypeRepository;
 
         internal async Task<ActionResult<IEnumerable<OperationTypeDto>>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal async Task<ActionResult<OperationTypeDto>> GetByIdAsync(OperationTypeID operationTypeID)
         {
             throw new NotImplementedException();
         }
