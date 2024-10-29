@@ -13,13 +13,11 @@ namespace DDDSample1.Domain.Patients
     public class PatientService
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly IUserRepository userRepository; // User repository for user management
         private readonly IPatientRepository patientRepository; // Patient repository for patient management
 
         public PatientService(IUnitOfWork unitOfWork, IUserRepository userRepo, IPatientRepository patientRepo)
         {
             this.unitOfWork = unitOfWork;
-            this.userRepository = userRepo;
             this.patientRepository = patientRepo; // Initialize the patient repository
         }
 
