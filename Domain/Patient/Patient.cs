@@ -16,6 +16,10 @@ namespace DDDSample1.Domain.Patients
         public string FullName { get; private set; }
         public string Gender { get; private set; }
         public List<string>? Allergies { get; private set; }
+        public DateTime? DateOfBirth { get; private set; }
+        public string MedicalRecordNumber { get; private set; }
+        public Guid UserId { get; private set; }
+        public List<Appointment> AppointmentHistory { get; private set; }
 
         // PhoneNumber property
         public string PhoneNumber
@@ -31,10 +35,7 @@ namespace DDDSample1.Domain.Patients
             set => _emergencyContact = value; // Direct assignment without validation
         }
 
-        public DateTime? DateOfBirth { get; private set; }
-        public string MedicalRecordNumber { get; private set; }
-        public Guid UserId { get; private set; }
-        public List<Appointment> AppointmentHistory { get; private set; }
+        
 
         public Patient(string firstname, string lastName, string fullName, string gender, List<string>? allergies,
                        string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber, Guid userId, string phoneNumber)
