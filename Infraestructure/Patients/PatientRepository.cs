@@ -17,21 +17,21 @@ namespace DDDSample1.Infrastructure.Patients
             _context = context;
         }
 
-        public async Task<Patient> GetByIdAsync(PatientId id)
+        public new async Task<Patient> GetByIdAsync(PatientId id)
         {
             return await _context.Patients
                 .Include(p => p.AppointmentHistory) // Include related appointments if necessary
                 .FirstOrDefaultAsync(p => p.Id.Equals(id));
         }
 
-        public async Task<List<Patient>> GetAllAsync()
+        public new async Task<List<Patient>> GetAllAsync()
         {
             return await _context.Patients
                 .Include(p => p.AppointmentHistory) // Include related appointments if necessary
                 .ToListAsync();
         }
 
-        public async Task AddAsync(Patient patient)
+        public new async Task AddAsync(Patient patient)
         {
             await _context.Patients.AddAsync(patient);
             await _context.SaveChangesAsync(); // Ensure changes are saved to the database
