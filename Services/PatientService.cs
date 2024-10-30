@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DDDNetCore.DTOs.Patient;
-using DDDSample1.Domain.Users;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Patients;
 using DDDNetCore.IRepos;
 
 namespace DDDSample1.Domain.Patients
