@@ -1,29 +1,23 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using System;
 using Microsoft.Extensions.Hosting;
-using MySql.Data.EntityFrameworkCore.Extensions;
 using DDDSample1.Infrastructure;
 using Microsoft.Extensions.Configuration;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Infrastructure.Patients;
 using DDDSample1.Domain.Specializations;
 using DDDSample1.Domain.Staffs;
 using DDDSample1.Domain.Users;
-using DDDSample1.Domain.Passwords;
 using DDDSample1.Infrastructure.Specializations;
 using DDDSample1.Infrastructure.Staffs;
 using DDDSample1.Infrastructure.Users;
 using DDDNetCore.IRepos;
+using DDDNetCore.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +27,8 @@ builder.Services.AddScoped<PatientService>();
 builder.Services.AddScoped<SpecializationService>();
 builder.Services.AddScoped<StaffService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<OperationRequestService>();
+builder.Services.AddScoped<OperationTypeService>();
 
 // Add Repositories to dependency scope
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
