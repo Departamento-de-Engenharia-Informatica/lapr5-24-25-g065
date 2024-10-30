@@ -36,7 +36,7 @@ namespace dddsample1.domain
             )).ToList();
         }
 
-        public async Task<OperationTypeDTO> GetByIdAsync(OperationTypeId id)
+        public async Task<OperationTypeDTO> GetByIdAsync(OperationTypeID id)
         {
             var operationType = await operationTypeRepository.GetByIdAsync(id);
             return operationType == null ? null : new OperationTypeDTO(
@@ -73,67 +73,52 @@ namespace dddsample1.domain
                 operationType.EstimatedDuration.ToString(),
                 operationType.IsActive
                 );
-            return dto; 
-        }
         }
 
-        public async Task<PatientDTO> UpdateAsync(UpdatePatientDTO dto)
+
+        public async Task<OperationTypeDTO> UpdateAsync(OperationTypeDTO dto)
         {
-            if (dto == null) throw new ArgumentException("Invalid patient data");
+            if (dto == null) throw new ArgumentException("Invalid Operation Type data");
 
-            var patient = await patientRepository.GetByIdAsync(new PatientId(dto.Id));
-            if (patient == null) throw new BusinessRuleValidationException("Patient not found");
+            var operationType = await operationTypeRepository.GetByIdAsync(new OperationTypeID(dto.ID));
+            if (operationType == null) throw new BusinessRuleValidationException("Operation Type not found");
 
-            patient.Update(
-                dto.FirstName,
-                dto.LastName,
-                dto.FullName,
-                dto.Gender,
-                dto.Allergies,
-                dto.EmergencyContact,
-                dto.DateOfBirth,
-                dto.MedicalRecordNumber,
-                dto.UserId,
-                dto.PhoneNumber
+            if (!TimeSpan.TryParse(dto.EstimatedDuration, out TimeSpan t1))
+            {
+                throw new ArgumentException("Invalid format for EstimatedDuration");
+            }
+
+            operationType.Update(
+                dto.Name,
+                dto.RequiredStaffBySpecialization,
+                t1
             );
 
             await unitOfWork.CommitAsync();
 
-            return new PatientDTO(
-                patient.Id.AsGuid(),
-                patient.FirstName,
-                patient.LastName,
-                patient.FullName,
-                patient.Gender,
-                patient.Allergies,
-                patient.EmergencyContact,
-            patient.DateOfBirth,
-            patient.MedicalRecordNumber,
-            patient.UserId,
-                patient.PhoneNumber
+            return new OperationTypeDTO(
+                operationType.Id.AsGuid(),
+                operationType.Name,
+                operationType.RequiredStaffBySpecialization,
+                operationType.EstimatedDuration.ToString(),
+                operationType.IsActive
             );
         }
 
-        public async Task<PatientDTO> DeleteAsync(PatientId id)
+        public async Task<OperationTypeDTO> DeleteAsync(OperationTypeID id)
         {
-            var patient = await patientRepository.GetByIdAsync(id);
-            if (patient == null) throw new BusinessRuleValidationException("Patient not found");
+            var operationType = await operationTypeRepository.GetByIdAsync(id);
+            if (operationType == null) throw new BusinessRuleValidationException("Operation Type not found");
 
-            await patientRepository.DeleteAsync(patient);
+            operationTypeRepository.Remove(operationType);
             await unitOfWork.CommitAsync();
 
-            return new PatientDTO(
-                patient.Id.AsGuid(),
-                patient.FirstName,
-                patient.LastName,
-                patient.FullName,
-                patient.Gender,
-                patient.Allergies,
-                patient.EmergencyContact,
-                patient.DateOfBirth,
-                patient.MedicalRecordNumber,
-                patient.UserId,
-                patient.PhoneNumber
+            return new OperationTypeDTO(
+                operationType.Id.AsGuid(),
+                operationType.Name,
+                operationType.RequiredStaffBySpecialization,
+                operationType.EstimatedDuration.ToString(),
+                operationType.IsActive
             );
         }
     }

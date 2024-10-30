@@ -1,12 +1,10 @@
- using DDDNetCore.DTOs.OperationType;
-using DDDNetCore.DTOs.Patient;
-using DDDSample1.Domain;
+using DDDNetCore.DTOs.OperationType;
+using dddsample1.domain;
 using DDDSample1.Domain.OperationType;
-using DDDSample1.Domain.Patients;
+using DDDSample1.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Reflection.Emit;
 using System.Threading.Tasks;
 
 namespace DDDSample1.Controllers
@@ -24,12 +22,13 @@ namespace DDDSample1.Controllers
 
         // GET: api/OperationType
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OperationTypeDTO>>> GetAll()
+        public async Task<ActionResult<IEnumerable<OperationTypeDTO>>> GetAllAsync()
         {
-            return await operationTypeService.GetAllAsync();
+            var operationTypes = await operationTypeService.GetAllAsync();
+            return Ok(operationTypes);
         }
 
-        // GET: api/OperationType/x
+        // GET: api/OperationType/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<OperationTypeDTO>> GetByIdAsync(Guid id)
         {
@@ -43,10 +42,51 @@ namespace DDDSample1.Controllers
             return operationType;
         }
 
+        // POST: api/OperationType
+        [HttpPost]
+        public async Task<ActionResult<OperationTypeDTO>> CreateAsync(OperationTypeDTO dto)
+        {
+            try
+            {
+                var operationType = await operationTypeService.AddAsync(dto);
+                return CreatedAtAction(nameof(GetByIdAsync), new { id = operationType.ID }, operationType);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
+        }
 
+        // PUT: api/OperationType/{id}
+        [HttpPut("{id}")]
+        public async Task<ActionResult<OperationTypeDTO>> Update(Guid id, OperationTypeDTO dto)
+        {
+            if (id != dto.ID) return BadRequest("Operation Type ID mismatch.");
 
+            try
+            {
+                var operationType = await operationTypeService.UpdateAsync(dto);
+                return operationType == null ? NotFound() : Ok(operationType);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
 
-
-
+        // DELETE: api/OperationType/{id}/hard
+        [HttpDelete("{id}/hard")]
+        public async Task<ActionResult<OperationTypeDTO>> HardDelete(Guid id)
+        {
+            try
+            {
+                var operationType = await operationTypeService.DeleteAsync(new OperationTypeID(id));
+                return operationType == null ? NotFound() : Ok(operationType);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
     }
 } 

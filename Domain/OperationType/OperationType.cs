@@ -9,11 +9,18 @@ namespace DDDSample1.Domain.OperationType{
         public TimeSpan EstimatedDuration { get; set; }
         public bool IsActive { get; set; } = true;
 
-        public OperationType(string name, List<string> requiredStaffBySpecialization, TimeSpan estimatedDuration, bool isActive = true){
+        public OperationType(string name, List<string> requiredStaffBySpecialization, TimeSpan estimatedDuration, bool isActive){
             Name = name;
             RequiredStaffBySpecialization = requiredStaffBySpecialization;
             EstimatedDuration = estimatedDuration;
             IsActive = isActive;
+        }
+
+        internal void Update(string Name, List<string> RequiredStaffBySpecialization, TimeSpan EstimatedDuration)
+        {
+            this.Name=Name;
+            this.RequiredStaffBySpecialization=RequiredStaffBySpecialization;
+            this.EstimatedDuration=EstimatedDuration;
         }
     }
 }
