@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Collections.Generic;
 using System.Text.Json;
 using DDDSample1.Domain.Passwords;
+using DDDSample1.Domain.OperationType;
+using DDDNetCore.Domain.OperationRequestDomain;
+using DDDNetCore.Domain;
 
 namespace DDDSample1.Infrastructure
 {
@@ -20,9 +23,10 @@ namespace DDDSample1.Infrastructure
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Specialization> Specializations { get; set; }
         public DbSet<User> Users { get; set; }
-        /*public DbSet<OperationType> OperationTypes { get; set; }*/
+        public DbSet<OperationType> OperationTypes { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Password> Passwords { get; set; }
+        public DbSet<OperationRequest> OperationRequests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,11 +34,70 @@ namespace DDDSample1.Infrastructure
             ConfigurePatient(modelBuilder);
             ConfigureStaff(modelBuilder);
             ConfigureUser(modelBuilder);
-           /* ConfigureOperationType(modelBuilder);*/
+            ConfigureOperationType(modelBuilder);
+            ConfigureOperationRequest(modelBuilder);
             ConfigureAppointment(modelBuilder);
             // Uncomment if needed
             // ConfigurePassword(modelBuilder);
         }
+
+        private void ConfigureOperationRequest(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<OperationRequest>()
+                .HasKey(or => or.Id);
+
+            modelBuilder.Entity<OperationRequest>()
+                .Property(or => or.Id)
+                .HasConversion(
+                    v => v.AsGuid(),
+                    v => new OperationRequestID(v)
+                )
+                .HasColumnName("OperationRequestId");
+
+            modelBuilder.Entity<OperationRequest>()
+                .Property(or => or.patientID)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<OperationRequest>()
+                .Property(or => or.doctorID)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<OperationRequest>()
+                .Property(or => or.operationTypeID)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<OperationRequest>()
+                .Property(or => or.operationDateTime)
+                .IsRequired();
+
+            modelBuilder.Entity<OperationRequest>()
+                .Property(or => or.deadline)
+                .IsRequired();
+
+            modelBuilder.Entity<OperationRequest>()
+                .Property(or => or.priority)
+                .IsRequired();
+
+            // Relationships (if applicable, adjust if foreign key needs clarification)
+            modelBuilder.Entity<OperationRequest>()
+                .HasOne<Patient>() // Each OperationRequest is associated with a Patient
+                .WithMany() // Assuming there's no specific navigation back in Patient
+                .HasForeignKey(or => or.patientID);
+
+            modelBuilder.Entity<OperationRequest>()
+                .HasOne<Staff>() // Each OperationRequest has an assigned doctor
+                .WithMany() // Assuming there's no specific navigation back in Staff
+                .HasForeignKey(or => or.doctorID);
+
+            modelBuilder.Entity<OperationRequest>()
+                .HasOne<OperationType>() // Each OperationRequest has one OperationType
+                .WithMany() // Assuming there's no specific navigation back in OperationType
+                .HasForeignKey(or => or.operationTypeID);
+        }
+
 
         private void ConfigureAppointment(ModelBuilder modelBuilder)
         {
@@ -80,7 +143,7 @@ namespace DDDSample1.Infrastructure
                 .HasForeignKey(a => a.StaffId);
         }
 
-        /*private void ConfigureOperationType(ModelBuilder modelBuilder)
+        private void ConfigureOperationType(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<OperationType>()
                 .HasKey(ot => ot.Id);
@@ -108,7 +171,7 @@ namespace DDDSample1.Infrastructure
 
             modelBuilder.Entity<OperationType>()
                 .Property(ot => ot.IsActive);
-        }*/
+        }
 
         private void ConfigureSpecialization(ModelBuilder modelBuilder)
         {
