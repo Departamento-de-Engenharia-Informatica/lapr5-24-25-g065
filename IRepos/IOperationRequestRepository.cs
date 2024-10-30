@@ -1,18 +1,16 @@
-﻿using DDDNetCore.Domain.OperationRequest;
-using DDDNetCore.DTOs.OperationRequest;
-using DDDSample1.Domain.Patients;
+﻿using DDDNetCore.Domain;
+using DDDNetCore.Domain.OperationRequestDomain;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DDDNetCore.IRepos
 {
-    public interface IOperationRequestRepository{
-
-        Task<IEnumerable<OperationRequest>> GetAllOperationRequest();
-        Task<OperationRequest> GetOperationRequestByPriority(int priority);
-        Task AddOperationRequest(OperationRequest operationRequest);
-        Task UpdateOperationRequest(OperationRequest operationRequest);
-        Task DeleteOperationRequestByPriority(int priority);
-        
+    public interface IOperationRequestRepository : IRepository<OperationRequest, OperationRequestID>
+    {
+        new Task<IEnumerable<OperationRequest>> GetAllAsync();
+        new Task<OperationRequest> GetByIdAsync(OperationRequestID operationRequestID);
+        new Task AddAsync(OperationRequest operationRequest);
+        new Task Remove(OperationRequest operationRequest);
+        Task UpdateAsync(OperationRequest operationRequest);
     }
 }

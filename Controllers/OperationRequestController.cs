@@ -1,3 +1,4 @@
+using DDDNetCore.Domain;
 using DDDNetCore.DTOs.OperationRequest;
 using DDDNetCore.DTOs.Patient;
 using DDDNetCore.Services;
@@ -23,17 +24,17 @@ namespace DDDSample1.Controllers
 
         // GET: api/operationRequest
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OperationRequestDTO>>> GetAllOperationRequest()
+        public async Task<ActionResult<IEnumerable<OperationRequestDTO>>> GetAll()
         {
-            var operationRequestList = await operationRequestService.GetAllOperationRequest();
+            var operationRequestList = await operationRequestService.GetAllAsync();
             return operationRequestList;
         }
 
-        // GET: api/operationRequest/{priority}
-        [HttpGet("{priority}")]
-        public async Task<ActionResult<OperationRequestDTO>> GetOperationRequestByPriority(int priority)
+        // GET: api/operationRequest/{id}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<OperationRequestDTO>> GetByIdAsync(Guid id)
         {
-            var operationRequest = await operationRequestService.GetOperationRequestByPriority(priority);
+            var operationRequest = await operationRequestService.GetByIdAsync(new OperationRequestID(id));
 
             if (operationRequest == null)
             {
@@ -46,22 +47,12 @@ namespace DDDSample1.Controllers
 
         //POST: api/operationRequest
         [HttpPost]
-        public async Task<ActionResult<OperationRequestDTO>> AddOperationRequest(OperationRequestDTO operationRequestDTO)
+        public async Task<ActionResult<OperationRequestDTO>> AddAsync(OperationRequestDTO operationRequestDTO)
         {
-            var prio = await operationRequestService.AddOperationRequest(operationRequestDTO);
-            return CreatedAtAction("Priority", new { operationRequestDTO.priority }, operationRequestDTO);
-        }
-
-
-        // PUT: api/operationRequest/{priority}
-        [HttpPut("{priority}")]
-        public async Task<ActionResult<OperationRequestDTO>> Update(int priority, OperationRequestDTO operationRequestDTO){
-            if (priority != operationRequestDTO.priority) return BadRequest("Operation Request priority mismatch");
-
             try
             {
-                var operationRequest = await operationRequestService.UpdateOperationRequest(operationRequestDTO);
-                return operationRequestDTO == null ? NotFound() : Ok(operationRequestDTO);
+                var opreq = await operationRequestService.AddAsync(operationRequestDTO);
+                return CreatedAtAction(nameof(GetByIdAsync), new { id = opreq.ID }, opreq);
             }
             catch (BusinessRuleValidationException ex)
             {
@@ -69,12 +60,32 @@ namespace DDDSample1.Controllers
             }
         }
 
-        // DELETE: api/operationRequest/{priority}/hard
-        [HttpDelete("{priority}/hard")]
-        public async Task<ActionResult<OperationRequestDTO>> DeleteOperationRequestByID(int priority){
-            
-            try{
-                var operationRequest = await operationRequestService.DeleteOperationRequestByID(priority);
+
+        // PUT: api/operationRequest/{priority}
+        [HttpPut("{id}")]
+        public async Task<ActionResult<OperationRequestDTO>> Update(Guid id, OperationRequestDTO operationRequestDTO)
+        {
+            if (id != operationRequestDTO.ID) return BadRequest("Operation Request priority mismatch");
+
+            try
+            {
+                var operationRequest = await operationRequestService.UpdateAsync(operationRequestDTO);
+                return operationRequestDTO == null ? NotFound() : Ok(operationRequest);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        // DELETE: api/operationRequest/{id}/hard
+        [HttpDelete("{id}/hard")]
+        public async Task<ActionResult<OperationRequestDTO>> DeleteOperationRequestByID(Guid id)
+        {
+
+            try
+            {
+                var operationRequest = await operationRequestService.RemoveAsync(new OperationRequestID(id));
                 return operationRequest == null ? NotFound() : Ok(operationRequest);
             }
             catch (BusinessRuleValidationException ex)
