@@ -18,6 +18,8 @@ using DDDSample1.Infrastructure.Staffs;
 using DDDSample1.Infrastructure.Users;
 using DDDNetCore.IRepos;
 using DDDNetCore.Services;
+using dddsample1.domain;
+using DDDSample1.Infrastructure.OperationTypes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +38,8 @@ builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<ISpecializationRepository, SpecializationRepository>();
 builder.Services.AddScoped<IStaffRepository, StaffRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IOperationRequestRepository,OperationRequestRepository>();
+builder.Services.AddScoped<IOperationTypeRepository,OperationTypeRepository>();
 
 // Configure MySQL as the database provider
 builder.Services.AddDbContext<DDDSample1DbContext>(options =>
