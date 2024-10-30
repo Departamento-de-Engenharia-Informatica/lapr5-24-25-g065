@@ -19,21 +19,39 @@ namespace DDDSample1.Controllers
         }
 
         [HttpGet("login")]
-        public async Task Login(){
+        public async Task<IActionResult> Login()  // Updated to return IActionResult
+        {
+            // Initiates the Google authentication challenge
             await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
-                new AuthenticationProperties{
-                    RedirectUri=Url.Action("GoogleResponse")
+                new AuthenticationProperties
+                {
+                    RedirectUri = Url.Action("GoogleResponse") // Ensure this matches the authorized redirect URI in Google Console
                 });
+            return new EmptyResult(); // Return an empty result after challenge
         }
-         [HttpGet("google-response")]
-        public async Task<IActionResult> GoogleResponse(){
+
+        [HttpGet("google-response")]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            // Authenticate with the cookie scheme
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            var claims = result.Principal.Identities.FirstOrDefault().Claims.Select( claim => new{ 
-            claim.Issuer,
-            claim.OriginalIssuer,
-            claim.Type,
-            claim.Value
+
+            // Check if the result is null or if the principal is null
+            if (result == null || result.Principal == null)
+            {
+                // Handle the case when authentication fails
+                return Unauthorized(); // Return 401 Unauthorized
+            }
+
+            // Extract claims from the authenticated principal
+            var claims = result.Principal.Identities.FirstOrDefault()?.Claims.Select(claim => new {
+                claim.Issuer,
+                claim.OriginalIssuer,
+                claim.Type,
+                claim.Value
             });
+
+            // Return claims as JSON
             return Json(claims);
         }
     }
