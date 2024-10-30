@@ -1,28 +1,23 @@
-/*sing System;
+using System;
 using System.Collections.Generic;
-using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Specializations;
 
 namespace DDDNetCore.DTOs.OperationType
 {
-    public class OperationTypeDto
+    public class OperationTypeDTO
     {
-        public Guid Id { get; set; }
+        public Guid ID { get; set; }
         public string Name { get; private set; }
+        public List<string> RequiredStaffBySpecialization { get; set; }
+        public string EstimatedDuration { get; set; }
+        public bool IsActive { get; set; }
 
-        public List<Specialization> RequiredStaffBySpecialization { get; set; }
-        public TimeSpan EstimatedDuration { get; set; }
-        public bool IsActive { get; set; } = true;
-
-
-        public OperationTypeDto(Guid id,String name, List<Specialization> requiredStaffBySpecialization, TimeSpan estimatedDuration, bool isActive)
+        public OperationTypeDTO(Guid ID, string Name, List<string> RequiredStaffBySpecialization, string EstimatedDuration, bool IsActive)
         {
-            Id = id;
-            Name = name;
-            RequiredStaffBySpecialization = requiredStaffBySpecialization;
-            EstimatedDuration = estimatedDuration;
-            IsActive = isActive;
+            this.ID = ID;
+            this.Name = Name;
+            this.RequiredStaffBySpecialization = RequiredStaffBySpecialization;
+            this.EstimatedDuration = EstimatedDuration;
+            this.IsActive = IsActive;
         }
-
     }
-}*/
+}

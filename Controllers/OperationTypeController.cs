@@ -1,6 +1,7 @@
-/*using DDDNetCore.DTOs.OperationType;
+ using DDDNetCore.DTOs.OperationType;
 using DDDNetCore.DTOs.Patient;
-using DDDSample1.Domain.OperationTypes;
+using DDDSample1.Domain;
+using DDDSample1.Domain.OperationType;
 using DDDSample1.Domain.Patients;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,14 +24,14 @@ namespace DDDSample1.Controllers
 
         // GET: api/OperationType
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OperationTypeDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<OperationTypeDTO>>> GetAll()
         {
             return await operationTypeService.GetAllAsync();
         }
 
         // GET: api/OperationType/x
         [HttpGet("{id}")]
-        public async Task<ActionResult<OperationTypeDto>> GetById(Guid id)
+        public async Task<ActionResult<OperationTypeDTO>> GetByIdAsync(Guid id)
         {
             var operationType = await operationTypeService.GetByIdAsync(new OperationTypeID(id));
 
@@ -48,4 +49,4 @@ namespace DDDSample1.Controllers
 
 
     }
-}*/
+} 
