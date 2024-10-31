@@ -1,8 +1,7 @@
 using System;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Specializations;
 using DDDSample1.Domain.Users;
-using DDDSample1.Domain.Appointments;
+using DDDSample1.Domain.Appointments; // Added for Appointment
 using Xunit;
 using DDDSample1.Domain.Staffs;
 
@@ -18,7 +17,7 @@ namespace DDDSample1.Tests.Unitary
             var lastName = "Cartman";
             var fullName = "Eric Cartman";
             var gender = "Male";
-            var specializationId = new SpecializationId(Guid.NewGuid());
+            var specialization = "Pediatrics"; // Updated to string
             var type = "Doctor";
             var licenseNumber = "LN12345";
             var userId = new UserId(Guid.NewGuid());
@@ -27,14 +26,14 @@ namespace DDDSample1.Tests.Unitary
             var email = "ericcartman@gmail.com";
 
             // Act
-            var staff = new Staff(firstname, lastName, fullName, gender, specializationId, type, licenseNumber, userId, availabilitySlot, phoneNumber, email);
+            var staff = new Staff(firstname, lastName, fullName, gender, specialization, type, licenseNumber, userId, availabilitySlot, phoneNumber, email);
 
             // Assert
             Assert.Equal(firstname, staff.Firstname);
             Assert.Equal(lastName, staff.LastName);
             Assert.Equal(fullName, staff.FullName);
             Assert.Equal(gender, staff.Gender);
-            Assert.Equal(specializationId, staff.SpecializationId);
+            Assert.Equal(specialization, staff.Specialization); // Updated to string
             Assert.Equal(type, staff.Type);
             Assert.Equal(licenseNumber, staff.LicenseNumber);
             Assert.Equal(userId, staff.UserId);
@@ -100,13 +99,13 @@ namespace DDDSample1.Tests.Unitary
         {
             // Arrange
             var staff = CreateSampleStaff();
-            var newSpecializationId = new SpecializationId(Guid.NewGuid());
+            var newSpecialization = "Cardiology"; // Updated to string
 
             // Act
-            staff.ChangeSpecialization(newSpecializationId);
+            staff.ChangeSpecialization(newSpecialization);
 
             // Assert
-            Assert.Equal(newSpecializationId, staff.SpecializationId);
+            Assert.Equal(newSpecialization, staff.Specialization); // Updated to string
         }
 
         [Fact]
@@ -181,7 +180,7 @@ namespace DDDSample1.Tests.Unitary
                 "Cartman", 
                 "Eric Cartman", 
                 "Male", 
-                new SpecializationId(Guid.NewGuid()), 
+                "Pediatrics", // Updated to string
                 "Doctor", 
                 "LN12345", 
                 new UserId(Guid.NewGuid()), 

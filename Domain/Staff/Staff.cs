@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic; // Added for List
 using DDDNetCore.IRepos;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Specializations;
 using DDDSample1.Domain.Users;
-using DDDSample1.Domain.Appointments; // Added for Appointment
 
 namespace DDDSample1.Domain.Staffs
 {
@@ -24,7 +22,7 @@ namespace DDDSample1.Domain.Staffs
         public string Email { get; private set; }
 
         // Added collection of Appointments
-        public List<Appointment> Appointments { get; private set; }
+        /*public List<Appointment> Appointments { get; private set; }*/
 
         public Staff(string firstname, string lastName, string fullName, string gender, string specialization,
                      string type, string licenseNumber, UserId userId, string availabilitySlot, string phoneNumber, string email)
@@ -41,7 +39,7 @@ namespace DDDSample1.Domain.Staffs
             this.AvailabilitySlot = availabilitySlot;
             this.PhoneNumber = phoneNumber;
             this.Email = email;
-            this.Appointments = new List<Appointment>(); // Initialize list
+           /* this.Appointments = new List<Appointment>(); // Initialize list*/
         }
 
         public void ChangeFirstName(string firstname)

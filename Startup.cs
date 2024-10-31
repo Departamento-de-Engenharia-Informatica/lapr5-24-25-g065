@@ -12,8 +12,11 @@ using DDDSample1.Infrastructure.Patients;
 using DDDSample1.Domain.Staffs;
 using DDDSample1.Infrastructure.Staffs;
 using DDDNetCore.IRepos;
-using Microsoft.OpenApi.Models; // Add this for Swagger
-using DDDSample1.Domain.OperationTypes;
+using Microsoft.OpenApi.Models;
+using dddsample1.domain;
+using DDDNetCore.Services;
+using DDDSample1.Domain.Users;
+using DDDSample1.Infrastructure.OperationTypes; // Add this for Swagger
 
 namespace DDDSample1
 {

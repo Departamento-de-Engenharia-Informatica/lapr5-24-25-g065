@@ -9,6 +9,7 @@ using DDDSample1.Domain.OperationType; // Add the OperationType namespace
 using System.Collections.Generic;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using DDDNetCore.Domain;
 
 namespace DDDSample1.Infrastructure
 {
@@ -100,12 +101,7 @@ namespace DDDSample1.Infrastructure
             modelBuilder.Entity<Staff>()
                 .HasOne<User>()
                 .WithMany() // Assuming one-to-many relation with User
-                .HasForeignKey(s => s.UserId); // Ensure the relationship with User is set up
-
-            modelBuilder.Entity<Staff>()
-                .HasMany(s => s.Appointments)
-                .WithOne(a => a.Staff) // Ensure Appointment has a navigation property for Staff
-                .HasForeignKey(a => a.StaffId);
+                .HasForeignKey(s => s.UserId); // Ensure the relationship with User is set up 
         }
 
         private void ConfigureOperationType(ModelBuilder modelBuilder)
@@ -197,48 +193,40 @@ namespace DDDSample1.Infrastructure
         }
 
         private void ConfigureAppointment(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Appointment>()
-                .HasKey(a => a.Id);
+{
+    modelBuilder.Entity<Appointment>()
+        .HasKey(a => a.Id);
 
-            modelBuilder.Entity<Appointment>()
-                .Property(a => a.Id)
-                .HasConversion(
-                    v => v.AsGuid(),
-                    v => new AppointmentId(v)
-                )
-                .HasColumnName("AppointmentId");
+    modelBuilder.Entity<Appointment>()
+        .Property(a => a.Id)
+        .HasConversion(
+            v => v.AsGuid(),
+            v => new AppointmentId(v)
+        )
+        .HasColumnName("AppointmentId");
 
-            modelBuilder.Entity<Appointment>()
-                .Property(a => a.RequestId)
-                .IsRequired()
-                .HasMaxLength(150);
+    modelBuilder.Entity<Appointment>()
+        .Property(a => a.RequestId)
+        .IsRequired()
+        .HasMaxLength(150);
 
-            modelBuilder.Entity<Appointment>()
-                .Property(a => a.RoomId)
-                .IsRequired()
-                .HasMaxLength(100);
+    modelBuilder.Entity<Appointment>()
+        .Property(a => a.RoomId)
+        .IsRequired()
+        .HasMaxLength(100);
 
-            modelBuilder.Entity<Appointment>()
-                .Property(a => a.Date)
-                .IsRequired();
+    modelBuilder.Entity<Appointment>()
+        .Property(a => a.Date)
+        .IsRequired();
 
-            modelBuilder.Entity<Appointment>()
-                .Property(a => a.Status)
-                .IsRequired()
-                .HasMaxLength(50);
+    modelBuilder.Entity<Appointment>()
+        .Property(a => a.Status)
+        .IsRequired()
+        .HasMaxLength(50);
 
-            // Relationships
-            modelBuilder.Entity<Appointment>()
-                .HasOne<Patient>()
-                .WithMany(p => p.AppointmentHistory)
-                .HasForeignKey(a => a.PatientId);
+    // Relationships
+}
 
-            modelBuilder.Entity<Appointment>()
-                .HasOne<Staff>()
-                .WithMany(s => s.Appointments)
-                .HasForeignKey(a => a.StaffId);
-        }
 
         private void ConfigurePatient(ModelBuilder modelBuilder)
         {
@@ -291,25 +279,16 @@ namespace DDDSample1.Infrastructure
                 .IsRequired()
                 .HasMaxLength(50);
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.Email)
-                .IsRequired()
-                .HasMaxLength(250);
-
             var valueConverter = new ValueConverter<List<string>, string>(
                 v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
                 v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
             );
 
             modelBuilder.Entity<Patient>()
-                .Property(p => p.MedicalConditions)
+                .Property(p => p.Allergies)
                 .HasConversion(valueConverter); // Serialize List<string> to JSON string
 
             // Relationships
-            modelBuilder.Entity<Patient>()
-                .HasMany(p => p.AppointmentHistory)
-                .WithOne(a => a.Patient)
-                .HasForeignKey(a => a.PatientId);
         }
     }
 }

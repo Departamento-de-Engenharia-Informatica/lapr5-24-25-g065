@@ -12,17 +12,14 @@ namespace DDDSample1.Domain.Users
         // Parameterless constructor for deserialization
         public UserId() : base(Guid.NewGuid()) { }
 
-        override
-        protected Object createFromString(String text)
+        protected override object createFromString(string text)
         {
             return new Guid(text);
         }
-        
-        override
-        public String AsString()
+
+        public override string AsString()
         {
-            Guid obj = (Guid)base.ObjValue;
-            return obj.ToString();
+            return ((Guid)base.ObjValue).ToString();
         }
 
         public Guid AsGuid()

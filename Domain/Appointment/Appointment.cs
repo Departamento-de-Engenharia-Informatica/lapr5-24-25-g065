@@ -14,47 +14,49 @@ namespace DDDSample1.Domain.Appointments
         public DateTime Date { get; private set; }
         public string Status { get; private set; }
         public PatientId PatientId { get; private set; }
-        public StaffId StaffId { get; private set; } // Added
+        public StaffId StaffId { get; private set; }
 
+        // Constructor
         public Appointment(string requestId, string roomId, DateTime date, string status, PatientId patientId, StaffId staffId)
         {
             Id = new AppointmentId(Guid.NewGuid());
-            RequestId = requestId;
-            RoomId = roomId;
+            RequestId = requestId ?? throw new ArgumentNullException(nameof(requestId));
+            RoomId = roomId ?? throw new ArgumentNullException(nameof(roomId));
             Date = date;
-            Status = status;
+            Status = status ?? throw new ArgumentNullException(nameof(status));
             PatientId = patientId;
             StaffId = staffId; // Assign the associated StaffId
         }
 
+        // Change methods
         public void ChangeRequestId(string requestId)
         {
-            this.RequestId = requestId;
+            RequestId = requestId ?? throw new ArgumentNullException(nameof(requestId));
         }
 
         public void ChangeRoomId(string roomId)
         {
-            this.RoomId = roomId;
+            RoomId = roomId ?? throw new ArgumentNullException(nameof(roomId));
         }
 
         public void ChangeDate(DateTime date)
         {
-            this.Date = date;
+            Date = date;
         }
 
         public void ChangeStatus(string status)
         {
-            this.Status = status;
+            Status = status ?? throw new ArgumentNullException(nameof(status));
         }
 
         public void ChangePatientId(PatientId patientId)
         {
-            this.PatientId = patientId;
+            PatientId = patientId; 
         }
 
         public void ChangeStaffId(StaffId staffId)
         {
-            this.StaffId = staffId; // Method to change associated staff
+            StaffId = staffId; // Method to change associated staff
         }
     }
 }
