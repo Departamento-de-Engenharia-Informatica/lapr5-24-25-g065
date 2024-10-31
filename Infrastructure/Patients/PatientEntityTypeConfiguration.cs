@@ -16,45 +16,47 @@ namespace DDDSample1.Infrastructure.Patients
 
             // Configure properties
             builder.Property(b => b.Firstname)
-                .IsRequired() // Make required if necessary
-                .HasMaxLength(100); // Set maximum length
+                .IsRequired()
+                .HasMaxLength(100);
 
             builder.Property(b => b.LastName)
-                .IsRequired() // Make required if necessary
-                .HasMaxLength(100); // Set maximum length
+                .IsRequired()
+                .HasMaxLength(100);
 
             builder.Property(b => b.FullName)
-                .IsRequired() // Make required if necessary
-                .HasMaxLength(200); // Set maximum length
+                .IsRequired()
+                .HasMaxLength(200);
 
             builder.Property(b => b.Gender)
-                .IsRequired() // Make required if necessary
-                .HasMaxLength(10); // Adjust according to your needs
+                .IsRequired()
+                .HasMaxLength(10);
 
             builder.Property(b => b.EmergencyContact)
-                .IsRequired() // Make required if necessary
-                .HasMaxLength(100); // Set maximum length
+                .IsRequired()
+                .HasMaxLength(100);
 
-            builder.Property(b => b.PhoneNumber) // Configure PhoneNumber property
-                .IsRequired() // Make required if necessary
-                .HasMaxLength(15); // Set maximum length (adjust based on your phone number format)
+            builder.Property(b => b.PhoneNumber)
+                .IsRequired()
+                .HasMaxLength(15);
 
             builder.Property(b => b.DateOfBirth)
-                .IsRequired(false); // Nullable field
+                .IsRequired(false);
 
             builder.Property(b => b.MedicalRecordNumber)
-                .IsRequired() // Make required if necessary
-                .HasMaxLength(50); // Set maximum length
+                .IsRequired()
+                .HasMaxLength(50);
 
             builder.Property(b => b.UserId)
-                .IsRequired(); // Ensure UserId is required
+                .IsRequired();
+
+            builder.Property(b => b.Email) // Configure Email property
+                .IsRequired() // Set required if necessary
+                .HasMaxLength(150); // Set max length based on application needs
 
             // Configure relationships if necessary
             builder.HasMany(b => b.AppointmentHistory)
                 .WithOne() // Assuming there's a reference back to Patient in Appointment
-                .OnDelete(DeleteBehavior.Cascade); // Specify delete behavior if necessary
-
-            // Additional configurations can go here
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

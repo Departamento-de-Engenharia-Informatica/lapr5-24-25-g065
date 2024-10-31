@@ -8,8 +8,6 @@ namespace DDDSample1.Domain.Users
     {
         [JsonConstructor]
         public UserId(Guid value) : base(value) { }
-
-        // Parameterless constructor for deserialization
         public UserId() : base(Guid.NewGuid()) { }
 
         protected override object createFromString(string text)
@@ -28,3 +26,6 @@ namespace DDDSample1.Domain.Users
         }
     }
 }
+
+
+

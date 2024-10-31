@@ -3,41 +3,64 @@ using DDDSample1.Domain.Staffs;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Users;
 using DDDSample1.Domain.Appointments;
-using DDDSample1.Domain.Passwords;
+using DDDSample1.Domain.Passwords; 
 using DDDNetCore.Domain.OperationRequestDomain;
 using DDDSample1.Domain.OperationType; // Add the OperationType namespace
 using System.Collections.Generic;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using DDDNetCore.Domain;
+using System;
 
 namespace DDDSample1.Infrastructure
 {
     public class DDDSample1DbContext : DbContext
     {
-        public DDDSample1DbContext(DbContextOptions options) : base(options) { }
+        public DDDSample1DbContext(DbContextOptions<DDDSample1DbContext> options) : base(options) { } // Fixed the type to DDDSample1DbContext
 
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
-        public DbSet<Password> Passwords { get; set; }
         public DbSet<OperationRequest> OperationRequests { get; set; }
         public DbSet<OperationType> OperationTypes { get; set; } // Add DbSet for OperationType
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             ConfigurePatient(modelBuilder);
-            ConfigureStaff(modelBuilder); // Configure Staff
-            ConfigureOperationType(modelBuilder); // Configure OperationType
+            ConfigureStaff(modelBuilder);
+            ConfigureOperationType(modelBuilder);
             ConfigureOperationRequest(modelBuilder);
             ConfigureAppointment(modelBuilder);
+            ConfigureUser(modelBuilder);
         }
+private void ConfigureUser(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<User>()
+        .HasKey(u => u.Id); // Set primary key
+
+    modelBuilder.Entity<User>()
+        .Property(u => u.Id)
+        .HasConversion(
+            v => v.AsGuid(),
+            v => new UserId(v)
+        )
+        .HasColumnName("UserId");
+
+    // Configure Password as an owned type
+    modelBuilder.Entity<User>()
+        .OwnsOne(u => u.Password, p =>
+        {
+            p.Property(p => p.Pass) // Set the property of Password
+                .IsRequired() // Assuming Password must always be set
+                .HasMaxLength(100); // Set a max length or other constraints as needed
+        });
+}
 
         private void ConfigureStaff(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Staff>()
-                .HasKey(s => s.Id); // Assuming Id is the key inherited from Entity
+                .HasKey(s => s.Id);
 
             modelBuilder.Entity<Staff>()
                 .Property(s => s.Id)
@@ -63,24 +86,14 @@ namespace DDDSample1.Infrastructure
                 .HasMaxLength(300);
 
             modelBuilder.Entity<Staff>()
-                .Property(s => s.Gender)
+                .Property(s => s.LicenseNumber)
                 .IsRequired()
-                .HasMaxLength(20);
+                .HasMaxLength(50);
 
             modelBuilder.Entity<Staff>()
                 .Property(s => s.Specialization)
                 .IsRequired()
                 .HasMaxLength(150);
-
-            modelBuilder.Entity<Staff>()
-                .Property(s => s.Type)
-                .IsRequired()
-                .HasMaxLength(50);
-
-            modelBuilder.Entity<Staff>()
-                .Property(s => s.LicenseNumber)
-                .IsRequired()
-                .HasMaxLength(50);
 
             modelBuilder.Entity<Staff>()
                 .Property(s => s.AvailabilitySlot)
@@ -97,17 +110,34 @@ namespace DDDSample1.Infrastructure
                 .IsRequired()
                 .HasMaxLength(250);
 
-            // Relationships
+            // Constraints for unique License Number, Email, and Phone
             modelBuilder.Entity<Staff>()
-                .HasOne<User>()
-                .WithMany() // Assuming one-to-many relation with User
-                .HasForeignKey(s => s.UserId); // Ensure the relationship with User is set up 
+                .HasIndex(s => s.LicenseNumber)
+                .IsUnique();
+
+            modelBuilder.Entity<Staff>()
+                .HasIndex(s => s.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<Staff>()
+                .HasIndex(s => s.PhoneNumber)
+                .IsUnique();
+             modelBuilder.Entity<Staff>()
+                .HasKey(s => s.Id);
+
+            modelBuilder.Entity<Staff>()
+                .Property(s => s.Id)
+                .HasConversion(
+                    v => v.AsGuid(),
+                    v => new StaffId(v)
+                )
+                .HasColumnName("StaffId");
         }
 
         private void ConfigureOperationType(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<OperationType>()
-                .HasKey(ot => ot.Id); // Assuming Id is the key inherited from Entity
+                .HasKey(ot => ot.Id);
 
             modelBuilder.Entity<OperationType>()
                 .Property(ot => ot.Id)
@@ -155,21 +185,14 @@ namespace DDDSample1.Infrastructure
 
             modelBuilder.Entity<OperationRequest>()
                 .Property(or => or.patientID)
-                .IsRequired()
-                .HasMaxLength(100);
+                .IsRequired();
 
             modelBuilder.Entity<OperationRequest>()
                 .Property(or => or.doctorID)
-                .IsRequired()
-                .HasMaxLength(100);
+                .IsRequired();
 
             modelBuilder.Entity<OperationRequest>()
                 .Property(or => or.operationTypeID)
-                .IsRequired()
-                .HasMaxLength(100);
-
-            modelBuilder.Entity<OperationRequest>()
-                .Property(or => or.operationDateTime)
                 .IsRequired();
 
             modelBuilder.Entity<OperationRequest>()
@@ -180,7 +203,6 @@ namespace DDDSample1.Infrastructure
                 .Property(or => or.priority)
                 .IsRequired();
 
-            // Relationships
             modelBuilder.Entity<OperationRequest>()
                 .HasOne<Patient>()
                 .WithMany()
@@ -193,40 +215,48 @@ namespace DDDSample1.Infrastructure
         }
 
         private void ConfigureAppointment(ModelBuilder modelBuilder)
-{
-    modelBuilder.Entity<Appointment>()
-        .HasKey(a => a.Id);
+        {
+            modelBuilder.Entity<Appointment>()
+                .HasKey(a => a.Id);
 
-    modelBuilder.Entity<Appointment>()
-        .Property(a => a.Id)
-        .HasConversion(
-            v => v.AsGuid(),
-            v => new AppointmentId(v)
-        )
-        .HasColumnName("AppointmentId");
+            modelBuilder.Entity<Appointment>()
+                .Property(a => a.Id)
+                .HasConversion(
+                    v => v.AsGuid(),
+                    v => new AppointmentId(v)
+                )
+                .HasColumnName("AppointmentId");
 
-    modelBuilder.Entity<Appointment>()
-        .Property(a => a.RequestId)
-        .IsRequired()
-        .HasMaxLength(150);
+            modelBuilder.Entity<Appointment>()
+                .Property(a => a.RequestId)
+                .IsRequired()
+                .HasMaxLength(150);
 
-    modelBuilder.Entity<Appointment>()
-        .Property(a => a.RoomId)
-        .IsRequired()
-        .HasMaxLength(100);
+            modelBuilder.Entity<Appointment>()
+                .Property(a => a.RoomId)
+                .IsRequired()
+                .HasMaxLength(100);
 
-    modelBuilder.Entity<Appointment>()
-        .Property(a => a.Date)
-        .IsRequired();
+            modelBuilder.Entity<Appointment>()
+                .Property(a => a.Date)
+                .IsRequired();
 
-    modelBuilder.Entity<Appointment>()
-        .Property(a => a.Status)
-        .IsRequired()
-        .HasMaxLength(50);
+            modelBuilder.Entity<Appointment>()
+                .Property(a => a.Status)
+                .IsRequired()
+                .HasMaxLength(50);
 
-    // Relationships
-}
+            // Relationships for staff and patient
+            modelBuilder.Entity<Appointment>()
+                .HasOne<Patient>()
+                .WithMany(p => p.AppointmentHistory)
+                .HasForeignKey(a => a.PatientId);
 
+            // Update this to properly reflect the relationship between Appointment and Staff
+            modelBuilder.Entity<Appointment>()
+                .HasMany(a => a.StaffIds) // Ensure this property exists in the Appointment class
+                .WithMany();
+        }
 
         private void ConfigurePatient(ModelBuilder modelBuilder)
         {
@@ -262,13 +292,14 @@ namespace DDDSample1.Infrastructure
                 .HasMaxLength(20);
 
             modelBuilder.Entity<Patient>()
-                .Property(p => p.EmergencyContact)
-                .HasMaxLength(150);
-
-            modelBuilder.Entity<Patient>()
                 .Property(p => p.PhoneNumber)
                 .IsRequired()
                 .HasMaxLength(15);
+
+            modelBuilder.Entity<Patient>()
+                .Property(p => p.Email)
+                .IsRequired()
+                .HasMaxLength(250);
 
             modelBuilder.Entity<Patient>()
                 .Property(p => p.DateOfBirth)
@@ -288,7 +319,18 @@ namespace DDDSample1.Infrastructure
                 .Property(p => p.Allergies)
                 .HasConversion(valueConverter); // Serialize List<string> to JSON string
 
-            // Relationships
+            // Constraints for unique Medical Record Number, Email, and Phone
+            modelBuilder.Entity<Patient>()
+                .HasIndex(p => p.MedicalRecordNumber)
+                .IsUnique();
+
+            modelBuilder.Entity<Patient>()
+                .HasIndex(p => p.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<Patient>()
+                .HasIndex(p => p.PhoneNumber)
+                .IsUnique();
         }
     }
 }

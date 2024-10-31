@@ -11,17 +11,17 @@ namespace DDDSample1.Domain.Patients
     public class PatientService
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly IPatientRepository patientRepository; // Patient repository for patient management
+        private readonly IPatientRepository patientRepository;
 
         public PatientService(IUnitOfWork unitOfWork, IUserRepository userRepo, IPatientRepository patientRepo)
         {
             this.unitOfWork = unitOfWork;
-            this.patientRepository = patientRepo; // Initialize the patient repository
+            this.patientRepository = patientRepo;
         }
 
         public async Task<List<PatientDto>> GetAllAsync()
         {
-            var patients = await patientRepository.GetAllAsync(); // Fetch patients from repository
+            var patients = await patientRepository.GetAllAsync();
             return patients.Select(patient => new PatientDto(
                 patient.Id.AsGuid(),
                 patient.Firstname,
@@ -32,14 +32,15 @@ namespace DDDSample1.Domain.Patients
                 patient.EmergencyContact,
                 patient.DateOfBirth,
                 patient.MedicalRecordNumber,
-                patient.UserId, // Include UserId
-                patient.PhoneNumber // Include PhoneNumber
+                patient.UserId,
+                patient.PhoneNumber,
+                patient.Email // Include Email
             )).ToList();
         }
 
         public async Task<PatientDto> GetByIdAsync(PatientId id)
         {
-            var patient = await patientRepository.GetByIdAsync(id); // Fetch from repository
+            var patient = await patientRepository.GetByIdAsync(id);
             return patient == null ? null : new PatientDto(
                 patient.Id.AsGuid(),
                 patient.Firstname,
@@ -50,8 +51,9 @@ namespace DDDSample1.Domain.Patients
                 patient.EmergencyContact,
                 patient.DateOfBirth,
                 patient.MedicalRecordNumber,
-                patient.UserId, // Include UserId
-                patient.PhoneNumber // Include PhoneNumber
+                patient.UserId,
+                patient.PhoneNumber,
+                patient.Email // Include Email
             );
         }
 
@@ -59,24 +61,23 @@ namespace DDDSample1.Domain.Patients
         {
             if (dto == null) throw new ArgumentException("Invalid patient data");
 
-            // Convert IReadOnlyList<string> to List<string>
-            var allergies = dto.Allergies?.ToList(); // Assuming dto.Allergies is IReadOnlyList<string>
+            var allergies = dto.Allergies?.ToList();
 
-            // Create the patient with the UserId and PhoneNumber
             var patient = new Patient(
                 dto.Firstname,
                 dto.LastName,
                 dto.FullName,
                 dto.Gender,
-                allergies, // Pass the converted allergies
+                allergies,
                 dto.EmergencyContact,
                 dto.DateOfBirth,
                 dto.MedicalRecordNumber,
-                dto.UserId, // Include UserId
-                dto.PhoneNumber // Include PhoneNumber
+                dto.UserId,
+                dto.PhoneNumber,
+                dto.Email // Include Email
             );
 
-            await patientRepository.AddAsync(patient); // Use the repository to add
+            await patientRepository.AddAsync(patient);
             await unitOfWork.CommitAsync();
 
             return new PatientDto(
@@ -89,8 +90,9 @@ namespace DDDSample1.Domain.Patients
                 patient.EmergencyContact,
                 patient.DateOfBirth,
                 patient.MedicalRecordNumber,
-                patient.UserId, // Include UserId
-                patient.PhoneNumber // Include PhoneNumber
+                patient.UserId,
+                patient.PhoneNumber,
+                patient.Email // Include Email
             );
         }
 
@@ -98,10 +100,9 @@ namespace DDDSample1.Domain.Patients
         {
             if (dto == null) throw new ArgumentException("Invalid patient data");
 
-            var patient = await patientRepository.GetByIdAsync(new PatientId(dto.Id)); // Fetch patient from repository
+            var patient = await patientRepository.GetByIdAsync(new PatientId(dto.Id));
             if (patient == null) throw new BusinessRuleValidationException("Patient not found");
 
-            // Update patient details, including PhoneNumber
             patient.Update(
                 dto.Firstname,
                 dto.LastName,
@@ -111,8 +112,9 @@ namespace DDDSample1.Domain.Patients
                 dto.EmergencyContact,
                 dto.DateOfBirth,
                 dto.MedicalRecordNumber,
-                dto.UserId, // Pass UserId from the DTO
-                dto.PhoneNumber // Pass PhoneNumber from the DTO
+                dto.UserId,
+                dto.PhoneNumber,
+                dto.Email // Pass Email from the DTO
             );
 
             await unitOfWork.CommitAsync();
@@ -127,17 +129,18 @@ namespace DDDSample1.Domain.Patients
                 patient.EmergencyContact,
                 patient.DateOfBirth,
                 patient.MedicalRecordNumber,
-                patient.UserId, // Include UserId
-                patient.PhoneNumber // Include PhoneNumber
+                patient.UserId,
+                patient.PhoneNumber,
+                patient.Email // Include Email
             );
         }
 
         public async Task<PatientDto> DeleteAsync(PatientId id)
         {
-            var patient = await patientRepository.GetByIdAsync(id); // Fetch patient from repository
+            var patient = await patientRepository.GetByIdAsync(id);
             if (patient == null) throw new BusinessRuleValidationException("Patient not found");
 
-            await patientRepository.DeleteAsync(patient); // Use the repository to delete
+            await patientRepository.DeleteAsync(patient);
             await unitOfWork.CommitAsync();
 
             return new PatientDto(
@@ -150,59 +153,64 @@ namespace DDDSample1.Domain.Patients
                 patient.EmergencyContact,
                 patient.DateOfBirth,
                 patient.MedicalRecordNumber,
-                patient.UserId, // Include UserId
-                patient.PhoneNumber // Include PhoneNumber
+                patient.UserId,
+                patient.PhoneNumber,
+                patient.Email // Include Email
             );
         }
 
-        public async Task<List<PatientDto>> SearchPatientsAsync(string name, DateTime? dateOfBirth, string medicalRecordNumber, string phoneNumber, int pageNumber, int pageSize)
-{
-    var patients = await patientRepository.GetAllAsync();
+        public async Task<List<PatientDto>> SearchPatientsAsync(string name, DateTime? dateOfBirth, string medicalRecordNumber, string phoneNumber, string email, int pageNumber, int pageSize)
+        {
+            var patients = await patientRepository.GetAllAsync();
 
-    // Apply filters
-    if (!string.IsNullOrEmpty(name))
-    {
-        patients = patients.Where(p => 
-            p.Firstname.Contains(name, StringComparison.OrdinalIgnoreCase) || 
-            p.LastName.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
-    }
+            if (!string.IsNullOrEmpty(name))
+            {
+                patients = patients.Where(p => 
+                    p.Firstname.Contains(name, StringComparison.OrdinalIgnoreCase) || 
+                    p.LastName.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
 
-    if (dateOfBirth.HasValue)
-    {
-        patients = patients.Where(p => p.DateOfBirth?.Date == dateOfBirth.Value.Date).ToList();
-    }
+            if (dateOfBirth.HasValue)
+            {
+                patients = patients.Where(p => p.DateOfBirth?.Date == dateOfBirth.Value.Date).ToList();
+            }
 
-    if (!string.IsNullOrEmpty(medicalRecordNumber))
-    {
-        patients = patients.Where(p => p.MedicalRecordNumber == medicalRecordNumber).ToList();
-    }
+            if (!string.IsNullOrEmpty(medicalRecordNumber))
+            {
+                patients = patients.Where(p => p.MedicalRecordNumber == medicalRecordNumber).ToList();
+            }
 
-    // Filter by phone number if provided
-    if (!string.IsNullOrEmpty(phoneNumber))
-    {
-        patients = patients.Where(p => p.PhoneNumber == phoneNumber).ToList();
-    }
+            if (!string.IsNullOrEmpty(phoneNumber))
+            {
+                patients = patients.Where(p => p.PhoneNumber == phoneNumber).ToList();
+            }
 
-    // Implement pagination
-    var paginatedPatients = patients
-        .Skip((pageNumber - 1) * pageSize)
-        .Take(pageSize)
-        .Select(patient => new PatientDto(
-            patient.Id.AsGuid(),
-            patient.Firstname,
-            patient.LastName,
-            patient.FullName,
-            patient.Gender,
-            patient.Allergies,
-            patient.EmergencyContact,
-            patient.DateOfBirth,
-            patient.MedicalRecordNumber,
-            patient.UserId, // Include UserId
-            patient.PhoneNumber // Include PhoneNumber
-        ))
-        .ToList();
+            // Filter by email if provided
+            if (!string.IsNullOrEmpty(email))
+            {
+                patients = patients.Where(p => p.Email == email).ToList();
+            }
 
-    return paginatedPatients;
-}
+            var paginatedPatients = patients
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(patient => new PatientDto(
+                    patient.Id.AsGuid(),
+                    patient.Firstname,
+                    patient.LastName,
+                    patient.FullName,
+                    patient.Gender,
+                    patient.Allergies,
+                    patient.EmergencyContact,
+                    patient.DateOfBirth,
+                    patient.MedicalRecordNumber,
+                    patient.UserId,
+                    patient.PhoneNumber,
+                    patient.Email // Include Email
+                ))
+                .ToList();
+
+            return paginatedPatients;
+        }
     }
 }

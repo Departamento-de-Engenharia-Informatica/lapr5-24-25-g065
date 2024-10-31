@@ -12,22 +12,10 @@ namespace DDDSample1.Domain.Staffs
         // Parameterless constructor for deserialization
         public StaffId() : base(Guid.NewGuid()) { }
 
-        override
-        protected Object createFromString(String text)
-        {
-            return new Guid(text);
-        }
+        override protected Object createFromString(String text) => new Guid(text);
         
-        override
-        public String AsString()
-        {
-            Guid obj = (Guid)base.ObjValue;
-            return obj.ToString();
-        }
+        override public String AsString() => ((Guid)base.ObjValue).ToString();
 
-        public Guid AsGuid()
-        {
-            return (Guid)base.ObjValue;
-        }
+        public Guid AsGuid() => (Guid)base.ObjValue;
     }
 }

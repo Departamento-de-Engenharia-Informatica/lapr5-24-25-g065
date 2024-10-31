@@ -37,6 +37,7 @@ namespace DDDSample1.Domain.Users
 
         private void ValidateEmail(string email)
         {
+                        var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled);
             if (!EmailRegex.IsMatch(email))
             {
                 throw new ArgumentException("Invalid email format.");

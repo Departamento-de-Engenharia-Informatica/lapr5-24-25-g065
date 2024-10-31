@@ -14,10 +14,10 @@ namespace DDDNetCore.DTOs.Patient
         public string EmergencyContact { get; set; }
         public DateTime? DateOfBirth { get; set; } // Nullable DateTime for flexibility
         public string MedicalRecordNumber { get; set; }
-        
+
         // Fields from User class
         public string UserName { get; set; }
-        public string Email { get; set; }
+        public string Email { get; set; } // Email property already present
         public Guid UserId { get; set; } // Add UserId property
 
         public string PhoneNumber { get; set; } // Added PhoneNumber

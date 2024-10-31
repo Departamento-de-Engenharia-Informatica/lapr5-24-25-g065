@@ -82,18 +82,19 @@ namespace DDDSample1.Controllers
             }
         }
 
+        // GET: api/patient/search
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<PatientDto>>> SearchPatients(
-     [FromQuery] string name = null,
-     [FromQuery] DateTime? dateOfBirth = null,
-     [FromQuery] string medicalRecordNumber = null,
-     [FromQuery] string phoneNumber = null, // Add phoneNumber parameter
-     [FromQuery] int pageNumber = 1,
-     [FromQuery] int pageSize = 10)
+            [FromQuery] string name = null,
+            [FromQuery] DateTime? dateOfBirth = null,
+            [FromQuery] string medicalRecordNumber = null,
+            [FromQuery] string phoneNumber = null,
+            [FromQuery] string email = null, // Add email parameter
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
         {
-            var patients = await patientService.SearchPatientsAsync(name, dateOfBirth, medicalRecordNumber, phoneNumber, pageNumber, pageSize);
+            var patients = await patientService.SearchPatientsAsync(name, dateOfBirth, medicalRecordNumber, phoneNumber, email, pageNumber, pageSize);
             return Ok(patients);
         }
-
     }
 }
