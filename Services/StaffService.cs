@@ -8,6 +8,7 @@ using DDDNetCore.DTOs.Staff;
 using DDDSample1.Domain.Staffs;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Users;
+using DDDSample1.Domain.Appointments;
 
 namespace DDDSample1.Domain.Staffs
 {
