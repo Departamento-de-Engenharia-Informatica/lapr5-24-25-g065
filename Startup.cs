@@ -11,10 +11,9 @@ using DDDSample1.Domain.Patients;
 using DDDSample1.Infrastructure.Patients;
 using DDDSample1.Domain.Staffs;
 using DDDSample1.Infrastructure.Staffs;
-using DDDSample1.Domain.Specializations;
-using DDDSample1.Infrastructure.Specializations;
 using DDDNetCore.IRepos;
 using Microsoft.OpenApi.Models; // Add this for Swagger
+using DDDSample1.Domain.OperationTypes;
 
 namespace DDDSample1
 {
@@ -85,15 +84,18 @@ namespace DDDSample1
         public void ConfigureMyServices(IServiceCollection services)
         {
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-
+            services.AddTransient<IOperationTypeRepository, OperationTypeRepository>();
             services.AddTransient<IPatientRepository, PatientRepository>();
-            services.AddTransient<PatientService>();
-
             services.AddTransient<IStaffRepository, StaffRepository>();
-            services.AddTransient<StaffService>();
+            services.AddTransient<IOperationRequestRepository, OperationRequestRepository>();
 
-            services.AddTransient<ISpecializationRepository, SpecializationRepository>();
-            services.AddTransient<SpecializationService>();
+
+            services.AddTransient<PatientService>();
+            services.AddTransient<StaffService>();
+            services.AddTransient<OperationTypeService>();
+            services.AddTransient<OperationRequestService>();
+            services.AddTransient<UserService>();
+
         }
     }
 }

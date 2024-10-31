@@ -7,8 +7,8 @@ using DDDNetCore.IRepos;
 using DDDNetCore.DTOs.Staff;
 using DDDSample1.Domain.Staffs;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Specializations;
 using DDDSample1.Domain.Users;
+using DDDSample1.Domain.Appointments;
 
 namespace DDDSample1.Domain.Staffs
 {
@@ -16,13 +16,11 @@ namespace DDDSample1.Domain.Staffs
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IStaffRepository _repo;
-        private readonly ISpecializationRepository _specRepo;
 
-        public StaffService(IUnitOfWork unitOfWork, IStaffRepository repo, ISpecializationRepository specRepo)
+        public StaffService(IUnitOfWork unitOfWork, IStaffRepository repo)
         {
             _unitOfWork = unitOfWork;
             _repo = repo;
-            _specRepo = specRepo;
         }
 
         public async Task<List<StaffDto>> GetAllAsync()
@@ -40,7 +38,7 @@ namespace DDDSample1.Domain.Staffs
                 dto.LastName,
                 dto.FullName,
                 dto.Gender,
-                new SpecializationId(dto.SpecializationId),
+                dto.Specialization, // Updated to use string specialization
                 dto.Type,
                 dto.LicenseNumber,
                 new UserId(dto.UserId),
@@ -90,9 +88,10 @@ namespace DDDSample1.Domain.Staffs
         {
             if (string.IsNullOrWhiteSpace(dto.Firstname) ||
                 string.IsNullOrWhiteSpace(dto.LastName) ||
-                string.IsNullOrWhiteSpace(dto.Email))
+                string.IsNullOrWhiteSpace(dto.Email) ||
+                string.IsNullOrWhiteSpace(dto.LicenseNumber))
             {
-                throw new BusinessRuleValidationException("Firstname, LastName, and Email are required fields.");
+                throw new BusinessRuleValidationException("Firstname, LastName, Email, and LicenseNumber are required fields.");
             }
         }
 
@@ -104,10 +103,10 @@ namespace DDDSample1.Domain.Staffs
                 staff.LastName,
                 staff.FullName,
                 staff.Gender,
-                staff.SpecializationId,
+                staff.Specialization, // Updated to use string specialization
                 staff.Type,
                 staff.LicenseNumber,
-                staff.UserId,
+                staff.UserId.AsGuid(),
                 staff.AvailabilitySlot,
                 staff.PhoneNumber,
                 staff.Email);
@@ -121,17 +120,16 @@ namespace DDDSample1.Domain.Staffs
             staff.ChangeGender(dto.Gender);
             staff.ChangeType(dto.Type);
             staff.ChangeLicenseNumber(dto.LicenseNumber);
-            staff.ChangeSpecialization(dto.SpecializationId);
+            staff.ChangeSpecialization(dto.Specialization); // Updated to use string specialization
             staff.ChangeAvailabilitySlot(dto.AvailabilitySlot);
             staff.ChangePhoneNumber(dto.PhoneNumber);
             staff.ChangeEmail(dto.Email);
         }
 
-        public async Task<List<StaffDto>> SearchStaffsAsync(string name, string licenseNumber, string phoneNumber,string email, int pageNumber, int pageSize)
+        public async Task<List<StaffDto>> SearchStaffsAsync(string name, string licenseNumber, string phoneNumber, string email, int pageNumber, int pageSize)
         {
             var staffList = await _repo.GetAllAsync();
-            
-            
+
             if (!string.IsNullOrEmpty(name))
             {
                 staffList = staffList.Where(s =>
@@ -139,40 +137,21 @@ namespace DDDSample1.Domain.Staffs
                     s.LastName.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
-            
-            
             if (!string.IsNullOrEmpty(licenseNumber))
             {
-                staffList = staffList.Where(s => s.LicenseNumber == licenseNumber).ToList();
+                staffList = staffList.Where(s => s.LicenseNumber.Equals(licenseNumber, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
-            // Filter by phone number if provided
             if (!string.IsNullOrEmpty(phoneNumber))
             {
-                staffList = staffList.Where(s => s.PhoneNumber == phoneNumber).ToList();
+                staffList = staffList.Where(s => s.PhoneNumber.Equals(phoneNumber, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
             // Implement pagination
             var paginatedStaffs = staffList
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Select(staff => new StaffDto(
-                                staff.Id.AsGuid(),
-                                staff.Firstname,
-                                staff.LastName,
-                                staff.FullName,
-                                staff.Gender,
-                                staff.SpecializationId,
-                                staff.Type,
-                                staff.LicenseNumber,
-                                staff.UserId,
-                                staff.AvailabilitySlot,
-                                staff.PhoneNumber,
-                                staff.Email
-
-
-
-))
+                .Select(staff => CreateStaffDto(staff))
                 .ToList();
 
             return paginatedStaffs;

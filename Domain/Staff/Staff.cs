@@ -12,8 +12,7 @@ namespace DDDSample1.Domain.Staffs
     {
         public string Gender { get; private set; }
         public string Type { get; private set; }
-        public SpecializationId SpecializationId { get; private set; }
-        public Specialization Specialization { get; private set; }
+        public string Specialization { get; private set; }
         public string Firstname { get; private set; }
         public string LastName { get; private set; }
         public string FullName { get; private set; }
@@ -27,7 +26,7 @@ namespace DDDSample1.Domain.Staffs
         // Added collection of Appointments
         public List<Appointment> Appointments { get; private set; }
 
-        public Staff(string firstname, string lastName, string fullName, string gender, SpecializationId specializationId,
+        public Staff(string firstname, string lastName, string fullName, string gender, string specialization,
                      string type, string licenseNumber, UserId userId, string availabilitySlot, string phoneNumber, string email)
         {
             this.Id = new StaffId(Guid.NewGuid());
@@ -35,7 +34,7 @@ namespace DDDSample1.Domain.Staffs
             this.LastName = lastName;
             this.FullName = fullName;
             this.Gender = gender;
-            this.SpecializationId = specializationId;
+            this.Specialization = specialization;
             this.Type = type;
             this.LicenseNumber = licenseNumber;
             this.UserId = userId;
@@ -65,9 +64,9 @@ namespace DDDSample1.Domain.Staffs
             this.Gender = gender;
         }
 
-        public void ChangeSpecialization(SpecializationId specializationId)
+        public void ChangeSpecialization(string specialization)
         {
-            this.SpecializationId = specializationId;
+            this.Specialization = specialization;
         }
 
         public void ChangeType(string type)

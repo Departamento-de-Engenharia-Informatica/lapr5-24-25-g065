@@ -11,7 +11,7 @@ namespace DDDNetCore.DTOs.Staff
         public string Gender { get; private set; }
         public string Type { get; private set; }
 
-        public SpecializationId SpecializationId { get; private set; }
+        public string Specialization { get; private set; }
         public string Firstname { get; private set; }
 
         public string LastName { get; private set; }
@@ -27,14 +27,14 @@ namespace DDDNetCore.DTOs.Staff
 
 
         public UserId UserId { get; private set; }
-        public StaffDto(Guid id, string firstname, string lastName, string fullName, string gender, SpecializationId specializationId, string type, string licenseNumber, UserId userId, string availabilitySlot, string phoneNumber, string email)
+        public StaffDto(Guid id, string firstname, string lastName, string fullName, string gender, string specialization, string type, string licenseNumber, UserId userId, string availabilitySlot, string phoneNumber, string email)
         {
             Id = id;
             Firstname = firstname;
             LastName = lastName;
             FullName = fullName;
             Gender = gender;
-            SpecializationId = specializationId;
+            Specialization = specialization;
             Type = type;
             LicenseNumber = licenseNumber;
             UserId = userId;

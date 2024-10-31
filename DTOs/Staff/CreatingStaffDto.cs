@@ -8,7 +8,7 @@ namespace DDDNetCore.DTOs.Staff
     {
         public string Gender { get; set; }  // Changed to public set
         public string Type { get; set; }    // Changed to public set
-        public Guid SpecializationId { get; set; }  // Changed to public set
+        public string Specialization { get; set; }  // Changed to public set
         public string Firstname { get; set; }  // Changed to public set
         public string LastName { get; set; }  // Changed to public set
         public string FullName { get; set; }  // Changed to public set
@@ -23,13 +23,13 @@ namespace DDDNetCore.DTOs.Staff
         public string Email { get; set; }  // Changed to public set
 
         // Constructor with parameters
-        public CreatingStaffDto(string firstname, string lastName, string fullName, string gender, Guid specializationId, string type, string licenseNumber, Guid userId, string availabilitySlot, string phoneNumber, string email)
+        public CreatingStaffDto(string firstname, string lastName, string fullName, string gender, string specialization, string type, string licenseNumber, Guid userId, string availabilitySlot, string phoneNumber, string email)
         {
             Firstname = firstname;
             LastName = lastName;
             FullName = fullName;
             Gender = gender;
-            SpecializationId = specializationId;  // Changed parameter type to Guid
+            Specialization = specialization;  // Changed parameter type to Guid
             Type = type;
             LicenseNumber = licenseNumber;
             UserId = userId;  // Changed parameter type to Guid

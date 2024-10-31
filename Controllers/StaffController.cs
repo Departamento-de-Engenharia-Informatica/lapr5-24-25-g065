@@ -24,7 +24,7 @@ namespace DDDSample1.Controllers
         public async Task<ActionResult<IEnumerable<StaffDto>>> GetAll()
         {
             var staffList = await _service.GetAllAsync();
-            return Ok(staffList); // Use Ok() to return a 200 status with the result
+            return Ok(staffList); // Return 200 status with the result
         }
 
         // GET: api/Staff/5
@@ -38,12 +38,12 @@ namespace DDDSample1.Controllers
                 return NotFound(); // Return 404 if staff not found
             }
 
-            return Ok(staff); // Use Ok() to return a 200 status with the result
+            return Ok(staff); // Return 200 status with the result
         }
 
         // POST: api/Staff
         [HttpPost]
-        public async Task<ActionResult<StaffDto>> Create([FromBody] CreatingStaffDto dto) // Use FromBody to specify where to get the data from
+        public async Task<ActionResult<StaffDto>> Create([FromBody] CreatingStaffDto dto)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace DDDSample1.Controllers
 
         // PUT: api/Staff/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<StaffDto>> Update(Guid id, [FromBody] StaffDto dto) // Use FromBody to specify where to get the data from
+        public async Task<ActionResult<StaffDto>> Update(Guid id, [FromBody] StaffDto dto)
         {
             if (id != dto.Id)
             {
@@ -102,17 +102,19 @@ namespace DDDSample1.Controllers
                 return BadRequest(new { Message = ex.Message }); // Return 400 with error message
             }
         }
-[HttpGet("search")]
+
+        // GET: api/Staff/search
+        [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<StaffDto>>> SearchStaff(
-    [FromQuery] string name = null,
-    [FromQuery] string licenseNumber = null,
-    [FromQuery] string phoneNumber = null,
-    [FromQuery] string email = null, 
-    [FromQuery] int pageNumber = 1,
-    [FromQuery] int pageSize = 10)
+            [FromQuery] string name = null,
+            [FromQuery] string licenseNumber = null,
+            [FromQuery] string phoneNumber = null,
+            [FromQuery] string email = null,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
         {
-            var staffs = await _service.SearchStaffsAsync(name,licenseNumber, phoneNumber, email,pageNumber, pageSize);
-            return Ok(staffs);
+            var staffs = await _service.SearchStaffsAsync(name, licenseNumber, phoneNumber, email, pageNumber, pageSize);
+            return Ok(staffs); // Return 200 status with the result
         }
     }
 }
