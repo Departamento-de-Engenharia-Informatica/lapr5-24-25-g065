@@ -18,6 +18,7 @@ namespace DDDSample1.Infrastructure
     {
         public DDDSample1DbContext(DbContextOptions<DDDSample1DbContext> options) : base(options) { } // Fixed the type to DDDSample1DbContext
 
+
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<User> Users { get; set; }
@@ -37,13 +38,13 @@ namespace DDDSample1.Infrastructure
 private void ConfigureUser(ModelBuilder modelBuilder)
 {
     modelBuilder.Entity<User>()
-        .HasKey(u => u.Id); // Set primary key
+        .HasKey(u => u.Id); // Set primary key for User entity
 
     modelBuilder.Entity<User>()
-        .Property(u => u.Id)
+        .Property(u => u.Id) // Assuming Id is of type UserId
         .HasConversion(
-            v => v.AsGuid(),
-            v => new UserId(v)
+            v => v.AsGuid(), // Convert UserId to Guid for database storage
+            v => new UserId(v) // Convert Guid back to UserId
         )
         .HasColumnName("UserId");
 
@@ -55,20 +56,23 @@ private void ConfigureUser(ModelBuilder modelBuilder)
                 .IsRequired() // Assuming Password must always be set
                 .HasMaxLength(100); // Set a max length or other constraints as needed
         });
+
+    // Configure UserId as a keyless entity
+    modelBuilder.Entity<UserId>()
+        .HasNoKey(); // Mark UserId as keyless
 }
+       private void ConfigureStaff(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Staff>()
+            .HasKey(s => s.Id);
 
-        private void ConfigureStaff(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Staff>()
-                .HasKey(s => s.Id);
-
-            modelBuilder.Entity<Staff>()
-                .Property(s => s.Id)
-                .HasConversion(
-                    v => v.AsGuid(),
-                    v => new StaffId(v)
-                )
-                .HasColumnName("StaffId");
+        modelBuilder.Entity<Staff>()
+            .Property(s => s.Id)
+            .HasConversion(
+                v => v.AsGuid(),
+                v => new StaffId(v)
+            )
+            .HasColumnName("StaffId");
 
             modelBuilder.Entity<Staff>()
                 .Property(s => s.Firstname)
@@ -124,15 +128,10 @@ private void ConfigureUser(ModelBuilder modelBuilder)
                 .IsUnique();
              modelBuilder.Entity<Staff>()
                 .HasKey(s => s.Id);
-
-            modelBuilder.Entity<Staff>()
-                .Property(s => s.Id)
-                .HasConversion(
-                    v => v.AsGuid(),
-                    v => new StaffId(v)
-                )
-                .HasColumnName("StaffId");
-        }
+                    modelBuilder.Entity<Staff>()
+            .Ignore(s => s.UserId); // Change to your actual property name if different
+    }
+        
 
         private void ConfigureOperationType(ModelBuilder modelBuilder)
         {
@@ -170,93 +169,86 @@ private void ConfigureUser(ModelBuilder modelBuilder)
                 .HasConversion(valueConverter); // Serialize List<string> to JSON string
         }
 
-        private void ConfigureOperationRequest(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<OperationRequest>()
-                .HasKey(or => or.Id);
+      private void ConfigureOperationRequest(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<OperationRequest>()
+        .HasKey(or => or.Id);
 
-            modelBuilder.Entity<OperationRequest>()
-                .Property(or => or.Id)
-                .HasConversion(
-                    v => v.AsGuid(),
-                    v => new OperationRequestID(v)
-                )
-                .HasColumnName("OperationRequestId");
+    modelBuilder.Entity<OperationRequest>()
+        .Property(or => or.Id)
+        .HasConversion(
+            v => v.AsGuid(), // Assuming Id is a Guid
+            v => new OperationRequestID(v)
+        )
+        .HasColumnName("OperationRequestId");
 
-            modelBuilder.Entity<OperationRequest>()
-                .Property(or => or.patientID)
-                .IsRequired();
+    modelBuilder.Entity<OperationRequest>()
+        .Property(or => or.patientID) // Assuming this is now a PatientId
+        .IsRequired();
 
-            modelBuilder.Entity<OperationRequest>()
-                .Property(or => or.doctorID)
-                .IsRequired();
+    modelBuilder.Entity<OperationRequest>()
+        .Property(or => or.doctorID)
+        .IsRequired();
 
-            modelBuilder.Entity<OperationRequest>()
-                .Property(or => or.operationTypeID)
-                .IsRequired();
+    modelBuilder.Entity<OperationRequest>()
+        .Property(or => or.operationTypeID)
+        .IsRequired();
 
-            modelBuilder.Entity<OperationRequest>()
-                .Property(or => or.deadline)
-                .IsRequired();
+    modelBuilder.Entity<OperationRequest>()
+        .Property(or => or.deadline)
+        .IsRequired();
 
-            modelBuilder.Entity<OperationRequest>()
-                .Property(or => or.priority)
-                .IsRequired();
+    modelBuilder.Entity<OperationRequest>()
+        .Property(or => or.priority)
+        .IsRequired();
 
-            modelBuilder.Entity<OperationRequest>()
-                .HasOne<Patient>()
-                .WithMany()
-                .HasForeignKey(or => or.patientID);
+    // Here is the important part for setting the foreign key
+    modelBuilder.Entity<OperationRequest>()
+        .HasOne<Patient>() // Indicates the related entity type
+        .WithMany() // Indicates that Patient can have many OperationRequests
+        .HasForeignKey(or => or.patientID) // Here, patientID should match the type of PatientId
+        .OnDelete(DeleteBehavior.Cascade); // Optional: set the delete behavior if needed
 
-            modelBuilder.Entity<OperationRequest>()
-                .HasOne<Staff>()
-                .WithMany()
-                .HasForeignKey(or => or.doctorID);
-        }
+    modelBuilder.Entity<OperationRequest>()
+        .HasOne<Staff>()
+        .WithMany()
+        .HasForeignKey(or => or.doctorID); // Assuming doctorID is the correct type as well
+}
+
+
 
         private void ConfigureAppointment(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Appointment>()
-                .HasKey(a => a.Id);
+{
+    modelBuilder.Entity<Appointment>()
+        .HasKey(a => a.Id);
 
-            modelBuilder.Entity<Appointment>()
-                .Property(a => a.Id)
-                .HasConversion(
-                    v => v.AsGuid(),
-                    v => new AppointmentId(v)
-                )
-                .HasColumnName("AppointmentId");
+    modelBuilder.Entity<Appointment>()
+        .Property(a => a.Id)
+        .HasConversion(
+            v => v.AsGuid(),
+            v => new AppointmentId(v)
+        )
+        .HasColumnName("AppointmentId");
 
-            modelBuilder.Entity<Appointment>()
-                .Property(a => a.RequestId)
-                .IsRequired()
-                .HasMaxLength(150);
+    modelBuilder.Entity<Appointment>()
+        .Property(a => a.RequestId)
+        .IsRequired()
+        .HasMaxLength(150);
 
-            modelBuilder.Entity<Appointment>()
-                .Property(a => a.RoomId)
-                .IsRequired()
-                .HasMaxLength(100);
+    // Configure StaffIds as a collection of value objects, not entities
+    modelBuilder.Entity<Appointment>()
+        .Property(a => a.StaffIds)
+        .HasConversion(
+            v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+            v => JsonSerializer.Deserialize<List<StaffId>>(v, (JsonSerializerOptions)null)
+        );
 
-            modelBuilder.Entity<Appointment>()
-                .Property(a => a.Date)
-                .IsRequired();
-
-            modelBuilder.Entity<Appointment>()
-                .Property(a => a.Status)
-                .IsRequired()
-                .HasMaxLength(50);
-
-            // Relationships for staff and patient
-            modelBuilder.Entity<Appointment>()
-                .HasOne<Patient>()
-                .WithMany(p => p.AppointmentHistory)
-                .HasForeignKey(a => a.PatientId);
-
-            // Update this to properly reflect the relationship between Appointment and Staff
-            modelBuilder.Entity<Appointment>()
-                .HasMany(a => a.StaffIds) // Ensure this property exists in the Appointment class
-                .WithMany();
-        }
+    // Relationships for patient
+    modelBuilder.Entity<Appointment>()
+        .HasOne<Patient>()
+        .WithMany(p => p.AppointmentHistory)
+        .HasForeignKey(a => a.PatientId);
+}
 
         private void ConfigurePatient(ModelBuilder modelBuilder)
         {
@@ -332,5 +324,6 @@ private void ConfigureUser(ModelBuilder modelBuilder)
                 .HasIndex(p => p.PhoneNumber)
                 .IsUnique();
         }
+        
     }
 }
