@@ -5,13 +5,19 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Threading.Tasks;
 using System.Linq;
+using DDDSample1.Domain.Users;
+using System.Text.Json;
+using System;
+using System.Security.Claims;
 
 namespace DDDSample1.Controllers
 {
+    //private readonly UserService _userService; 
     [Route("[controller]")]
     [ApiController]
     public class LoginController : Controller
     {
+        private readonly UserService _userService; 
         [HttpGet]
         public ActionResult Index()
         {
@@ -19,40 +25,57 @@ namespace DDDSample1.Controllers
         }
 
         [HttpGet("login")]
-        public async Task<IActionResult> Login()  // Updated to return IActionResult
+        public async Task<IActionResult> Login()
         {
-            // Initiates the Google authentication challenge
+
             await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
                 new AuthenticationProperties
                 {
-                    RedirectUri = Url.Action("GoogleResponse") // Ensure this matches the authorized redirect URI in Google Console
+                    RedirectUri = Url.Action("GoogleResponse")
                 });
-            return new EmptyResult(); // Return an empty result after challenge
+            return new EmptyResult();
         }
 
         [HttpGet("google-response")]
-        public async Task<IActionResult> GoogleResponse()
+        public async void GoogleResponse()
         {
-            // Authenticate with the cookie scheme
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            // Check if the result is null or if the principal is null
-            if (result == null || result.Principal == null)
-            {
-                // Handle the case when authentication fails
-                return Unauthorized(); // Return 401 Unauthorized
-            }
-
-            // Extract claims from the authenticated principal
-            var claims = result.Principal.Identities.FirstOrDefault()?.Claims.Select(claim => new {
-                claim.Issuer,
-                claim.OriginalIssuer,
-                claim.Type,
-                claim.Value
+            var claims = result.Principal.Identities.FirstOrDefault().Claims.Select( claim => new{ 
+            claim.Issuer,
+            claim.OriginalIssuer,
+            claim.Type,
+            claim.Value
             });
+            string email = GetEmailFromClaims(claims);
+            
+            UserDto user = await _userService.GetUserByEmailAsync(email);
+            RedirectToUserPage(user.Role);
 
-            // Return claims as JSON
-            return Json(claims);
+
+        }
+
+        private RedirectToActionResult RedirectToUserPage(Role role)
+        {
+            switch (role){
+                case Role.Admin:
+                    return RedirectToAction("Index", "Admin"); 
+                case Role.Doctor:
+                    return RedirectToAction("Index", "Doctor");
+                case Role.Nurse:
+                    return RedirectToAction("Index", "Nurse"); 
+                case Role.Technician:
+                    return RedirectToAction("Index", "Technician"); 
+                case Role.Patient:
+                    return RedirectToAction("Index", "Patient");
+                default:
+                    return RedirectToAction("Index", "Home");
+            }
+        }
+
+        private string GetEmailFromClaims(IEnumerable<dynamic> claims)
+        {
+            var emailClaim = claims?.FirstOrDefault(claim => claim.Type == ClaimTypes.Email);
+            return emailClaim?.Value;
         }
     }
 }

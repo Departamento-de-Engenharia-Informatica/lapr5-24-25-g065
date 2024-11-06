@@ -8,9 +8,9 @@ namespace DDDSample1.Domain.Staffs
     {
         [JsonConstructor]
         public StaffId(Guid value) : base(value) { }
-
-        // Parameterless constructor for deserialization
-        public StaffId() : base(Guid.NewGuid()) { }
+        public StaffId(String value) : base(value)
+        {
+        }
 
         override protected Object createFromString(String text) => new Guid(text);
         

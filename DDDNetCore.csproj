@@ -25,4 +25,10 @@
     <PackageReference Include="Moq.EntityFrameworkCore" Version="8.0.1.2" />
   </ItemGroup>
 
+  <Target Name="NgRelease" BeforeTargets="Build" Condition="'$(Configuration)' == 'Release'">
+    <Exec WorkingDirectory="$(ProjectDir)Angular\Angular" Command="ng build --prod" />
+  </Target>
+  <Target Name="NgRelease" BeforeTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+    <Exec WorkingDirectory="$(ProjectDir)Angular\Angular" Command="ng build" />
+  </Target>
 </Project>

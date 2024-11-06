@@ -1,0 +1,66 @@
+<h1>Staff</h1>
+
+<table mat-table [dataSource]="dataSource">
+
+    <!-- First Name Column -->
+    <ng-container matColumnDef="FirstName">
+        <th mat-header-cell *matHeaderCellDef> First Name </th>
+        <td mat-cell *matCellDef="let staff"> {{staff.FirstName}} </td>
+    </ng-container>
+
+    <!-- Last Name Column -->
+    <ng-container matColumnDef="LastName">
+        <th mat-header-cell *matHeaderCellDef> Last Name </th>
+        <td mat-cell *matCellDef="let staff"> {{staff.LastName}} </td>
+    </ng-container>
+
+    <!-- Full Name Column -->
+    <ng-container matColumnDef="FullName">
+        <th mat-header-cell *matHeaderCellDef> Full Name </th>
+        <td mat-cell *matCellDef="let staff"> {{staff.FullName}} </td>
+    </ng-container>
+
+    <!-- Gender Column -->
+    <ng-container matColumnDef="Gender">
+        <th mat-header-cell *matHeaderCellDef> Gender </th>
+        <td mat-cell *matCellDef="let staff"> {{staff.Gender}} </td>
+    </ng-container>
+
+    <!-- Specialization Column -->
+    <ng-container matColumnDef="Specialization">
+        <th mat-header-cell *matHeaderCellDef> Specialization </th>
+        <td mat-cell *matCellDef="let staff"> {{staff.Specialization}} </td>
+    </ng-container>
+
+    <!-- Phone Number Column -->
+    <ng-container matColumnDef="PhoneNumber">
+        <th mat-header-cell *matHeaderCellDef> Phone Number </th>
+        <td mat-cell *matCellDef="let staff"> {{staff.PhoneNumber}} </td>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container matColumnDef="Email">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let staff"> {{staff.Email}} </td>
+    </ng-container>
+
+    <!-- Update Button Column -->
+    <ng-container matColumnDef="Update">
+        <th mat-header-cell *matHeaderCellDef> Update </th>
+        <td mat-cell *matCellDef="let staff">
+            <button mat-raised-button color="primary" (click)="onUpdate(staff)">Update</button>
+        </td>
+    </ng-container>
+
+    <!-- Delete Button Column -->
+    <ng-container matColumnDef="Delete">
+        <th mat-header-cell *matHeaderCellDef> Delete </th>
+        <td mat-cell *matCellDef="let staff">
+            <button mat-raised-button color="warn" (click)="onDelete(staff)">Delete</button>
+        </td>
+    </ng-container>
+
+    <!-- Header and Row Definitions -->
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+</table>

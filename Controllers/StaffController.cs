@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Staffs;
 using DDDNetCore.DTOs.Staff;
+using Microsoft.AspNetCore.Cors;
 
 namespace DDDSample1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("Policy1")]
     public class StaffController : ControllerBase
     {
         private readonly StaffService _service;

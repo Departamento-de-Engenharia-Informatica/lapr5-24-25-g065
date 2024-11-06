@@ -75,6 +75,7 @@ namespace DDDSample1
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseAuthorization(); 
 
             app.UseAuthorization();
 

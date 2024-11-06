@@ -1,0 +1,76 @@
+<div id="mainContent">
+    <h1>New Staff</h1>
+
+    <div id="staffCard">
+        <form [formGroup]="staffForm" (ngSubmit)="onSubmit()" class="myform">
+            <mat-card>
+                <mat-card-content>
+                    <div class="myInputs">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>First Name</mat-label>
+                            <input matInput formControlName="firstName">
+                        </mat-form-field>
+
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput formControlName="lastName">
+                        </mat-form-field>
+
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Full Name</mat-label>
+                            <input matInput formControlName="fullName">
+                        </mat-form-field>
+
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Gender</mat-label>
+                            <mat-select formControlName="gender">
+                                <mat-option value="Male">Male</mat-option>
+                                <mat-option value="Female">Female</mat-option>
+                                <mat-option value="Other">Other</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Type</mat-label>
+                            <input matInput formControlName="type">
+                        </mat-form-field>
+
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Specialization</mat-label>
+                            <input matInput formControlName="specialization">
+                        </mat-form-field>
+
+                        <mat-form-field class="example-full-width">
+                            <mat-label>License Number</mat-label>
+                            <input matInput formControlName="licenseNumber">
+                        </mat-form-field>
+
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Availability Slot</mat-label>
+                            <input matInput formControlName="availabilitySlot">
+                        </mat-form-field>
+
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Phone Number</mat-label>
+                            <input matInput formControlName="phoneNumber">
+                        </mat-form-field>
+
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Email</mat-label>
+                            <input matInput formControlName="email" type="email">
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+
+                <mat-card-actions align="end">
+                    <button class="actionButtons" (click)="onCancel()" type="button" mat-raised-button color="warn">
+                        Cancel
+                    </button>
+                    <button class="actionButtons" [disabled]="staffForm.invalid" type="submit" mat-raised-button color="primary">
+                        Create
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+        </form>
+    </div>
+</div>
