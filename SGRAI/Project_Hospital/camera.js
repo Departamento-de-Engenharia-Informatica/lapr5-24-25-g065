@@ -32,8 +32,6 @@ export default class Camera {
         // Compute half of the size of the target plane as a function of the camera's distance to the target and the field-of-view
         this.initialHalfSize = Math.tan(THREE.MathUtils.degToRad(this.initialFov / 2.0)) * this.initialDistance;
 
-        // The player direction (expressed in degrees) is needed to compute the horizontal orientation of the first- and third-person view cameras
-        this.playerDirection = 0.0;
 
         // Create two cameras (perspective and orthographic projection)
         this.perspective = new THREE.PerspectiveCamera();
