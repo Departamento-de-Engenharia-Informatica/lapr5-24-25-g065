@@ -76,35 +76,35 @@ scene.add(wall6);
 const wall7 = createWall(11.5, 5, 0.5, { x: 17.25, y: 2.5, z: 10 }, 'textures/wall.jpg', { x: 0, y: Math.PI / 2, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
 scene.add(wall7);
 
-const wallInterior1 = createWall(5, 5, 0.2, { x: -5, y: 2.5, z: 2 }, 'textures/wall.jpg', { x: 0, y: 0, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
+const wallInterior1 = createWall(5, 5, 0.2, { x: -5, y: 2.5, z: 2 }, 'textures/wall1.jpg', { x: 0, y: 0, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
 scene.add(wallInterior1);
-const wallInterior2 = createWall(5, 5, 0.2, { x: 5, y: 2.5, z: 2 }, 'textures/wall.jpg', { x: 0, y: 0, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
+const wallInterior2 = createWall(5, 5, 0.2, { x: 5, y: 2.5, z: 2 }, 'textures/wall1.jpg', { x: 0, y: 0, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
 scene.add(wallInterior2);
 
-const wallInterior3 = createWall(8, 5, 0.2, { x: 0, y: 2.5, z: -2 }, 'textures/wall.jpg', { x: 0, y: Math.PI / 2, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
+const wallInterior3 = createWall(8, 5, 0.2, { x: 0, y: 2.5, z: -2 }, 'textures/wall1.jpg', { x: 0, y: Math.PI / 2, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
 scene.add(wallInterior3);
-const wallInterior4 = createWall(5, 5, 0.5, { x: -7.25, y: 2.5, z: 11.25 }, 'textures/wall.jpg', { x: 0, y: Math.PI / 2, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
-scene.add(wallInterior4);
+const wallI4 = createWall(5, 5, 0.5, { x: -7.25, y: 2.5, z: 11.25 }, 'textures/wall.jpg', { x: 0, y: Math.PI / 2, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
+scene.add(wallI4);
 
-const wallInterior5 = createWall(5, 5, 0.2, { x: 15, y: 2.5, z: 2 }, 'textures/wall.jpg', { x: 0, y: 0, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
+const wallInterior5 = createWall(5, 5, 0.2, { x: 15, y: 2.5, z: 2 }, 'textures/wall1.jpg', { x: 0, y: 0, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
 scene.add(wallInterior5);
-const wallInterior6 = createWall(8, 5, 0.2, { x: 10, y: 2.5, z: -2 }, 'textures/wall.jpg', { x: 0, y: Math.PI / 2, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
+const wallInterior6 = createWall(8, 5, 0.2, { x: 10, y: 2.5, z: -2 }, 'textures/wall1.jpg', { x: 0, y: Math.PI / 2, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
 scene.add(wallInterior6);
-const wallInterior7 = createWall(8, 5, 0.2, { x: 5, y: 2.5, z: -2 }, 'textures/wall.jpg', { x: 0, y: Math.PI / 2, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
+const wallInterior7 = createWall(8, 5, 0.2, { x: 5, y: 2.5, z: -2 }, 'textures/wall1.jpg', { x: 0, y: Math.PI / 2, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
 scene.add(wallInterior7);
 
-const wallInterior8 = createWall(8, 5, 0.2, { x: 0, y: 2.5, z: 12 }, 'textures/wall.jpg', { x: 0, y: Math.PI / 2, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
+const wallInterior8 = createWall(8, 5, 0.2, { x: 0, y: 2.5, z: 12 }, 'textures/wall1.jpg', { x: 0, y: Math.PI / 2, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
 scene.add(wallInterior8);
-const wallInterior9 = createWall(8, 5, 0.2, { x: 10, y: 2.5, z: 12 }, 'textures/wall.jpg', { x: 0, y: Math.PI / 2, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
+const wallInterior9 = createWall(8, 5, 0.2, { x: 10, y: 2.5, z: 12 }, 'textures/wall1.jpg', { x: 0, y: Math.PI / 2, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
 scene.add(wallInterior9);
-const wallInterior10 = createWall(8, 5, 0.2, { x: 5, y: 2.5, z: 12 }, 'textures/wall.jpg', { x: 0, y: Math.PI / 2, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
+const wallInterior10 = createWall(8, 5, 0.2, { x: 5, y: 2.5, z: 12 }, 'textures/wall1.jpg', { x: 0, y: Math.PI / 2, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
 scene.add(wallInterior10);
 
-const wallInterior11 = createWall(5, 5, 0.2, { x: 15, y: 2.5, z: 8 }, 'textures/wall.jpg', { x: 0, y: 0, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
+const wallInterior11 = createWall(5, 5, 0.2, { x: 15, y: 2.5, z: 8 }, 'textures/wall1.jpg', { x: 0, y: 0, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
 scene.add(wallInterior11);
-const wallInterior12 = createWall(5, 5, 0.2, { x: 5, y: 2.5, z: 8 }, 'textures/wall.jpg', { x: 0, y: 0, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
+const wallInterior12 = createWall(5, 5, 0.2, { x: 5, y: 2.5, z: 8 }, 'textures/wall1.jpg', { x: 0, y: 0, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
 scene.add(wallInterior12);
-const wallInterior13 = createWall(5, 5, 0.2, { x: -5, y: 2.5, z: 8 }, 'textures/wall.jpg', { x: 0, y: 0, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
+const wallInterior13 = createWall(5, 5, 0.2, { x: -5, y: 2.5, z: 8 }, 'textures/wall1.jpg', { x: 0, y: 0, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
 scene.add(wallInterior13);
 
 
