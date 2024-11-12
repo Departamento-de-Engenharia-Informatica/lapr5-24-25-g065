@@ -5,7 +5,7 @@ using DDDSample1.Domain.Users;
 using DDDSample1.Domain.Appointments;
 using DDDSample1.Domain.Passwords; 
 using DDDNetCore.Domain.OperationRequestDomain;
-using DDDSample1.Domain.OperationType; // Add the OperationType namespace
+using DDDSample1.Domain.OperationType; 
 using System.Collections.Generic;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -24,7 +24,7 @@ namespace DDDSample1.Infrastructure
         public DbSet<User> Users { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<OperationRequest> OperationRequests { get; set; }
-        public DbSet<OperationType> OperationTypes { get; set; } // Add DbSet for OperationType
+        public DbSet<OperationType> OperationTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -57,9 +57,8 @@ private void ConfigureUser(ModelBuilder modelBuilder)
                 .HasMaxLength(100); // Set a max length or other constraints as needed
         });
 
-    // Configure UserId as a keyless entity
-    modelBuilder.Entity<UserId>()
-        .HasNoKey(); // Mark UserId as keyless
+    // No need to configure UserId as a keyless entity
+    // The UserId is already being handled as a value object within the User entity
 }
        private void ConfigureStaff(ModelBuilder modelBuilder)
     {
@@ -134,40 +133,52 @@ private void ConfigureUser(ModelBuilder modelBuilder)
         
 
         private void ConfigureOperationType(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<OperationType>()
-                .HasKey(ot => ot.Id);
+{
+    modelBuilder.Entity<OperationType>()
+        .HasKey(ot => ot.Id);
 
-            modelBuilder.Entity<OperationType>()
-                .Property(ot => ot.Id)
-                .HasConversion(
-                    v => v.AsGuid(),
-                    v => new OperationTypeID(v)
-                )
-                .HasColumnName("OperationTypeId");
+    modelBuilder.Entity<OperationType>()
+        .Property(ot => ot.Id)
+        .HasConversion(
+            v => v.AsGuid(),
+            v => new OperationTypeID(v)
+        )
+        .HasColumnName("OperationTypeId");
 
-            modelBuilder.Entity<OperationType>()
-                .Property(ot => ot.Name)
-                .IsRequired()
-                .HasMaxLength(150);
+    modelBuilder.Entity<OperationType>()
+        .Property(ot => ot.Name)
+        .IsRequired()
+        .HasMaxLength(150);
 
-            modelBuilder.Entity<OperationType>()
-                .Property(ot => ot.EstimatedDuration)
-                .IsRequired();
+    modelBuilder.Entity<OperationType>()
+        .Property(ot => ot.EstimatedDuration)
+        .IsRequired()
+        .HasConversion(
+            v => v.Ticks, // Store as ticks (long) in the database
+            v => TimeSpan.FromTicks(v) // Convert back to TimeSpan
+        );
 
-            modelBuilder.Entity<OperationType>()
-                .Property(ot => ot.IsActive)
-                .IsRequired();
+    modelBuilder.Entity<OperationType>()
+        .Property(ot => ot.IsActive)
+        .IsRequired();
 
-            var valueConverter = new ValueConverter<List<string>, string>(
-                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
-            );
+    var jsonOptions = new JsonSerializerOptions
+{
+    WriteIndented = false,
+    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+};
 
-            modelBuilder.Entity<OperationType>()
-                .Property(ot => ot.RequiredStaffBySpecialization)
-                .HasConversion(valueConverter); // Serialize List<string> to JSON string
-        }
+// Serialize List<string> to JSON string
+var valueConverter = new ValueConverter<List<string>, string>(
+    v => JsonSerializer.Serialize(v, jsonOptions),  // Use JsonSerializerOptions explicitly
+    v => JsonSerializer.Deserialize<List<string>>(v, jsonOptions)  // Use JsonSerializerOptions explicitly
+);
+
+modelBuilder.Entity<OperationType>()
+    .Property(ot => ot.RequiredStaffBySpecialization)
+    .HasConversion(valueConverter);
+}
+
 
       private void ConfigureOperationRequest(ModelBuilder modelBuilder)
 {
@@ -177,21 +188,37 @@ private void ConfigureUser(ModelBuilder modelBuilder)
     modelBuilder.Entity<OperationRequest>()
         .Property(or => or.Id)
         .HasConversion(
-            v => v.AsGuid(), // Assuming Id is a Guid
+            v => v.AsGuid(), // Convert OperationRequestID to Guid
             v => new OperationRequestID(v)
         )
         .HasColumnName("OperationRequestId");
 
     modelBuilder.Entity<OperationRequest>()
-        .Property(or => or.patientID) // Assuming this is now a PatientId
-        .IsRequired();
+        .Property(or => or.patientID)
+        .IsRequired()
+        .HasConversion(
+            v => v.AsGuid(), // Convert PatientId to Guid
+            v => new PatientId(v)
+        );
 
     modelBuilder.Entity<OperationRequest>()
         .Property(or => or.doctorID)
-        .IsRequired();
+        .IsRequired()
+        .HasConversion(
+            v => v.AsGuid(), // Convert StaffId to Guid
+            v => new StaffId(v)
+        );
 
     modelBuilder.Entity<OperationRequest>()
         .Property(or => or.operationTypeID)
+        .IsRequired()
+        .HasConversion(
+            v => v.AsGuid(), // Convert OperationTypeID to Guid
+            v => new OperationTypeID(v)
+        );
+
+    modelBuilder.Entity<OperationRequest>()
+        .Property(or => or.operationDateTime)
         .IsRequired();
 
     modelBuilder.Entity<OperationRequest>()
@@ -202,18 +229,24 @@ private void ConfigureUser(ModelBuilder modelBuilder)
         .Property(or => or.priority)
         .IsRequired();
 
-    // Here is the important part for setting the foreign key
+    // Define the foreign keys relationships
     modelBuilder.Entity<OperationRequest>()
-        .HasOne<Patient>() // Indicates the related entity type
-        .WithMany() // Indicates that Patient can have many OperationRequests
-        .HasForeignKey(or => or.patientID) // Here, patientID should match the type of PatientId
-        .OnDelete(DeleteBehavior.Cascade); // Optional: set the delete behavior if needed
+        .HasOne<Patient>()
+        .WithMany()
+        .HasForeignKey(or => or.patientID)
+        .OnDelete(DeleteBehavior.Cascade);
 
     modelBuilder.Entity<OperationRequest>()
         .HasOne<Staff>()
         .WithMany()
-        .HasForeignKey(or => or.doctorID); // Assuming doctorID is the correct type as well
+        .HasForeignKey(or => or.doctorID);
+
+    modelBuilder.Entity<OperationRequest>()
+        .HasOne<OperationType>()
+        .WithMany() // Assuming OperationType can have many OperationRequests
+        .HasForeignKey(or => or.operationTypeID);
 }
+
 
 
 
@@ -251,79 +284,81 @@ private void ConfigureUser(ModelBuilder modelBuilder)
 }
 
         private void ConfigurePatient(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Patient>()
-                .HasKey(p => p.Id);
+{
+    modelBuilder.Entity<Patient>()
+        .HasKey(p => p.Id);
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.Id)
-                .HasConversion(
-                    v => v.AsGuid(),
-                    v => new PatientId(v)
-                )
-                .HasColumnName("PatientId");
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.Id)
+        .HasConversion(
+            v => v.AsGuid(),
+            v => new PatientId(v)
+        )
+        .HasColumnName("PatientId");
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.Firstname)
-                .IsRequired()
-                .HasMaxLength(150);
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.Firstname)
+        .IsRequired()
+        .HasMaxLength(150);
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.LastName)
-                .IsRequired()
-                .HasMaxLength(150);
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.LastName)
+        .IsRequired()
+        .HasMaxLength(150);
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.FullName)
-                .IsRequired()
-                .HasMaxLength(300);
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.FullName)
+        .IsRequired()
+        .HasMaxLength(300);
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.Gender)
-                .IsRequired()
-                .HasMaxLength(20);
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.Gender)
+        .IsRequired()
+        .HasMaxLength(20);
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.PhoneNumber)
-                .IsRequired()
-                .HasMaxLength(15);
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.PhoneNumber)
+        .IsRequired()
+        .HasMaxLength(15)
+        .HasColumnName("PhoneNumber"); // Ensure correct column name in DB
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.Email)
-                .IsRequired()
-                .HasMaxLength(250);
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.Email)
+        .IsRequired()
+        .HasMaxLength(250)
+        .HasColumnName("Email"); // Ensure correct column name in DB
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.DateOfBirth)
-                .IsRequired();
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.DateOfBirth)
+        .IsRequired();
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.MedicalRecordNumber)
-                .IsRequired()
-                .HasMaxLength(50);
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.MedicalRecordNumber)
+        .IsRequired()
+        .HasMaxLength(50);
 
-            var valueConverter = new ValueConverter<List<string>, string>(
-                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
-            );
+    var valueConverter = new ValueConverter<List<string>, string>(
+        v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+        v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
+    );
 
-            modelBuilder.Entity<Patient>()
-                .Property(p => p.Allergies)
-                .HasConversion(valueConverter); // Serialize List<string> to JSON string
+    modelBuilder.Entity<Patient>()
+        .Property(p => p.Allergies)
+        .HasConversion(valueConverter); // Serialize List<string> to JSON string
 
-            // Constraints for unique Medical Record Number, Email, and Phone
-            modelBuilder.Entity<Patient>()
-                .HasIndex(p => p.MedicalRecordNumber)
-                .IsUnique();
+    // Constraints for unique Medical Record Number, Email, and Phone
+    modelBuilder.Entity<Patient>()
+        .HasIndex(p => p.MedicalRecordNumber)
+        .IsUnique();
 
-            modelBuilder.Entity<Patient>()
-                .HasIndex(p => p.Email)
-                .IsUnique();
+    modelBuilder.Entity<Patient>()
+        .HasIndex(p => p.Email)
+        .IsUnique();
 
-            modelBuilder.Entity<Patient>()
-                .HasIndex(p => p.PhoneNumber)
-                .IsUnique();
-        }
+    modelBuilder.Entity<Patient>()
+        .HasIndex(p => p.PhoneNumber)
+        .IsUnique();
+}
         
     }
 }
