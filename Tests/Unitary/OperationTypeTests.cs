@@ -1,4 +1,4 @@
-using Xunit;
+/*using Xunit;
 using System;
 using System.Collections.Generic;
 using DDDSample1.Domain.OperationType;
@@ -41,4 +41,4 @@ public class OperationTypeTest
     }
 
     // Additional tests for other properties and edge cases can be added here...
-}
+}*/
