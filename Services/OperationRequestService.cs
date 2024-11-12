@@ -24,15 +24,7 @@ namespace DDDNetCore.Services
         public async Task<List<OperationRequestDTO>> GetAllAsync()
         {
             var operationRequests = await operationRequestRepository.GetAllAsync();
-            return operationRequests.Select(operationRequest => new OperationRequestDTO(
-                operationRequest.Id.AsGuid(),
-                operationRequest.patientID,
-                operationRequest.doctorID,
-                operationRequest.operationTypeID,
-                operationRequest.operationDateTime.ToString(),
-                operationRequest.deadline.ToString(),
-                operationRequest.priority
-            )).ToList();
+            return operationRequests.ConvertAll(CreateOperationRequestDto);
         }
 
         public async Task<OperationRequestDTO> GetByIdAsync(OperationRequestID id)
@@ -56,7 +48,7 @@ namespace DDDNetCore.Services
         {
             if (operationRequestDTO == null) throw new ArgumentException("Invalid Operation Request data");
 
-            var operationRequest = await operationRequestRepository.GetByIdAsync(new OperationRequestID(operationRequestDTO.ID)); // Fetch patient from repository
+            var operationRequest = await operationRequestRepository.GetByIdAsync(new OperationRequestID(operationRequestDTO.ID));
             if (operationRequest == null) throw new BusinessRuleValidationException("Operation Request not found");
 
             operationRequest.Update(
@@ -88,7 +80,7 @@ namespace DDDNetCore.Services
             var operationRequest = await operationRequestRepository.GetByIdAsync(id);
             if (operationRequest == null) throw new BusinessRuleValidationException("Operation Request not found");
 
-            await operationRequestRepository.Remove(operationRequest); // Use the repository to delete
+            operationRequestRepository.Remove(operationRequest); // Use the repository to delete
             await unitOfWork.CommitAsync();
 
             return new OperationRequestDTO(
@@ -100,6 +92,19 @@ namespace DDDNetCore.Services
                 operationRequest.deadline.ToString(),
                 operationRequest.priority
             );
+        }
+
+        private OperationRequestDTO CreateOperationRequestDto(OperationRequest operationRequest)
+        {
+            return new OperationRequestDTO(
+                operationRequest.Id.AsGuid(),
+                operationRequest.patientID,
+                operationRequest.doctorID,
+                operationRequest.operationTypeID,
+                operationRequest.operationDateTime.ToString(),
+                operationRequest.deadline.ToString(),
+                operationRequest.priority
+                );
         }
 
     }

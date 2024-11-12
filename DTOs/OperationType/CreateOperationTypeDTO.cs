@@ -10,7 +10,7 @@ namespace DDDNetCore.DTOs.OperationType
         public string EstimatedDuration { get; set; }
         public bool IsActive { get; set; }
 
-        public OperationTypeDTO(string Name, List<string> RequiredStaffBySpecialization, string EstimatedDuration, bool IsActive)
+        public CreateOperationTypeDTO(string Name, List<string> RequiredStaffBySpecialization, string EstimatedDuration, bool IsActive)
         {
             this.Name = Name;
             this.RequiredStaffBySpecialization = RequiredStaffBySpecialization;
