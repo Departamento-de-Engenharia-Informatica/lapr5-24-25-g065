@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@abacritt/angularx-social-login": "^2.3.0",
     "@angular/forms": "^18.2.10",
     "@angular/material": "^18.2.11"
   }

@@ -1,0 +1,43 @@
+<h1 mat-dialog-title>Update User</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>User Name</mat-label>
+      <input matInput formControlName="userName" />
+      <mat-error *ngIf="updateForm.controls['userName'].hasError('required')">
+        User Name is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" />
+      <mat-error *ngIf="updateForm.controls['email'].hasError('required')">
+        Email is required
+      </mat-error>
+      <mat-error *ngIf="updateForm.controls['email'].hasError('email')">
+        Invalid email format
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Role</mat-label>
+      <mat-select formControlName="role">
+        <mat-option value="Admin">Admin</mat-option>
+        <mat-option value="Doctor">Doctor</mat-option>
+        <mat-option value="Nurse">Nurse</mat-option>
+        <mat-option value="Technician">Technician</mat-option>
+        <mat-option value="Patient">Patient</mat-option>
+      </mat-select>
+      <mat-error *ngIf="updateForm.controls['role'].hasError('required')">
+        Role is required
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button color="primary" (click)="onSubmit()" [disabled]="!updateForm.valid">Update</button>
+</div>

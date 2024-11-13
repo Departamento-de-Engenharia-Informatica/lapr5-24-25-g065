@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { StaffsService } from '../services/Staffs.service';
-import { Staff } from '../interfaces/staff';
+import { StaffService } from '../Services/staff.service';
+import { Staff } from '../Interfaces/staff';
 
 @Component({
   selector: 'app-newStaff',
@@ -28,7 +28,7 @@ export class NewStaffComponent {
     address: new FormControl('', [Validators.required, Validators.maxLength(200)]),
   });
 
-  constructor(private router: Router, private staffsService: StaffsService) { }
+  constructor(private router: Router, private staffsService: StaffService) { }
 
   onSubmit() {
     // Create a new Staff object with all fields

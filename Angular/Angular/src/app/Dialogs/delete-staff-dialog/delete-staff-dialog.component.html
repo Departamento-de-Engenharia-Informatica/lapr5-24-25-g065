@@ -1,0 +1,61 @@
+<div id="updateForm">
+    <h1 id="deleteStaffTitle">Delete Staff</h1>
+    <form [formGroup]="deleteForm" (ngSubmit)="onSubmit()" class="myform">
+        <div class="myInputs">
+            <mat-form-field class="example-full-width">
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="firstName" [disabled]="true">
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Last Name</mat-label>
+                <input matInput formControlName="lastName" [disabled]="true">
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Full Name</mat-label>
+                <input matInput formControlName="fullName" [disabled]="true">
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Gender</mat-label>
+                <input matInput formControlName="gender" [disabled]="true">
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Type</mat-label>
+                <input matInput formControlName="type" [disabled]="true">
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Specialization</mat-label>
+                <input matInput formControlName="specialization" [disabled]="true">
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>License Number</mat-label>
+                <input matInput formControlName="licenseNumber" [disabled]="true">
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Availability Slot</mat-label>
+                <input matInput formControlName="availabilitySlot" [disabled]="true">
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Phone Number</mat-label>
+                <input matInput formControlName="phoneNumber" [disabled]="true">
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" [disabled]="true">
+            </mat-form-field>
+        </div>
+
+        <mat-dialog-actions align="end">
+            <button class="actionButtons" type="button" mat-dialog-close mat-raised-button color="warn">Cancel</button>
+            <button class="actionButtons" type="submit" mat-raised-button color="accent">Delete</button>
+        </mat-dialog-actions>
+    </form>
+</div>

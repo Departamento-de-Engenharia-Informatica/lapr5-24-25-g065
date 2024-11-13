@@ -22,6 +22,8 @@ using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.UseUrls("http://localhost:5000", "https://localhost:5001");
+
 // Add services to dependency scope.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<PatientService>();
@@ -71,21 +73,23 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("Policy1",
+    options.AddPolicy("AllowLocalhostAngular",
         policy =>
         {
             policy.WithOrigins("http://localhost:4200")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
-        });
-
-    options.AddPolicy("AnotherPolicy",
+        }
+    );
+    options.AddPolicy("AllowSwaggerUI",
         policy =>
         {
-            policy.WithOrigins("http://www.contoso.com")
-                                .AllowAnyHeader()
-                                .AllowAnyMethod();
-        });
+            policy.WithOrigins("http://localhost:5000", "https://localhost:5001")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials(); // if using authentication
+        }
+    );
 });
 
 
@@ -103,7 +107,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting(); // Ensure routing is in place before authentication
-
+app.UseCors("AllowSwaggerUI");
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
@@ -119,6 +123,6 @@ app.MapControllers(); // Ensures that your controllers are mapped correctly
 
 // Set default route for MVC (if needed)
 
-app.UseCors();
+
 
 app.Run();

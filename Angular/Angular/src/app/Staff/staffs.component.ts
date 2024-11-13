@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { StaffService } from '../Services/staff.service';
 import { Staff } from '../Interfaces/staff';
 import { MatDialog } from '@angular/material/dialog';
-import { UpdateStaffDialogComponent } from './Dialogs/update-staff-dialog/update-staff-dialog.component';
-import { DeleteStaffDialogComponent } from './Dialogs/delete-staff-dialog/delete-staff-dialog.component';
+import { UpdateStaffDialogComponent } from '../Dialogs/update-staff-dialog/update-staff-dialog.component';
+import { DeleteStaffDialogComponent } from '../Dialogs/delete-staff-dialog/delete-staff-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
