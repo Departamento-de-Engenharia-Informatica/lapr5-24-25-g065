@@ -1,18 +1,16 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'; // Importando o OrbitControls
-import { loadModel } from './models.js'; // Importando a função loadModel
-import { createWall } from './wall.js'; // Importando a função createWall
-import { createGround } from './ground.js'; // Importando a função createGround
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { loadModel } from './models.js';
+import { createWall } from './wall.js';
+import { createGround } from './ground.js';
 import { loadModelWithRotation } from './models.js';
 
-// Inicializar cena, câmera e renderizador
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// Adicionar o plano à cena usando a função createGround com posição personalizada
 const plane = createGround({ x: 10, y: 0, z: 0 });
 scene.add(plane);
 const plane1 = createGround({ x: 10, y: 0, z: 10 });
@@ -22,7 +20,6 @@ scene.add(plane2);
 const plane3 = createGround({ x: 0, y: 0, z: 10 });
 scene.add(plane3);
 
-// Carregar o modelo GLTF (hospital_bed.glb) usando a função loadModel do models.js
 loadModel(scene, 'models/hospital_bed.glb', { x: -5, y: 0, z: -5 }, { x: 2, y: 2, z: 2 });
 loadModel(scene, 'models/hospital_bed.glb', { x: 2.5, y: 0, z: -5 }, { x: 2, y: 2, z: 2 });
 loadModel(scene, 'models/hospital_bed.glb', { x: 8, y: 0, z: -5 }, { x: 2, y: 2, z: 2 });
@@ -54,8 +51,6 @@ loadModelWithRotation(scene, 'models/human_body.glb', { x: -3, y: 2, z: 15 }, { 
 loadModelWithRotation(scene, 'models/human_body.glb', { x: 4, y: 2, z: 15 }, { x: 0.7, y: 0.7, z: 0.7 }, { x: -Math.PI / 2, y:0, z:  Math.PI / 2 });
 loadModelWithRotation(scene, 'models/human_body.glb', { x: 9.5, y: 2, z: 15 }, { x: 0.7, y: 0.7, z: 0.7 }, { x: -Math.PI / 2, y:0, z:  Math.PI / 2 });
 loadModelWithRotation(scene, 'models/human_body.glb', { x: 16.5, y: 2, z: 15 }, { x: 0.7, y: 0.7, z: 0.7 }, { x: -Math.PI / 2, y:0, z:  Math.PI / 2 });
-
-// Criar um paralelopípedo (parede) usando a função createWall
 
 const wall = createWall(15, 5, 0.5, { x: 0, y: 2.5, z: -6 }, 'textures/wall.jpg', { x: 0, y: 0, z: 0 }); // Largura, altura, profundidade, posição e caminho da textura
 scene.add(wall);
@@ -119,16 +114,13 @@ const wallInterior17 = createWall(5, 1, 0.2, { x: 10, y: 4.5, z: 2 }, 'textures/
 scene.add(wallInterior17);
 
 
-// Adicionando luz à cena
-const ambientLight = new THREE.AmbientLight(0x404040, 1); // Luz suave
+const ambientLight = new THREE.AmbientLight(0x404040, 1);
 scene.add(ambientLight);
 
-// Luz direcional
-const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // Luz direcional
-directionalLight.position.set(5, 10, 5).normalize(); // Posicionar a luz
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(5, 10, 5).normalize();
 scene.add(directionalLight);
 
-// Configuração dos controles de órbita
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.25;
@@ -139,8 +131,7 @@ camera.position.set(10, 10, 25);
 function animate() {
     requestAnimationFrame(animate);
 
-    controls.update(); // Atualiza os controles de órbita
-
+    controls.update();
     renderer.render(scene, camera);
 }
 
