@@ -1,0 +1,184 @@
+[
+  {
+    "name": "wall",
+    "dimensions": { "width": 15, "height": 5, "depth": 0.5 },
+    "position": { "x": 0, "y": 2.5, "z": -6 },
+    "texture": "textures/wall.jpg",
+    "rotation": { "x": 0, "y": 0, "z": 0 }
+  },
+  {
+    "name": "wall1",
+    "dimensions": { "width": 15, "height": 5, "depth": 0.5 },
+    "position": { "x": 10, "y": 2.5, "z": -6 },
+    "texture": "textures/wall.jpg",
+    "rotation": { "x": 0, "y": 0, "z": 0 }
+  },
+  {
+    "name": "wallPorta",
+    "dimensions": { "width": 3, "height": 5, "depth": 0.3 },
+    "position": { "x": -7.25, "y": 2.5, "z": 5 },
+    "texture": "textures/door1.jpg",
+    "rotation": { "x": 0, "y": 1.5708, "z": 0 }
+  },
+  {
+    "name": "wall2",
+    "dimensions": { "width": 9.5, "height": 5, "depth": 0.5 },
+    "position": { "x": -7.25, "y": 2.5, "z": -1.25 },
+    "texture": "textures/wall.jpg",
+    "rotation": { "x": 0, "y": 1.5708, "z": 0 }
+  },
+  {
+    "name": "wall3",
+    "dimensions": { "width": 9.5, "height": 5, "depth": 0.5 },
+    "position": { "x": -7.25, "y": 2.5, "z": 11.25 },
+    "texture": "textures/wall.jpg",
+    "rotation": { "x": 0, "y": 1.5708, "z": 0 }
+  },
+  {
+    "name": "wall4",
+    "dimensions": { "width": 15, "height": 5, "depth": 0.5 },
+    "position": { "x": 0, "y": 2.5, "z": 16 },
+    "texture": "textures/wall.jpg",
+    "rotation": { "x": 0, "y": 0, "z": 0 }
+  },
+  {
+    "name": "wall5",
+    "dimensions": { "width": 15, "height": 5, "depth": 0.5 },
+    "position": { "x": 10, "y": 2.5, "z": 16 },
+    "texture": "textures/wall.jpg",
+    "rotation": { "x": 0, "y": 0, "z": 0 }
+  },
+  {
+    "name": "wall6",
+    "dimensions": { "width": 11, "height": 5, "depth": 0.5 },
+    "position": { "x": 17.25, "y": 2.5, "z": -0.5 },
+    "texture": "textures/wall.jpg",
+    "rotation": { "x": 0, "y": 1.5708, "z": 0 }
+  },
+  {
+    "name": "wall7",
+    "dimensions": { "width": 11.5, "height": 5, "depth": 0.5 },
+    "position": { "x": 17.25, "y": 2.5, "z": 10 },
+    "texture": "textures/wall.jpg",
+    "rotation": { "x": 0, "y": 1.5708, "z": 0 }
+  },
+  {
+    "name": "wallInterior1",
+    "dimensions": { "width": 5, "height": 5, "depth": 0.2 },
+    "position": { "x": -5, "y": 2.5, "z": 2 },
+    "texture": "textures/wall1.jpg",
+    "rotation": { "x": 0, "y": 0, "z": 0 }
+  },
+  {
+    "name": "wallInterior2",
+    "dimensions": { "width": 5, "height": 5, "depth": 0.2 },
+    "position": { "x": 5, "y": 2.5, "z": 2 },
+    "texture": "textures/wall1.jpg",
+    "rotation": { "x": 0, "y": 0, "z": 0 }
+  },
+  {
+    "name": "wallInterior3",
+    "dimensions": { "width": 8, "height": 5, "depth": 0.2 },
+    "position": { "x": 0, "y": 2.5, "z": -2 },
+    "texture": "textures/wall1.jpg",
+    "rotation": { "x": 0, "y": 1.5708, "z": 0 }
+  },
+  {
+    "name": "wallI4",
+    "dimensions": { "width": 5, "height": 5, "depth": 0.5 },
+    "position": { "x": -7.25, "y": 2.5, "z": 11.25 },
+    "texture": "textures/wall.jpg",
+    "rotation": { "x": 0, "y": 1.5708, "z": 0 }
+  },
+  {
+    "name": "wallInterior5",
+    "dimensions": { "width": 5, "height": 5, "depth": 0.2 },
+    "position": { "x": 15, "y": 2.5, "z": 2 },
+    "texture": "textures/wall1.jpg",
+    "rotation": { "x": 0, "y": 0, "z": 0 }
+  },
+  {
+    "name": "wallInterior6",
+    "dimensions": { "width": 8, "height": 5, "depth": 0.2 },
+    "position": { "x": 10, "y": 2.5, "z": -2 },
+    "texture": "textures/wall1.jpg",
+    "rotation": { "x": 0, "y": 1.5708, "z": 0 }
+  },
+  {
+    "name": "wallInterior7",
+    "dimensions": { "width": 8, "height": 5, "depth": 0.2 },
+    "position": { "x": 5, "y": 2.5, "z": -2 },
+    "texture": "textures/wall1.jpg",
+    "rotation": { "x": 0, "y": 1.5708, "z": 0 }
+  },
+  {
+    "name": "wallInterior8",
+    "dimensions": { "width": 8, "height": 5, "depth": 0.2 },
+    "position": { "x": 0, "y": 2.5, "z": 12 },
+    "texture": "textures/wall1.jpg",
+    "rotation": { "x": 0, "y": 1.5708, "z": 0 }
+  },
+  {
+    "name": "wallInterior9",
+    "dimensions": { "width": 8, "height": 5, "depth": 0.2 },
+    "position": { "x": 10, "y": 2.5, "z": 12 },
+    "texture": "textures/wall1.jpg",
+    "rotation": { "x": 0, "y": 1.5708, "z": 0 }
+  },
+  {
+    "name": "wallInterior10",
+    "dimensions": { "width": 8, "height": 5, "depth": 0.2 },
+    "position": { "x": 5, "y": 2.5, "z": 12 },
+    "texture": "textures/wall1.jpg",
+    "rotation": { "x": 0, "y": 1.5708, "z": 0 }
+  },
+  {
+    "name": "wallInterior11",
+    "dimensions": { "width": 5, "height": 5, "depth": 0.2 },
+    "position": { "x": 15, "y": 2.5, "z": 8 },
+    "texture": "textures/wall1.jpg",
+    "rotation": { "x": 0, "y": 0, "z": 0 }
+  },
+  {
+    "name": "wallInterior12",
+    "dimensions": { "width": 5, "height": 5, "depth": 0.2 },
+    "position": { "x": 5, "y": 2.5, "z": 8 },
+    "texture": "textures/wall1.jpg",
+    "rotation": { "x": 0, "y": 0, "z": 0 }
+  },
+  {
+    "name": "wallInterior13",
+    "dimensions": { "width": 5, "height": 5, "depth": 0.2 },
+    "position": { "x": -5, "y": 2.5, "z": 8 },
+    "texture": "textures/wall1.jpg",
+    "rotation": { "x": 0, "y": 0, "z": 0 }
+  },
+  {
+    "name": "wallInterior14",
+    "dimensions": { "width": 5, "height": 1, "depth": 0.2 },
+    "position": { "x": 0, "y": 4.5, "z": 8 },
+    "texture": "textures/wall.jpg",
+    "rotation": { "x": 0, "y": 0, "z": 0 }
+  },
+  {
+    "name": "wallInterior15",
+    "dimensions": { "width": 5, "height": 1, "depth": 0.2 },
+    "position": { "x": 10, "y": 4.5, "z": 8 },
+    "texture": "textures/wall.jpg",
+    "rotation": { "x": 0, "y": 0, "z": 0 }
+  },
+  {
+    "name": "wallInterior16",
+    "dimensions": { "width": 5, "height": 1, "depth": 0.2 },
+    "position": { "x": 0, "y": 4.5, "z": 2 },
+    "texture": "textures/wall.jpg",
+    "rotation": { "x": 0, "y": 0, "z": 0 }
+  },
+  {
+    "name": "wallInterior17",
+    "dimensions": { "width": 5, "height": 1, "depth": 0.2 },
+    "position": { "x": 10, "y": 4.5, "z": 2 },
+    "texture": "textures/wall.jpg",
+    "rotation": { "x": 0, "y": 0, "z": 0 }
+  }
+]

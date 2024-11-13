@@ -1,0 +1,82 @@
+[
+  {
+    "model": "models/hospital_bed.glb",
+    "position": { "x": -5, "y": 0, "z": -5 },
+    "scale": { "x": 2, "y": 2, "z": 2 }
+  },
+  {
+    "model": "models/hospital_bed.glb",
+    "position": { "x": 2.5, "y": 0, "z": -5 },
+    "scale": { "x": 2, "y": 2, "z": 2 }
+  },
+  {
+    "model": "models/hospital_bed.glb",
+    "position": { "x": 8, "y": 0, "z": -5 },
+    "scale": { "x": 2, "y": 2, "z": 2 }
+  },
+  {
+    "model": "models/hospital_bed.glb",
+    "position": { "x": 15, "y": 0, "z": -5 },
+    "scale": { "x": 2, "y": 2, "z": 2 }
+  },
+  {
+    "model": "models/hospital_bed.glb",
+    "position": { "x": -5, "y": 0, "z": 15 },
+    "scale": { "x": 2, "y": 2, "z": 2 }
+  },
+  {
+    "model": "models/hospital_bed.glb",
+    "position": { "x": 2, "y": 0, "z": 15 },
+    "scale": { "x": 2, "y": 2, "z": 2 }
+  },
+  {
+    "model": "models/hospital_bed.glb",
+    "position": { "x": 8, "y": 0, "z": 15 },
+    "scale": { "x": 2, "y": 2, "z": 2 }
+  },
+  {
+    "model": "models/hospital_bed.glb",
+    "position": { "x": 15, "y": 0, "z": 15 },
+    "scale": { "x": 2, "y": 2, "z": 2 }
+  },
+  {
+    "model": "models/hospital_door.glb",
+    "position": { "x": -1.3, "y": 0, "z": 2 },
+    "scale": { "x": 1.2, "y": 1.2, "z": 1.2 }
+  },
+  {
+    "model": "models/hospital_door.glb",
+    "position": { "x": 1.3, "y": 0, "z": 2 },
+    "scale": { "x": 1.2, "y": 1.2, "z": 1.2 }
+  },
+  {
+    "model": "models/hospital_door.glb",
+    "position": { "x": 8.75, "y": 0, "z": 2 },
+    "scale": { "x": 1.2, "y": 1.2, "z": 1.2 }
+  },
+  {
+    "model": "models/hospital_door.glb",
+    "position": { "x": 11.25, "y": 0, "z": 2 },
+    "scale": { "x": 1.2, "y": 1.2, "z": 1.2 }
+  },
+  {
+    "model": "models/hospital_door.glb",
+    "position": { "x": -1.3, "y": 0, "z": 8 },
+    "scale": { "x": 1.2, "y": 1.2, "z": 1.2 }
+  },
+  {
+    "model": "models/hospital_door.glb",
+    "position": { "x": 1.3, "y": 0, "z": 8 },
+    "scale": { "x": 1.2, "y": 1.2, "z": 1.2 }
+  },
+  {
+    "model": "models/hospital_door.glb",
+    "position": { "x": 8.75, "y": 0, "z": 8 },
+    "scale": { "x": 1.2, "y": 1.2, "z": 1.2 }
+  },
+  {
+    "model": "models/hospital_door.glb",
+    "position": { "x": 11.25, "y": 0, "z": 8 },
+    "scale": { "x": 1.2, "y": 1.2, "z": 1.2 }
+  }
+]

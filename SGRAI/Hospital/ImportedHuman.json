@@ -1,0 +1,50 @@
+[
+  {
+    "model": "models/human_body.glb",
+    "position": { "x": -3, "y": 2, "z": -5 },
+    "scale": { "x": 0.7, "y": 0.7, "z": 0.7 },
+    "rotation": { "x": -1.5708, "y": 0, "z": 1.5708 }
+  },
+  {
+    "model": "models/human_body.glb",
+    "position": { "x": 4, "y": 2, "z": -5 },
+    "scale": { "x": 0.7, "y": 0.7, "z": 0.7 },
+    "rotation": { "x": -1.5708, "y": 0, "z": 1.5708 }
+  },
+  {
+    "model": "models/human_body.glb",
+    "position": { "x": 9.5, "y": 2, "z": -5 },
+    "scale": { "x": 0.7, "y": 0.7, "z": 0.7 },
+    "rotation": { "x": -1.5708, "y": 0, "z": 1.5708 }
+  },
+  {
+    "model": "models/human_body.glb",
+    "position": { "x": 16.5, "y": 2, "z": -5 },
+    "scale": { "x": 0.7, "y": 0.7, "z": 0.7 },
+    "rotation": { "x": -1.5708, "y": 0, "z": 1.5708 }
+  },
+  {
+    "model": "models/human_body.glb",
+    "position": { "x": -3, "y": 2, "z": 15 },
+    "scale": { "x": 0.7, "y": 0.7, "z": 0.7 },
+    "rotation": { "x": -1.5708, "y": 0, "z": 1.5708 }
+  },
+  {
+    "model": "models/human_body.glb",
+    "position": { "x": 4, "y": 2, "z": 15 },
+    "scale": { "x": 0.7, "y": 0.7, "z": 0.7 },
+    "rotation": { "x": -1.5708, "y": 0, "z": 1.5708 }
+  },
+  {
+    "model": "models/human_body.glb",
+    "position": { "x": 9.5, "y": 2, "z": 15 },
+    "scale": { "x": 0.7, "y": 0.7, "z": 0.7 },
+    "rotation": { "x": -1.5708, "y": 0, "z": 1.5708 }
+  },
+  {
+    "model": "models/human_body.glb",
+    "position": { "x": 16.5, "y": 2, "z": 15 },
+    "scale": { "x": 0.7, "y": 0.7, "z": 0.7 },
+    "rotation": { "x": -1.5708, "y": 0, "z": 1.5708 }
+  }
+]
