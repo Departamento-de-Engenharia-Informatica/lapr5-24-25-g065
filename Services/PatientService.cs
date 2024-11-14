@@ -13,7 +13,7 @@ namespace DDDSample1.Domain.Patients
         private readonly IUnitOfWork unitOfWork;
         private readonly IPatientRepository patientRepository;
 
-        public PatientService(IUnitOfWork unitOfWork, IUserRepository userRepo, IPatientRepository patientRepo)
+        public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientRepo)
         {
             this.unitOfWork = unitOfWork;
             this.patientRepository = patientRepo;
@@ -32,9 +32,8 @@ namespace DDDSample1.Domain.Patients
                 patient.EmergencyContact,
                 patient.DateOfBirth,
                 patient.MedicalRecordNumber,
-                patient.UserId,
                 patient.PhoneNumber,
-                patient.Email // Include Email
+                patient.Email // Removed UserId
             )).ToList();
         }
 
@@ -51,9 +50,8 @@ namespace DDDSample1.Domain.Patients
                 patient.EmergencyContact,
                 patient.DateOfBirth,
                 patient.MedicalRecordNumber,
-                patient.UserId,
                 patient.PhoneNumber,
-                patient.Email // Include Email
+                patient.Email // Removed UserId
             );
         }
 
@@ -72,9 +70,8 @@ namespace DDDSample1.Domain.Patients
                 dto.EmergencyContact,
                 dto.DateOfBirth,
                 dto.MedicalRecordNumber,
-                dto.UserId,
                 dto.PhoneNumber,
-                dto.Email // Include Email
+                dto.Email // Removed UserId
             );
 
             await patientRepository.AddAsync(patient);
@@ -90,9 +87,8 @@ namespace DDDSample1.Domain.Patients
                 patient.EmergencyContact,
                 patient.DateOfBirth,
                 patient.MedicalRecordNumber,
-                patient.UserId,
                 patient.PhoneNumber,
-                patient.Email // Include Email
+                patient.Email // Removed UserId
             );
         }
 
@@ -112,9 +108,8 @@ namespace DDDSample1.Domain.Patients
                 dto.EmergencyContact,
                 dto.DateOfBirth,
                 dto.MedicalRecordNumber,
-                dto.UserId,
                 dto.PhoneNumber,
-                dto.Email // Pass Email from the DTO
+                dto.Email // Removed UserId
             );
 
             await unitOfWork.CommitAsync();
@@ -129,9 +124,8 @@ namespace DDDSample1.Domain.Patients
                 patient.EmergencyContact,
                 patient.DateOfBirth,
                 patient.MedicalRecordNumber,
-                patient.UserId,
                 patient.PhoneNumber,
-                patient.Email // Include Email
+                patient.Email // Removed UserId
             );
         }
 
@@ -153,9 +147,8 @@ namespace DDDSample1.Domain.Patients
                 patient.EmergencyContact,
                 patient.DateOfBirth,
                 patient.MedicalRecordNumber,
-                patient.UserId,
                 patient.PhoneNumber,
-                patient.Email // Include Email
+                patient.Email // Removed UserId
             );
         }
 
@@ -204,9 +197,8 @@ namespace DDDSample1.Domain.Patients
                     patient.EmergencyContact,
                     patient.DateOfBirth,
                     patient.MedicalRecordNumber,
-                    patient.UserId,
                     patient.PhoneNumber,
-                    patient.Email // Include Email
+                    patient.Email // Removed UserId
                 ))
                 .ToList();
 
