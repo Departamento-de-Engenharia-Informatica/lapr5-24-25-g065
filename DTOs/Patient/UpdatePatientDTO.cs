@@ -18,7 +18,6 @@ namespace DDDNetCore.DTOs.Patient
         // Fields from User class
         public string UserName { get; set; }
         public string Email { get; set; } // Email property already present
-        public Guid UserId { get; set; } // Add UserId property
 
         public string PhoneNumber { get; set; } // Added PhoneNumber
 

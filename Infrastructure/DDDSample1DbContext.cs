@@ -283,7 +283,7 @@ modelBuilder.Entity<OperationType>()
         .HasForeignKey(a => a.PatientId);
 }
 
-        private void ConfigurePatient(ModelBuilder modelBuilder)
+      private void ConfigurePatient(ModelBuilder modelBuilder)
 {
     modelBuilder.Entity<Patient>()
         .HasKey(p => p.Id);
@@ -359,6 +359,5 @@ modelBuilder.Entity<OperationType>()
         .HasIndex(p => p.PhoneNumber)
         .IsUnique();
 }
-        
     }
 }

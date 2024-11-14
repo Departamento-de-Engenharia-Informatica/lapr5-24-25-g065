@@ -15,7 +15,6 @@ namespace DDDSample1.Domain.Patients
         public List<string>? Allergies { get; private set; }
         public DateTime? DateOfBirth { get; private set; }
         public string MedicalRecordNumber { get; private set; }
-        public Guid UserId { get; private set; }
         public string Email { get; private set; } // New Email property
         public List<Appointment> AppointmentHistory { get; private set; } = new List<Appointment>(); // Renamed Navigation property
 
@@ -24,7 +23,7 @@ namespace DDDSample1.Domain.Patients
         public string EmergencyContact { get; set; }
 
         public Patient(string firstname, string lastName, string fullName, string gender, List<string>? allergies,
-                       string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber, Guid userId,
+                       string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber,
                        string phoneNumber, string email)
         {
             Id = new PatientId(Guid.NewGuid());
@@ -38,7 +37,6 @@ namespace DDDSample1.Domain.Patients
             PhoneNumber = phoneNumber ?? throw new ArgumentException("PhoneNumber cannot be null");
             DateOfBirth = dateOfBirth;
             MedicalRecordNumber = medicalRecordNumber ?? throw new ArgumentException("MedicalRecordNumber cannot be null");
-            UserId = userId;
             Email = email ?? throw new ArgumentException("Email cannot be null");
         }
 
@@ -56,7 +54,7 @@ namespace DDDSample1.Domain.Patients
 
         internal void Update(string firstname, string lastName, string fullName, string gender,
                              List<string>? allergies, string emergencyContact, DateTime? dateOfBirth,
-                             string medicalRecordNumber, Guid userId, string phoneNumber, string email)
+                             string medicalRecordNumber, string phoneNumber, string email)
         {
             Firstname = firstname ?? throw new ArgumentException("Firstname cannot be null");
             LastName = lastName ?? throw new ArgumentException("LastName cannot be null");
@@ -67,7 +65,6 @@ namespace DDDSample1.Domain.Patients
             PhoneNumber = phoneNumber ?? throw new ArgumentException("PhoneNumber cannot be null");
             DateOfBirth = dateOfBirth;
             MedicalRecordNumber = medicalRecordNumber ?? throw new ArgumentException("MedicalRecordNumber cannot be null");
-            UserId = userId;
             Email = email ?? throw new ArgumentException("Email cannot be null");
         }
     }

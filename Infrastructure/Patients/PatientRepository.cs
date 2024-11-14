@@ -49,12 +49,7 @@ namespace DDDSample1.Infrastructure.Patients
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Patient> GetByUserIDAsync(Guid userId)
-        {
-            return await _context.Patients
-                .FirstOrDefaultAsync(p => p.UserId == userId);
-        }
-
+       
         // Optional: Add a method to retrieve a patient by Email if needed
         public async Task<Patient> GetByEmailAsync(string email)
         {

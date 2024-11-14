@@ -46,8 +46,7 @@ namespace DDDSample1.Infrastructure.Patients
                 .IsRequired()
                 .HasMaxLength(50);
 
-            builder.Property(b => b.UserId)
-                .IsRequired();
+          
 
             builder.Property(b => b.Email) // Configure Email property
                 .IsRequired() // Set required if necessary

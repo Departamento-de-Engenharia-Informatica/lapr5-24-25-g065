@@ -13,13 +13,11 @@ namespace DDDNetCore.DTOs.Patient
         public string EmergencyContact { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public string MedicalRecordNumber { get; set; }
-        public Guid UserId { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; } // Added Email property
 
         public CreatePatientDTO(string firstname, string lastName, string fullName, string gender, List<string>? allergies,
-                                string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber,
-                                Guid userId, string phoneNumber, string email)
+                                string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber, string phoneNumber, string email)
         {
             Firstname = firstname;
             LastName = lastName;
@@ -29,7 +27,6 @@ namespace DDDNetCore.DTOs.Patient
             EmergencyContact = emergencyContact;
             DateOfBirth = dateOfBirth;
             MedicalRecordNumber = medicalRecordNumber;
-            UserId = userId;
             PhoneNumber = phoneNumber;
             Email = email ?? throw new ArgumentException("Email cannot be null"); // Initialize Email
         }
