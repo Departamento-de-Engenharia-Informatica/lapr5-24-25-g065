@@ -6,7 +6,7 @@ export interface User {
     Id: UserId;
     userName: string;
     email: string;
-    role: string;
+    role: number;
     password?: string;
 }
   

@@ -78,7 +78,8 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins("http://localhost:4200")
                                 .AllowAnyHeader()
-                                .AllowAnyMethod();
+                                .AllowAnyMethod()
+                                .AllowCredentials();
         }
     );
     options.AddPolicy("AllowSwaggerUI",
@@ -107,6 +108,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting(); // Ensure routing is in place before authentication
+app.UseCors("AllowLocalhostAngular");
 app.UseCors("AllowSwaggerUI");
 app.UseEndpoints(endpoints =>
 {

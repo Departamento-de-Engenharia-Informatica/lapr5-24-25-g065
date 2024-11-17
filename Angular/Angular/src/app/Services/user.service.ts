@@ -10,7 +10,7 @@ export class UserService {
     constructor(private http: HttpClient) { }
 
     getUsers() {
-      return this.http.get<User>('https://localhost:5001/api/User');
+      return this.http.get<User[]>('https://localhost:5001/api/Users');
     }
 
     getUserByEmail(email: string)  {

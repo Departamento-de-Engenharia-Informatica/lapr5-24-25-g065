@@ -1,0 +1,39 @@
+<div class="dashboard-container">
+    <h1>Admin Dashboard</h1>
+    
+    <div *ngIf="loading">Loading...</div>
+    
+    <div *ngIf="!loading">
+      <h2>User List</h2>
+      <table *ngIf="users.length > 0">
+        <thead>
+          <tr>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.userName }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              {{ user.role === 0 ? 'Admin' : 
+                 user.role === 1 ? 'Doctor' : 
+                 user.role === 2 ? 'Nurse' : 
+                 user.role === 3 ? 'Technician' : 
+                'Patient'' 
+              }}
+            </td>
+            
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="users.length === 0">
+        <p>No users found</p>
+      </div>
+    </div>
+  
+    <button (click)="logout()">Logout</button>
+  </div>
+  
