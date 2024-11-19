@@ -92,7 +92,7 @@ namespace DDDSample1.Domain.Patients
             );
         }
 
-        public async Task<PatientDto> UpdateAsync(UpdatePatientDTO dto)
+        public async Task<PatientDto> UpdateAsync(PatientId patientId, UpdatePatientDTO dto)
         {
             if (dto == null) throw new ArgumentException("Invalid patient data");
 
@@ -204,5 +204,37 @@ namespace DDDSample1.Domain.Patients
 
             return paginatedPatients;
         }
+        public async Task<PatientDto> GetPatientByEmailAsync(string email)
+{
+    if (string.IsNullOrWhiteSpace(email))
+    {
+        throw new ArgumentException("Email cannot be null or empty.", nameof(email));
+    }
+
+    var patients = await patientRepository.GetAllAsync();
+
+    // Filter by email
+    var patient = patients.FirstOrDefault(p => p.Email == email);
+
+    if (patient == null)
+    {
+        return null;
+    }
+
+    return new PatientDto(
+        patient.Id.AsGuid(),
+        patient.Firstname,
+        patient.LastName,
+        patient.FullName,
+        patient.Gender,
+        patient.Allergies,
+        patient.EmergencyContact,
+        patient.DateOfBirth,
+        patient.MedicalRecordNumber,
+        patient.PhoneNumber,
+        patient.Email
+    );
+}
+
     }
 }

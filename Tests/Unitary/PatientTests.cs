@@ -19,7 +19,6 @@ public class PatientTest
             emergencyContact,
             DateTime.Parse(dateOfBirth),
             medicalRecordNumber,
-            Guid.Parse(userId),
             "966966966", // PhoneNumber
             email
         );
@@ -33,7 +32,6 @@ public class PatientTest
         Assert.Equal(emergencyContact, patient.EmergencyContact);
         Assert.Equal(DateTime.Parse(dateOfBirth), patient.DateOfBirth);
         Assert.Equal(medicalRecordNumber, patient.MedicalRecordNumber);
-        Assert.Equal(Guid.Parse(userId), patient.UserId);
         Assert.Equal("966966966", patient.PhoneNumber);
         Assert.Equal(email, patient.Email);
     }
@@ -52,7 +50,6 @@ public class PatientTest
                 emergencyContact,
                 DateTime.Parse(dateOfBirth),
                 medicalRecordNumber,
-                Guid.Parse(userId),
                 "966966966", // PhoneNumber
                 email
             )

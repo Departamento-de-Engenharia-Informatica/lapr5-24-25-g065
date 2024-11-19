@@ -1,100 +1,158 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System;
 using System.Threading.Tasks;
-using DDDSample1.Domain.Shared;
+using TodoApi.Services;
 using DDDSample1.Domain.Patients;
 using DDDNetCore.DTOs.Patient;
+using System.Linq;
+using System;
 
-namespace DDDSample1.Controllers
+namespace TodoApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class PatientController : ControllerBase
     {
-        private readonly PatientService patientService;
+        private readonly AuthServicePatient _authServicePatient;
+        private readonly PatientService _patientService;
 
-        public PatientController(PatientService service)
+        public PatientController(AuthServicePatient authServicePatient, PatientService patientService)
         {
-            patientService = service;
+            _authServicePatient = authServicePatient;
+            _patientService = patientService;
         }
 
-        // GET: api/patient
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PatientDto>>> GetAll()
+        // POST: api/Patients/authenticate
+        [HttpPost("authenticate")]
+        public async Task<ActionResult<string>> AuthenticateUser()
         {
-            var patients = await patientService.GetAllAsync();
-            return Ok(patients);
+            var token = await _authServicePatient.AuthenticateUser();
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized("Authentication failed.");
+            }
+            return Ok(new { AccessToken = token });
         }
 
-        // GET: api/patient/{id}
+        // POST: api/Patients/register
+        [HttpPost("register")]
+        public async Task<IActionResult> RegisterPatient([FromBody] CreatePatientDTO model)
+        {
+            if (model == null)
+            {
+                return BadRequest("Patient details are required.");
+            }
+
+            try
+            {
+                var patientId = await _patientService.AddAsync(model);
+                return Ok(new { Message = "Patient registered successfully.", PatientId = patientId });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { Error = ex.Message });
+            }
+            catch
+            {
+                return StatusCode(500, "An error occurred while registering the patient.");
+            }
+        }
+
+        // PUT: api/Patients/update/{id}
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdatePatient(string id, [FromBody] UpdatePatientDTO model)
+        {
+            if (model == null)
+            {
+                return BadRequest("Patient update details are required.");
+            }
+
+            try
+            {
+                var patientId = new PatientId(id);
+                await _patientService.UpdateAsync(patientId, model);
+                return Ok(new { Message = "Patient updated successfully." });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { Error = ex.Message });
+            }
+            catch
+            {
+                return StatusCode(500, "An error occurred while updating the patient.");
+            }
+        }
+
+        // DELETE: api/Patients/delete/{id}
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeletePatient(string id)
+        {
+            try
+            {
+                var patientId = new PatientId(id);
+                await _patientService.DeleteAsync(patientId);
+                return Ok(new { Message = "Patient deleted successfully." });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { Error = ex.Message });
+            }
+            catch
+            {
+                return StatusCode(500, "An error occurred while deleting the patient.");
+            }
+        }
+
+        // GET: api/Patients/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<PatientDto>> GetById(Guid id)
-        {
-            var patient = await patientService.GetByIdAsync(new PatientId(id));
-            return patient == null ? NotFound() : Ok(patient);
-        }
-
-        // POST: api/patient
-        [HttpPost]
-        public async Task<ActionResult<PatientDto>> Create(CreatePatientDTO dto)
+        public async Task<IActionResult> GetPatient(string id)
         {
             try
             {
-                var patient = await patientService.AddAsync(dto);
-                return CreatedAtAction(nameof(GetById), new { id = patient.Id }, patient);
+                var patientId = new PatientId(id);
+                var patient = await _patientService.GetByIdAsync(patientId);
+                if (patient == null)
+                {
+                    return NotFound(new { Message = "Patient not found." });
+                }
+                return Ok(patient);
             }
-            catch (BusinessRuleValidationException ex)
+            catch
             {
-                return BadRequest(new { Message = ex.Message });
+                return StatusCode(500, "An error occurred while retrieving the patient.");
             }
         }
 
-        // PUT: api/patient/{id}
-        [HttpPut("{id}")]
-        public async Task<ActionResult<PatientDto>> Update(Guid id, UpdatePatientDTO dto)
+        // GET: api/Patients/byEmail
+        [HttpGet("byEmail")]
+        public async Task<IActionResult> GetPatientByEmail([FromQuery] string email)
         {
-            if (id != dto.Id) return BadRequest("Patient ID mismatch.");
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return BadRequest(new { Message = "Email is required." });
+            }
 
             try
             {
-                var patient = await patientService.UpdateAsync(dto);
-                return patient == null ? NotFound() : Ok(patient);
-            }
-            catch (BusinessRuleValidationException ex)
-            {
-                return BadRequest(new { Message = ex.Message });
-            }
-        }
+                var patient = await _patientService.SearchPatientsAsync(
+                    name: null,
+                    dateOfBirth: null,
+                    medicalRecordNumber: null,
+                    phoneNumber: null,
+                    email: email,
+                    pageNumber: 1,
+                    pageSize: 1);
 
-        // DELETE: api/patient/{id}/hard
-        [HttpDelete("{id}/hard")]
-        public async Task<ActionResult<PatientDto>> HardDelete(Guid id)
-        {
-            try
-            {
-                var patient = await patientService.DeleteAsync(new PatientId(id));
-                return patient == null ? NotFound() : Ok(patient);
-            }
-            catch (BusinessRuleValidationException ex)
-            {
-                return BadRequest(new { Message = ex.Message });
-            }
-        }
+                if (patient == null || patient.Count == 0)
+                {
+                    return NotFound(new { Message = "Patient not found." });
+                }
 
-        // GET: api/patient/search
-        [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<PatientDto>>> SearchPatients(
-            [FromQuery] string name = null,
-            [FromQuery] DateTime? dateOfBirth = null,
-            [FromQuery] string medicalRecordNumber = null,
-            [FromQuery] string phoneNumber = null,
-            [FromQuery] string email = null, // Add email parameter
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10)
-        {
-            var patients = await patientService.SearchPatientsAsync(name, dateOfBirth, medicalRecordNumber, phoneNumber, email, pageNumber, pageSize);
-            return Ok(patients);
+                return Ok(patient.First());
+            }
+            catch
+            {
+                return StatusCode(500, "An error occurred while retrieving the patient.");
+            }
         }
     }
 }
