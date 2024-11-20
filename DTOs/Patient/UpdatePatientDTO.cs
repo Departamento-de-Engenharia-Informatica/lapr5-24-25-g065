@@ -20,8 +20,5 @@ namespace DDDNetCore.DTOs.Patient
         public string Email { get; set; } // Email property already present
 
         public string PhoneNumber { get; set; } // Added PhoneNumber
-
-        // Optional: Add properties for tracking additional verification if needed
-        public bool EmailVerificationRequired { get; set; }
     }
 }

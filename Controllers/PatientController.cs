@@ -40,7 +40,7 @@ namespace TodoApi.Controllers
         {
             if (model == null)
             {
-                return BadRequest("Patient details are required.");
+                return BadRequest(new { Message = "Patient details are required." });
             }
 
             try
@@ -52,9 +52,9 @@ namespace TodoApi.Controllers
             {
                 return BadRequest(new { Error = ex.Message });
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while registering the patient.");
+                return StatusCode(500, $"An error occurred while registering the patient: {ex.Message}");
             }
         }
 
@@ -64,7 +64,7 @@ namespace TodoApi.Controllers
         {
             if (model == null)
             {
-                return BadRequest("Patient details are required.");
+                return BadRequest(new { Message = "Patient details are required." });
             }
 
             try
@@ -76,9 +76,9 @@ namespace TodoApi.Controllers
             {
                 return BadRequest(new { Error = ex.Message });
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while adding the patient.");
+                return StatusCode(500, $"An error occurred while adding the patient: {ex.Message}");
             }
         }
 
@@ -91,9 +91,9 @@ namespace TodoApi.Controllers
                 var patients = await _patientService.GetAllAsync();
                 return Ok(patients);
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while retrieving the patients.");
+                return StatusCode(500, $"An error occurred while retrieving the patients: {ex.Message}");
             }
         }
 
@@ -103,22 +103,22 @@ namespace TodoApi.Controllers
         {
             if (model == null)
             {
-                return BadRequest("Patient update details are required.");
+                return BadRequest(new { Message = "Patient update details are required." });
             }
 
             try
             {
                 var patientId = new PatientId(id);
-                await _patientService.UpdateAsync(patientId, model);
-                return Ok(new { Message = "Patient updated successfully." });
+                var updatedPatient = await _patientService.UpdateAsync(patientId, model);
+                return Ok(new { Message = "Patient updated successfully.", Patient = updatedPatient });
             }
             catch (ArgumentException ex)
             {
                 return BadRequest(new { Error = ex.Message });
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while updating the patient.");
+                return StatusCode(500, $"An error occurred while updating the patient: {ex.Message}");
             }
         }
 
@@ -136,9 +136,9 @@ namespace TodoApi.Controllers
             {
                 return BadRequest(new { Error = ex.Message });
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while deleting the patient.");
+                return StatusCode(500, $"An error occurred while deleting the patient: {ex.Message}");
             }
         }
 
@@ -156,9 +156,9 @@ namespace TodoApi.Controllers
                 }
                 return Ok(patient);
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while retrieving the patient.");
+                return StatusCode(500, $"An error occurred while retrieving the patient: {ex.Message}");
             }
         }
 
@@ -189,9 +189,9 @@ namespace TodoApi.Controllers
 
                 return Ok(patient.First());
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while retrieving the patient.");
+                return StatusCode(500, $"An error occurred while retrieving the patient: {ex.Message}");
             }
         }
     }
