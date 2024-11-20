@@ -11,7 +11,7 @@ using System.Net.Http.Json;
 
 using Microsoft.Extensions.Configuration;
 
-namespace TodoApi.Services
+namespace DDDNetCore.Services
 {
     public class AuthServicePatient
     {

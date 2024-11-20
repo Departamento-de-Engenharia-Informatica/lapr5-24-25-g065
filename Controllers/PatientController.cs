@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using TodoApi.Services;
 using DDDSample1.Domain.Patients;
 using DDDNetCore.DTOs.Patient;
 using System.Linq;
+using System.Collections.Generic;
 using System;
+using DDDNetCore.Services;
 
 namespace TodoApi.Controllers
 {
@@ -54,6 +55,45 @@ namespace TodoApi.Controllers
             catch
             {
                 return StatusCode(500, "An error occurred while registering the patient.");
+            }
+        }
+
+        // POST: api/Patients
+        [HttpPost]
+        public async Task<IActionResult> AddPatient([FromBody] CreatePatientDTO model)
+        {
+            if (model == null)
+            {
+                return BadRequest("Patient details are required.");
+            }
+
+            try
+            {
+                var patient = await _patientService.AddAsync(model);
+                return CreatedAtAction(nameof(GetPatient), new { id = patient.Id }, patient);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { Error = ex.Message });
+            }
+            catch
+            {
+                return StatusCode(500, "An error occurred while adding the patient.");
+            }
+        }
+
+        // GET: api/Patients
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<PatientDto>>> GetAllPatients()
+        {
+            try
+            {
+                var patients = await _patientService.GetAllAsync();
+                return Ok(patients);
+            }
+            catch
+            {
+                return StatusCode(500, "An error occurred while retrieving the patients.");
             }
         }
 

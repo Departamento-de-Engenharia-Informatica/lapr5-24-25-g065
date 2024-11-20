@@ -22,75 +22,95 @@ namespace DDDSample1.Domain.Patients
         public async Task<List<PatientDto>> GetAllAsync()
         {
             var patients = await patientRepository.GetAllAsync();
-            return patients.Select(patient => new PatientDto(
-                patient.Id.AsGuid(),
-                patient.Firstname,
-                patient.LastName,
-                patient.FullName,
-                patient.Gender,
-                patient.Allergies,
-                patient.EmergencyContact,
-                patient.DateOfBirth,
-                patient.MedicalRecordNumber,
-                patient.PhoneNumber,
-                patient.Email // Removed UserId
-            )).ToList();
+            return patients.Select(patient => MapToPatientDto(patient)).ToList();
         }
 
         public async Task<PatientDto> GetByIdAsync(PatientId id)
         {
             var patient = await patientRepository.GetByIdAsync(id);
-            return patient == null ? null : new PatientDto(
-                patient.Id.AsGuid(),
-                patient.Firstname,
-                patient.LastName,
-                patient.FullName,
-                patient.Gender,
-                patient.Allergies,
-                patient.EmergencyContact,
-                patient.DateOfBirth,
-                patient.MedicalRecordNumber,
-                patient.PhoneNumber,
-                patient.Email // Removed UserId
-            );
+            return patient == null ? null : MapToPatientDto(patient);
         }
 
         public async Task<PatientDto> AddAsync(CreatePatientDTO dto)
-        {
-            if (dto == null) throw new ArgumentException("Invalid patient data");
+{
+    if (dto == null) 
+    {
+        Console.WriteLine("Error: The provided patient DTO is null.");
+        throw new ArgumentException("Invalid patient data", nameof(dto));
+    }
 
-            var allergies = dto.Allergies?.ToList();
+    Console.WriteLine("Starting the patient addition process.");
 
-            var patient = new Patient(
-                dto.Firstname,
-                dto.LastName,
-                dto.FullName,
-                dto.Gender,
-                allergies,
-                dto.EmergencyContact,
-                dto.DateOfBirth,
-                dto.MedicalRecordNumber,
-                dto.PhoneNumber,
-                dto.Email // Removed UserId
-            );
+    // Validate required fields
+    if (string.IsNullOrEmpty(dto.Firstname) || string.IsNullOrEmpty(dto.LastName))
+    {
+        throw new ArgumentException("First name and last name are required.");
+    }
 
-            await patientRepository.AddAsync(patient);
-            await unitOfWork.CommitAsync();
+    // Validate phone number and emergency contact
+    if (string.IsNullOrEmpty(dto.PhoneNumber) || string.IsNullOrEmpty(dto.EmergencyContact))
+    {
+        throw new ArgumentException("The phone number and emergency contact should be provided.");
+    }
 
-            return new PatientDto(
-                patient.Id.AsGuid(),
-                patient.Firstname,
-                patient.LastName,
-                patient.FullName,
-                patient.Gender,
-                patient.Allergies,
-                patient.EmergencyContact,
-                patient.DateOfBirth,
-                patient.MedicalRecordNumber,
-                patient.PhoneNumber,
-                patient.Email // Removed UserId
-            );
-        }
+    // Validate gender
+    if (string.IsNullOrEmpty(dto.Gender))
+    {
+        throw new ArgumentException("The gender should be provided.");
+    }
+
+
+    // Create a new patient instance with the provided DTO
+    var allergies = dto.Allergies?.ToList();
+    var patient = new Patient(
+        dto.Firstname,
+        dto.LastName,
+        dto.FullName,
+        dto.Gender,
+        allergies,
+        dto.EmergencyContact,
+        dto.DateOfBirth,
+        dto.MedicalRecordNumber,
+        dto.PhoneNumber,
+        dto.Email
+    );
+
+    try
+    {
+        // Log the created patient object to ensure it's constructed properly
+        Console.WriteLine($"Patient object created: {patient.FullName}, {patient.Email}");
+
+        // Add patient to the repository
+        await patientRepository.AddAsync(patient);
+        await unitOfWork.CommitAsync();
+
+        // Log success
+        Console.WriteLine($"Patient successfully added: {patient.FullName}");
+
+        return new PatientDto(
+            patient.Id.AsGuid(),
+            patient.Firstname,
+            patient.LastName,
+            patient.FullName,
+            patient.Gender,
+            patient.Allergies,
+            patient.EmergencyContact,
+            patient.DateOfBirth,
+            patient.MedicalRecordNumber,
+            patient.PhoneNumber,
+            patient.Email
+        );
+    }
+    catch (Exception ex)
+    {
+        // Log detailed exception information
+        Console.WriteLine($"Error occurred while adding patient: {ex.Message}");
+        Console.WriteLine(ex.StackTrace);
+
+        // Re-throw the exception with more context
+        throw new Exception("An error occurred while adding the patient. See inner exception for details.", ex);
+    }
+}
 
         public async Task<PatientDto> UpdateAsync(PatientId patientId, UpdatePatientDTO dto)
         {
@@ -109,24 +129,12 @@ namespace DDDSample1.Domain.Patients
                 dto.DateOfBirth,
                 dto.MedicalRecordNumber,
                 dto.PhoneNumber,
-                dto.Email // Removed UserId
+                dto.Email
             );
 
             await unitOfWork.CommitAsync();
 
-            return new PatientDto(
-                patient.Id.AsGuid(),
-                patient.Firstname,
-                patient.LastName,
-                patient.FullName,
-                patient.Gender,
-                patient.Allergies,
-                patient.EmergencyContact,
-                patient.DateOfBirth,
-                patient.MedicalRecordNumber,
-                patient.PhoneNumber,
-                patient.Email // Removed UserId
-            );
+            return MapToPatientDto(patient);
         }
 
         public async Task<PatientDto> DeleteAsync(PatientId id)
@@ -137,22 +145,17 @@ namespace DDDSample1.Domain.Patients
             await patientRepository.DeleteAsync(patient);
             await unitOfWork.CommitAsync();
 
-            return new PatientDto(
-                patient.Id.AsGuid(),
-                patient.Firstname,
-                patient.LastName,
-                patient.FullName,
-                patient.Gender,
-                patient.Allergies,
-                patient.EmergencyContact,
-                patient.DateOfBirth,
-                patient.MedicalRecordNumber,
-                patient.PhoneNumber,
-                patient.Email // Removed UserId
-            );
+            return MapToPatientDto(patient);
         }
 
-        public async Task<List<PatientDto>> SearchPatientsAsync(string name, DateTime? dateOfBirth, string medicalRecordNumber, string phoneNumber, string email, int pageNumber, int pageSize)
+        public async Task<List<PatientDto>> SearchPatientsAsync(
+            string name, 
+            DateTime? dateOfBirth, 
+            string medicalRecordNumber, 
+            string phoneNumber, 
+            string email, 
+            int pageNumber, 
+            int pageSize)
         {
             var patients = await patientRepository.GetAllAsync();
 
@@ -178,7 +181,6 @@ namespace DDDSample1.Domain.Patients
                 patients = patients.Where(p => p.PhoneNumber == phoneNumber).ToList();
             }
 
-            // Filter by email if provided
             if (!string.IsNullOrEmpty(email))
             {
                 patients = patients.Where(p => p.Email == email).ToList();
@@ -187,54 +189,40 @@ namespace DDDSample1.Domain.Patients
             var paginatedPatients = patients
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Select(patient => new PatientDto(
-                    patient.Id.AsGuid(),
-                    patient.Firstname,
-                    patient.LastName,
-                    patient.FullName,
-                    patient.Gender,
-                    patient.Allergies,
-                    patient.EmergencyContact,
-                    patient.DateOfBirth,
-                    patient.MedicalRecordNumber,
-                    patient.PhoneNumber,
-                    patient.Email // Removed UserId
-                ))
+                .Select(patient => MapToPatientDto(patient))
                 .ToList();
 
             return paginatedPatients;
         }
+
         public async Task<PatientDto> GetPatientByEmailAsync(string email)
-{
-    if (string.IsNullOrWhiteSpace(email))
-    {
-        throw new ArgumentException("Email cannot be null or empty.", nameof(email));
-    }
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                throw new ArgumentException("Email cannot be null or empty.", nameof(email));
+            }
 
-    var patients = await patientRepository.GetAllAsync();
+            var patients = await patientRepository.GetAllAsync();
+            var patient = patients.FirstOrDefault(p => p.Email == email);
 
-    // Filter by email
-    var patient = patients.FirstOrDefault(p => p.Email == email);
+            return patient == null ? null : MapToPatientDto(patient);
+        }
 
-    if (patient == null)
-    {
-        return null;
-    }
-
-    return new PatientDto(
-        patient.Id.AsGuid(),
-        patient.Firstname,
-        patient.LastName,
-        patient.FullName,
-        patient.Gender,
-        patient.Allergies,
-        patient.EmergencyContact,
-        patient.DateOfBirth,
-        patient.MedicalRecordNumber,
-        patient.PhoneNumber,
-        patient.Email
-    );
-}
-
+        private PatientDto MapToPatientDto(Patient patient)
+        {
+            return new PatientDto(
+                patient.Id.AsGuid(),
+                patient.Firstname,
+                patient.LastName,
+                patient.FullName,
+                patient.Gender,
+                patient.Allergies,
+                patient.EmergencyContact,
+                patient.DateOfBirth,
+                patient.MedicalRecordNumber,
+                patient.PhoneNumber,
+                patient.Email // Removed UserId
+            );
+        }
     }
 }
