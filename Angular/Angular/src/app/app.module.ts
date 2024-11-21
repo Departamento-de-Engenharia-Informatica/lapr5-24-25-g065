@@ -19,10 +19,6 @@ import { AppRoutingModule } from './app-routing.module';
     UpdateStaffDialogComponent,
     DeleteStaffDialogComponent,
     AdminDashboardComponent,  
-  //  DoctorDashboardComponent,
-  //  NurseDashboardComponent,
-  //  TechnicianDashboardComponent,
-  //  PatientDashboardComponent
   ],
   imports: [
     BrowserModule,

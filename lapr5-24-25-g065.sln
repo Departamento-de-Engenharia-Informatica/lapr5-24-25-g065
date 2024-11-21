@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDNetCore", "DDDNetCore.csproj", "{34601E03-7363-46F2-97BB-B14BB66CFB69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDNetCore", "DDDNetCore.csproj", "{35E95125-CD63-407A-9D65-04107A2FAC14}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{34601E03-7363-46F2-97BB-B14BB66CFB69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{34601E03-7363-46F2-97BB-B14BB66CFB69}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{34601E03-7363-46F2-97BB-B14BB66CFB69}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{34601E03-7363-46F2-97BB-B14BB66CFB69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35E95125-CD63-407A-9D65-04107A2FAC14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35E95125-CD63-407A-9D65-04107A2FAC14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35E95125-CD63-407A-9D65-04107A2FAC14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35E95125-CD63-407A-9D65-04107A2FAC14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {13E623D3-3BD9-4ECE-A711-645BB79428F7}
+		SolutionGuid = {92B27AEC-A64D-4DB1-8CBA-C4F80C08C347}
 	EndGlobalSection
 EndGlobal

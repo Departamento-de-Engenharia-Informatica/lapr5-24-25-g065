@@ -23,7 +23,7 @@ using dddsample1.domain;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.UseUrls("http://10.9.10.65:5000", "https://10.9.10.65:5001");
+builder.WebHost.UseUrls("http://localhost:5000", "https://localhost:5001");
 
 // Add other services
 builder.Services.AddScoped<PatientService>();

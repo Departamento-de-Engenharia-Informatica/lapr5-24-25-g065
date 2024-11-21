@@ -11,11 +11,11 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/angular",
             "index": "src/index.html",
-            "browser": "src/main.ts",
+            "main": "src/main.ts", 
             "polyfills": [
               "zone.js"
             ],
@@ -45,12 +45,15 @@
                   "maximumError": "4kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "sourceMap": false,  
+              "optimization": true
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,  
+              "buildOptimizer": false
             }
           },
           "defaultConfiguration": "production"
