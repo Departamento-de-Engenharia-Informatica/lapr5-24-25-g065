@@ -8,11 +8,11 @@ import { PatientDashboardComponent } from './Dashboards/patient-dashboard/patien
 import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
+  { path: '', component: LoginComponent },
   { path: 'admin-dashboard', component: AdminDashboardComponent}, 
   { path: 'doctor-dashboard', component: DoctorDashboardComponent },
   { path: 'nurse-dashboard', component: NurseDashboardComponent },
   { path: 'technician-dashboard', component: TechnicianDashboardComponent },
   { path: 'patient-dashboard', component: PatientDashboardComponent },
-  { path: '', component: LoginComponent },
   { path: '**', component: LoginComponent }, // Redirect unknown routes to login
 ];

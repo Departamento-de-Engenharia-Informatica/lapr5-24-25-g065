@@ -29,6 +29,6 @@ import { AppRoutingModule } from './app-routing.module';
     ReactiveFormsModule
   ],
   providers: [],
-  bootstrap: [AppModule]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

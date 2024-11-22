@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SocialAuthService, GoogleSigninButtonModule, SocialUser } from '@abacritt/angularx-social-login';
-import { NavigationStart, Router } from '@angular/router';
+import { NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { UserService } from '../Services/user.service';
 import { User } from '../Interfaces/user';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-login',
   standalone: true,
   imports: [
     CommonModule,
-    GoogleSigninButtonModule
+    GoogleSigninButtonModule,
+    RouterOutlet
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
