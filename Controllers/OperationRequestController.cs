@@ -47,7 +47,7 @@ namespace DDDSample1.Controllers
 
         //POST: api/operationRequest
         [HttpPost]
-        public async Task<ActionResult<OperationRequestDTO>> AddAsync(OperationRequestDTO operationRequestDTO)
+        public async Task<ActionResult<OperationRequestDTO>> AddAsync(CreatingOperationRequestDTO operationRequestDTO)
         {
             try
             {

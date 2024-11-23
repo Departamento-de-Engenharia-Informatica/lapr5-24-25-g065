@@ -2,7 +2,10 @@
 using DDDNetCore.Domain.OperationRequestDomain;
 using DDDNetCore.DTOs.OperationRequest;
 using DDDNetCore.IRepos;
+using DDDSample1.Domain.OperationType;
+using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Shared;
+using DDDSample1.Domain.Staffs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,17 +36,38 @@ namespace DDDNetCore.Services
             return new OperationRequestDTO(operationRequest.Id.AsGuid(), operationRequest.patientID, operationRequest.doctorID, operationRequest.operationTypeID, operationRequest.operationDateTime.ToString(), operationRequest.deadline.ToString(), operationRequest.priority);
         }
 
-        public async Task<OperationRequestDTO> AddAsync(OperationRequestDTO operationRequestDTO)
+        public async Task<OperationRequestDTO> AddAsync(CreatingOperationRequestDTO operationRequestDTO)
         {
             var dateTimeAux = DateTime.Parse(operationRequestDTO.operationDateTime);
             var deadlineAux = DateTime.Parse(operationRequestDTO.deadline);
-            var operationRequest = new OperationRequest(operationRequestDTO.patientID, operationRequestDTO.doctorID, operationRequestDTO.operationTypeID, dateTimeAux, deadlineAux, operationRequestDTO.priority);
+            var operationRequest = 
+            new OperationRequest(
+                new PatientId(operationRequestDTO.patientID),
+                new StaffId(operationRequestDTO.doctorID), 
+                new OperationTypeID(operationRequestDTO.operationTypeID), 
+                dateTimeAux,
+                deadlineAux, 
+                operationRequestDTO.priority
+              );
 
             await operationRequestRepository.AddAsync(operationRequest);
             await unitOfWork.CommitAsync();
-            return operationRequestDTO;
+            return CreatefOperationRequestDto(operationRequest);
         }
 
+        private OperationRequestDTO CreatefOperationRequestDto(OperationRequest operationRequest)
+        {
+            return new OperationRequestDTO(
+                operationRequest.Id.AsGuid(),
+                operationRequest.patientID,
+                operationRequest.doctorID,
+                operationRequest.operationTypeID,
+                operationRequest.operationDateTime.ToString(),
+                operationRequest.deadline.ToString(),
+                operationRequest.priority
+            );
+
+        }
         public async Task<OperationRequestDTO> UpdateAsync(OperationRequestDTO operationRequestDTO)
         {
             if (operationRequestDTO == null) throw new ArgumentException("Invalid Operation Request data");
