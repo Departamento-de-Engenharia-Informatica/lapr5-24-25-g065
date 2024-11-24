@@ -13,9 +13,11 @@ export class OperationDetailDialogComponent {
   onDelete(): void {
     this.deleteOperation();
   }
+  onClose(): void {
+  }
 
   deleteOperation() {
-    const deleteUrl = `https://localhost:5001/api/operationRequest/${this.data.id}/hard`; // Replace with your actual delete endpoint
+    const deleteUrl = `https://10.9.10.65/api/operationRequest/${this.data.id}/hard`; // Replace with your actual delete endpoint
   
     this.http.delete(deleteUrl).subscribe({
       next: () => {
