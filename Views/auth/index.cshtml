@@ -1,0 +1,11 @@
+@{
+    ViewData["Title"] = "Authenticate with Google";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>Click the button below to authenticate with Google.</p>
+
+<form method="get" asp-action="Authenticate" asp-controller="Auth">
+    <button type="submit" class="btn btn-primary">Authenticate with Google</button>
+</form>
