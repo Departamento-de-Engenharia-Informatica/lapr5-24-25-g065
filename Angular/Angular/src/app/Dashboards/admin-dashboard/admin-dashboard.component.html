@@ -4,6 +4,8 @@
   <!-- Button is displayed if showStaffList is false -->
   <button (click)="loadStaffs()">Staff Management</button>
 </div>
+<!-- Register New Patient Button -->
+<button (click)="onShowPatientRegistrationForm()">Register New Patient</button>
 
 <div *ngIf="showStaffList">
   <!-- Staff list is displayed if showStaffList is true -->
