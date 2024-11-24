@@ -6,10 +6,10 @@ import { PatientId } from '../Services/patient.service';
 
 
 export interface OperationRequest {
-    Id: OperationRequestId;
-    patientId: PatientId;
-    doctorId:StaffId;
-    operationType:OperationRequestId;
+    id: { value: string };
+    patientID: { value: string };
+    doctorID: { value: string };
+    operationTypeID: { value: string };
     operationDateTime: string;
     deadline:string;
     priority: number ;
