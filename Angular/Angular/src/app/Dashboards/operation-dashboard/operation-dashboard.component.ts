@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { OperationRequestService } from '../../Services/operationRequest.service';
+import { MatDialog } from '@angular/material/dialog';
+import { OperationRequestDialogComponent } from '../operation-request-dialog/operation-request-dialog.component';
 
 
 @Component({
@@ -14,8 +16,20 @@ export class OperationDashboardComponent implements OnInit {
   loading: boolean = true;
   error: string | null = null;
 
-  constructor(private operationService: OperationRequestService) {}
+  constructor(private operationService: OperationRequestService,private dialog: MatDialog) {}
+  
+  openAddOperationDialog(): void {
+    const dialogRef = this.dialog.open(OperationRequestDialogComponent, {
+      width: '400px'
+    });
 
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.operations.push(result); // Add the new operation to the list
+        // Optionally, call an API to save the operation request
+      }
+    });
+  }
   ngOnInit(): void {
     this.operationService.getAllOperationRequest().subscribe({
       next: (data) => {

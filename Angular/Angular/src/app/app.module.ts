@@ -15,6 +15,11 @@ import { PatientDashboardComponent } from './Dashboards/patient-dashboard/patien
 import { AppRoutingModule } from './app-routing.module';
 import { OperationDashboardComponent } from './Dashboards/operation-dashboard/operation-dashboard.component';
 import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+
+import { OperationRequestDialogComponent } from './Dashboards/operation-request-dialog/operation-request-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -22,6 +27,7 @@ import { FormsModule } from '@angular/forms';
     DeleteStaffDialogComponent,
     AdminDashboardComponent,  
     OperationDashboardComponent,
+    OperationRequestDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -31,6 +37,12 @@ import { FormsModule } from '@angular/forms';
     MatSelectModule, 
     ReactiveFormsModule,
     FormsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
