@@ -17,21 +17,22 @@ namespace DDDNetCore.DTOs.Patient
         public string PhoneNumber { get; private set; }
         public string Email { get; private set; } // Added Email property
 
-        public PatientDto(Guid id, string firstname, string lastName, string fullName, string gender, List<string>? allergies,
-                          string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber,
-                           string phoneNumber, string email)
-        {
-            Id = id;
-            Firstname = firstname;
-            LastName = lastName;
-            FullName = fullName;
-            Gender = gender;
-            Allergies = allergies;
-            EmergencyContact = emergencyContact;
-            DateOfBirth = dateOfBirth;
-            MedicalRecordNumber = medicalRecordNumber;
-            PhoneNumber = phoneNumber;
-            Email = email ?? throw new ArgumentException("Email cannot be null"); // Initialize Email
-        }
+       public PatientDto(Guid id, string firstname, string lastName, string fullName, string gender, List<string>? allergies,
+                  string emergencyContact, DateTime? dateOfBirth, string medicalRecordNumber,
+                  string phoneNumber, string email)
+{
+    Id = id;
+    Firstname = firstname ?? throw new ArgumentException("Firstname cannot be null");
+    LastName = lastName ?? throw new ArgumentException("LastName cannot be null");
+    FullName = fullName ?? throw new ArgumentException("FullName cannot be null");
+    Gender = gender ?? throw new ArgumentException("Gender cannot be null");
+    Allergies = allergies ?? new List<string>();
+    EmergencyContact = emergencyContact ?? throw new ArgumentException("EmergencyContact cannot be null");
+    DateOfBirth = dateOfBirth;
+    MedicalRecordNumber = medicalRecordNumber ?? throw new ArgumentException("MedicalRecordNumber cannot be null");
+    PhoneNumber = phoneNumber ?? throw new ArgumentException("PhoneNumber cannot be null");
+    Email = email ?? throw new ArgumentException("Email cannot be null");
+}
+
     }
 }

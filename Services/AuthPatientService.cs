@@ -8,7 +8,6 @@ using DDDSample1.Domain.Shared;
 using System.Net;
 using System.IO;
 using System.Net.Http.Json;
-
 using Microsoft.Extensions.Configuration;
 
 namespace DDDNetCore.Services
@@ -27,9 +26,10 @@ namespace DDDNetCore.Services
             _patientService = patientService;
 
             // Retrieve values from configuration
-            _googleClientId = configuration["Authentication:Google:ClientId"];
-            _googleClientSecret = configuration["Authentication:Google:ClientSecret"];
-            _redirectUri = configuration["Authentication:Google:RedirectUri"];
+            var googleKeys = configuration.GetSection("GoogleKeys");
+            _googleClientId = googleKeys["ClientId"];
+            _googleClientSecret = googleKeys["ClientSecret"];
+            _redirectUri = googleKeys["RedirectUri"];
         }
 
         public async Task<string?> AuthenticateUser()

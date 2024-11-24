@@ -13,28 +13,27 @@ namespace TodoApi.Controllers
     [ApiController]
     public class PatientController : ControllerBase
     {
-        private readonly AuthServicePatient _authServicePatient;
         private readonly PatientService _patientService;
+        
+private readonly AuthServicePatient _authServicePatient;
 
-        public PatientController(AuthServicePatient authServicePatient, PatientService patientService)
-        {
-            _authServicePatient = authServicePatient;
-            _patientService = patientService;
-        }
+public PatientController(AuthServicePatient authServicePatient, PatientService patientService)
+{
+    _authServicePatient = authServicePatient;
+    _patientService = patientService;
+}
 
-        // POST: api/Patients/authenticate
-        [HttpPost("authenticate")]
-        public async Task<ActionResult<string>> AuthenticateUser()
-        {
-            var token = await _authServicePatient.AuthenticateUser();
-            if (string.IsNullOrEmpty(token))
-            {
-                return Unauthorized("Authentication failed.");
-            }
-            return Ok(new { AccessToken = token });
-        }
+       [HttpPost("authenticate")]
+public async Task<ActionResult<string>> AuthenticateUser()
+{
+    var token = await _authServicePatient.AuthenticateUser();
+    if (string.IsNullOrEmpty(token))
+    {
+        return Unauthorized("Authentication failed.");
+    }
+    return Ok(new { AccessToken = token });
+}
 
-        // POST: api/Patients/register
         [HttpPost("register")]
         public async Task<IActionResult> RegisterPatient([FromBody] CreatePatientDTO model)
         {
@@ -58,46 +57,26 @@ namespace TodoApi.Controllers
             }
         }
 
-        // POST: api/Patients
-        [HttpPost]
-        public async Task<IActionResult> AddPatient([FromBody] CreatePatientDTO model)
+   [HttpGet]
+public async Task<ActionResult> GetAllPatients()
+{
+    try
+    {
+        var patients = await _patientService.GetAllAsync();
+        if (patients == null || !patients.Any())
         {
-            if (model == null)
-            {
-                return BadRequest(new { Message = "Patient details are required." });
-            }
-
-            try
-            {
-                var patient = await _patientService.AddAsync(model);
-                return CreatedAtAction(nameof(GetPatient), new { id = patient.Id }, patient);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { Error = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"An error occurred while adding the patient: {ex.Message}");
-            }
+            return NotFound(new { Message = "No patients found." });
         }
 
-        // GET: api/Patients
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PatientDto>>> GetAllPatients()
-        {
-            try
-            {
-                var patients = await _patientService.GetAllAsync();
-                return Ok(patients);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"An error occurred while retrieving the patients: {ex.Message}");
-            }
-        }
+        return Ok(new { Data = patients });
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, new { Error = ex.Message });
+    }
+}
 
-        // PUT: api/Patients/update/{id}
+
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdatePatient(string id, [FromBody] UpdatePatientDTO model)
         {
@@ -108,8 +87,7 @@ namespace TodoApi.Controllers
 
             try
             {
-                var patientId = new PatientId(id);
-                var updatedPatient = await _patientService.UpdateAsync(patientId, model);
+                var updatedPatient = await _patientService.UpdateAsync(new PatientId(id), model);
                 return Ok(new { Message = "Patient updated successfully.", Patient = updatedPatient });
             }
             catch (ArgumentException ex)
@@ -122,14 +100,12 @@ namespace TodoApi.Controllers
             }
         }
 
-        // DELETE: api/Patients/delete/{id}
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeletePatient(string id)
         {
             try
             {
-                var patientId = new PatientId(id);
-                await _patientService.DeleteAsync(patientId);
+                await _patientService.DeleteAsync(new PatientId(id));
                 return Ok(new { Message = "Patient deleted successfully." });
             }
             catch (ArgumentException ex)
@@ -142,14 +118,12 @@ namespace TodoApi.Controllers
             }
         }
 
-        // GET: api/Patients/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPatient(string id)
         {
             try
             {
-                var patientId = new PatientId(id);
-                var patient = await _patientService.GetByIdAsync(patientId);
+                var patient = await _patientService.GetByIdAsync(new PatientId(id));
                 if (patient == null)
                 {
                     return NotFound(new { Message = "Patient not found." });
@@ -162,7 +136,6 @@ namespace TodoApi.Controllers
             }
         }
 
-        // GET: api/Patients/byEmail
         [HttpGet("byEmail")]
         public async Task<IActionResult> GetPatientByEmail([FromQuery] string email)
         {
@@ -173,21 +146,13 @@ namespace TodoApi.Controllers
 
             try
             {
-                var patient = await _patientService.SearchPatientsAsync(
-                    name: null,
-                    dateOfBirth: null,
-                    medicalRecordNumber: null,
-                    phoneNumber: null,
-                    email: email,
-                    pageNumber: 1,
-                    pageSize: 1);
-
-                if (patient == null || patient.Count == 0)
+                var patient = await _patientService.GetPatientByEmailAsync(email);
+                if (patient == null)
                 {
                     return NotFound(new { Message = "Patient not found." });
                 }
 
-                return Ok(patient.First());
+                return Ok(patient);
             }
             catch (Exception ex)
             {

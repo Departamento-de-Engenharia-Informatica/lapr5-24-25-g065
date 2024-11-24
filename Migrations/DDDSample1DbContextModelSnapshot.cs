@@ -173,9 +173,6 @@ namespace DDDNetCore.Migrations
                         .HasColumnType("varchar(15)")
                         .HasColumnName("PhoneNumber");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
