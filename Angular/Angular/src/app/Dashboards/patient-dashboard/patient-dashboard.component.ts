@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PatientService } from '../../Services/patient.service';
 import { Router } from '@angular/router';
+import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-patient-dashboard',
@@ -10,26 +12,40 @@ import { Router } from '@angular/router';
 export class PatientDashboardComponent implements OnInit {
   patient: any;
 
-  constructor(private patientService: PatientService, private router: Router) {}
+  constructor(
+    private patientService: PatientService,
+    private router: Router,
+    private authService: SocialAuthService // Injecting authService to get the logged-in user
+  ) {}
 
   ngOnInit(): void {
-    this.loadPatientData();
+    this.authService.authState.subscribe(async (user: SocialUser) => {
+      if (user) {
+        // Now use the email from the logged-in user
+        await this.loadPatientData(user.email);
+      } else {
+        console.log('No user logged in.');
+      }
+    });
   }
 
-  loadPatientData(): void {
-    this.patientService.getPatientProfile().subscribe(
-      (data: any) => { // Explicitly type 'data' as 'any'
+  // Load patient data by email
+  loadPatientData(email: string): void {
+    this.patientService.getPatientByEmail(email).subscribe(
+      (data: any) => {  // You can replace 'any' with a proper type like 'Patient'
         this.patient = data;
       },
-      (error: any) => { // Explicitly type 'error' as 'any'
+      (error: any) => {  // You can replace 'any' with a more specific error type
         console.error('Error loading patient data', error);
       }
     );
   }
 
   updateProfile(): void {
-    this.router.navigate(['/patient/update']);
+    // Navigate to update profile and pass the patient ID as a route parameter
+    this.router.navigate(['/patient/update', this.patient.id]);
   }
+  
 
   deleteProfile(): void {
     if (confirm('Are you sure you want to delete your profile?')) {
@@ -39,7 +55,7 @@ export class PatientDashboardComponent implements OnInit {
           alert('Profile deleted');
           this.router.navigate(['/login']);
         },
-        (error: any) => { // Explicitly type 'error' as 'any'
+        (error: any) => {  // Explicitly type 'error' as 'any'
           console.error('Error deleting profile', error);
         }
       );
