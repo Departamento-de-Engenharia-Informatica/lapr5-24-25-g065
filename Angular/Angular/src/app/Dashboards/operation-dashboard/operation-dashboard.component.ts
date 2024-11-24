@@ -3,6 +3,7 @@ import { OnInit } from '@angular/core';
 import { OperationRequestService } from '../../Services/operationRequest.service';
 import { MatDialog } from '@angular/material/dialog';
 import { OperationRequestDialogComponent } from '../operation-request-dialog/operation-request-dialog.component';
+import { OperationDetailDialogComponent } from '../operation-detail-dialog/operation-detail-dialog.component';
 
 
 @Component({
@@ -17,6 +18,18 @@ export class OperationDashboardComponent implements OnInit {
   error: string | null = null;
 
   constructor(private operationService: OperationRequestService,private dialog: MatDialog) {}
+
+  openOperationDetailsDialog(operation: any) {
+    const dialogRef = this.dialog.open(OperationDetailDialogComponent, {
+      width: '500px',
+      data: operation // Pass the selected operation data to the dialog
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      // You can handle the result here if needed
+    });
+  }
   
   openAddOperationDialog(): void {
     const dialogRef = this.dialog.open(OperationRequestDialogComponent, {

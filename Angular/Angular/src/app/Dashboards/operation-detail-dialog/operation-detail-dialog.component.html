@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Operation Request Details</h2>
+<div mat-dialog-content>
+  <p><strong>ID:</strong> {{ data.id }}</p>
+  <p><strong>Patient ID:</strong> {{ data.patientID.value }}</p>
+  <p><strong>Doctor ID:</strong> {{ data.doctorID.value }}</p>
+  <p><strong>Operation Type ID:</strong> {{ data.operationTypeID.value }}</p>
+  <p><strong>Operation Date & Time:</strong> {{ data.operationDateTime }}</p>
+  <p><strong>Deadline:</strong> {{ data.deadline}}</p>
+  <p><strong>Priority:</strong> {{ data.priority }}</p>
+</div>
+<div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-button color="warn" (click)="onDelete()">Delete</button>
+  </div>

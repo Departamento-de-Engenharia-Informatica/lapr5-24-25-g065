@@ -17,7 +17,7 @@ import { OperationDashboardComponent } from './Dashboards/operation-dashboard/op
 import { FormsModule } from '@angular/forms';
 import { OperationRequestDialogComponent } from './Dashboards/operation-request-dialog/operation-request-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatInputModule } from '@angular/material/input';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,7 +38,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatDialogModule,
     MatFormFieldModule,
     MatButtonModule,
-
+    MatInputModule,
     
   ],
   providers: [],
