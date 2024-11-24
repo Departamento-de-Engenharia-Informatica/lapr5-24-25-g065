@@ -13,12 +13,15 @@ import { NurseDashboardComponent } from './Dashboards/nurse-dashboard/nurse-dash
 import { TechnicianDashboardComponent } from './Dashboards/technician-dashboard/technician-dashboard.component';
 import { PatientDashboardComponent } from './Dashboards/patient-dashboard/patient-dashboard.component';
 import { AppRoutingModule } from './app-routing.module';
+import { OperationDashboardComponent } from './Dashboards/operation-dashboard/operation-dashboard.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     UpdateStaffDialogComponent,
     DeleteStaffDialogComponent,
     AdminDashboardComponent,  
+    OperationDashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,7 +29,8 @@ import { AppRoutingModule } from './app-routing.module';
     MatDialogModule,
     MatFormFieldModule,
     MatSelectModule, 
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
