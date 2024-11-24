@@ -12,13 +12,18 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./register-patient.component.css']
 })
 export class RegisterPatientComponent implements OnInit {
-  patient: CreatePatientDTO = { // Initialize patient as an object matching the interface
+  patient: CreatePatientDTO = { 
     firstname: '',
     lastname: '',
-    email: '',
-    phone: ''
-    // Initialize other properties as needed
-  };
+    fullName: '',  // Assuming fullName is a combination of firstname and lastname
+    gender: '',  // Initialize gender
+    allergies: [],  // Defaulting to an empty array for allergies
+    emergencyContact: '',  // Initialize emergency contact
+    dateOfBirth:'',  // Nullable DateTime, initialize to null
+    medicalRecordNumber: '',  // Initialize medical record number
+    phoneNumber: '',  // Initialize phone number
+    email: ''  // Initialize email
+  };  
   errorMessage: string | null = null;
 
   constructor(private patientService: PatientService, private router: Router) {}

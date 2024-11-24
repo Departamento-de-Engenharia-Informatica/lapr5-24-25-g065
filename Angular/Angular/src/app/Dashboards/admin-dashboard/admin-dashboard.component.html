@@ -1,46 +1,91 @@
 <h1>Admin Dashboard</h1>
+
 <div *ngIf="!showStaffList">
-    <!-- Button is displayed if showStaffList is false -->
-    <button (click)="loadStaffs()">Staff Management</button>
+  <!-- Button is displayed if showStaffList is false -->
+  <button (click)="loadStaffs()">Staff Management</button>
+</div>
+
+<div *ngIf="showStaffList">
+  <!-- Staff list is displayed if showStaffList is true -->
+  <button (click)="onCreate()">Register Staff Member</button>
+  <button (click)="onShowPatientRegistrationForm()">Register New Patient</button> <!-- Add button to show patient registration form -->
+
+  <div *ngIf="loading">Loading staff list...</div>
+  <div *ngIf="error">{{ error }}</div>
+
+  <!-- Patient registration form -->
+  <div *ngIf="showPatientRegistrationForm">
+    <h2>Register New Patient</h2>
+    <form (ngSubmit)="onRegisterPatient()">
+      <label for="firstname">First Name:</label>
+      <input id="firstname" [(ngModel)]="patientData.firstname" name="firstname" required>
+
+      <label for="lastname">Last Name:</label>
+      <input id="lastname" [(ngModel)]="patientData.lastname" name="lastname" required>
+
+      <label for="fullName">Full Name:</label>
+      <input id="fullName" [(ngModel)]="patientData.fullName" name="fullName" required>
+
+      <label for="gender">Gender:</label>
+      <select id="gender" [(ngModel)]="patientData.gender" name="gender" required>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label for="email">Email:</label>
+      <input id="email" [(ngModel)]="patientData.email" name="email" required>
+
+      <label for="phoneNumber">Phone Number:</label>
+      <input id="phoneNumber" [(ngModel)]="patientData.phoneNumber" name="phoneNumber" required>
+
+      <label for="dateOfBirth">Date of Birth:</label>
+      <input id="dateOfBirth" type="date" [(ngModel)]="patientData.dateOfBirth" name="dateOfBirth" required>
+
+      <label for="allergies">Allergies:</label>
+      <input id="allergies" [(ngModel)]="patientData.allergies" name="allergies">
+
+      <label for="emergencyContact">Emergency Contact:</label>
+      <input id="emergencyContact" [(ngModel)]="patientData.emergencyContact" name="emergencyContact" required>
+
+      <label for="medicalRecordNumber">Medical Record Number:</label>
+      <input id="medicalRecordNumber" [(ngModel)]="patientData.medicalRecordNumber" name="medicalRecordNumber" required>
+
+      <button type="submit" [disabled]="loading">Register Patient</button>
+    </form>
   </div>
-  
-  <div *ngIf="showStaffList">
-    <!-- Staff list is displayed if showStaffList is true -->
-    <button (click)="onCreate()">Register Staff Member</button>
-    <div *ngIf="loading">Loading staff list...</div>
-    <div *ngIf="error">{{ error }}</div>
-    <table *ngIf="!loading && staffs.length > 0">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Full Name</th>
-          <th>Gender</th>
-          <th>Specialization</th>
-          <th>Phone Number</th>
-          <th>Email</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let staff of staffs; let i = index">
-          <!-- Use the correct property names that match the response -->
-          <td>{{ staff.Id }}</td>
-          <td>{{ staff.FirstName }}</td>
-          <td>{{ staff.LastName }}</td>
-          <td>{{ staff.FullName }}</td>
-          <td>{{ staff.Gender }}</td>
-          <td>{{ staff.Specialization }}</td>
-          <td>{{ staff.PhoneNumber }}</td>
-          <td>{{ staff.Email }}</td>
-          <td>
-            <button (click)="onUpdate(staff)">Update</button>
-            <button (click)="onDelete(i)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div *ngIf="!loading && staffs.length === 0">No staff available.</div>
-  </div>
-  
+
+  <table *ngIf="!loading && staffs.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Full Name</th>
+        <th>Gender</th>
+        <th>Specialization</th>
+        <th>Phone Number</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let staff of staffs; let i = index">
+        <td>{{ staff.Id }}</td>
+        <td>{{ staff.FirstName }}</td>
+        <td>{{ staff.LastName }}</td>
+        <td>{{ staff.FullName }}</td>
+        <td>{{ staff.Gender }}</td>
+        <td>{{ staff.Specialization }}</td>
+        <td>{{ staff.PhoneNumber }}</td>
+        <td>{{ staff.Email }}</td>
+        <td>
+          <button (click)="onUpdate(staff)">Update</button>
+          <button (click)="onDelete(i)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && staffs.length === 0">No staff available.</div>
+</div>

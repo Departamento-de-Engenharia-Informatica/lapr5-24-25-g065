@@ -38,10 +38,17 @@ export class UpdatePatientComponent implements OnInit {
       this.patientService.getPatientById(this.patientId).subscribe(
         (data: PatientDTO) => {
           this.updatePatientForm.patchValue({
-            firstName: data.firstname,
-            lastName: data.lastname,
-            email: data.email,
-            phone: data.phone,
+            firstname: this.updatePatientForm.value.firstName,
+            lastname: this.updatePatientForm.value.lastName,
+            fullName: `${this.updatePatientForm.value.firstName} ${this.updatePatientForm.value.lastName}`, // Assuming fullName is the combination of first and last name
+            gender: this.updatePatientForm.value.gender, // Ensure gender is in your form
+            allergies: this.updatePatientForm.value.allergies || [], // Handle allergies (array of strings), default to empty array if null or undefined
+            emergencyContact: this.updatePatientForm.value.emergencyContact, // Make sure emergencyContact is present in the form
+            dateOfBirth: this.updatePatientForm.value.dateOfBirth, // Ensure dateOfBirth is in your form
+            medicalRecordNumber: this.updatePatientForm.value.medicalRecordNumber, // Ensure medicalRecordNumber is in your form
+            phoneNumber: this.updatePatientForm.value.phone,
+            email: this.updatePatientForm.value.email,
+            userName: ''
           });
         },
         (error) => {
@@ -57,12 +64,20 @@ export class UpdatePatientComponent implements OnInit {
     }
 
     const updatedPatient: PatientDTO = {
-      id: this.patientId!,
+      id: this.patientId!, // Patient ID (Ensure patientId is properly assigned)
       firstname: this.updatePatientForm.value.firstName,
       lastname: this.updatePatientForm.value.lastName,
+      fullName: `${this.updatePatientForm.value.firstName} ${this.updatePatientForm.value.lastName}`, // Assuming fullName is the combination of first and last name
+      gender: this.updatePatientForm.value.gender, // Ensure gender is in your form
+      allergies: this.updatePatientForm.value.allergies || [], // Handle allergies (array of strings), default to empty array if null or undefined
+      emergencyContact: this.updatePatientForm.value.emergencyContact, // Make sure emergencyContact is present in the form
+      dateOfBirth: this.updatePatientForm.value.dateOfBirth, // Ensure dateOfBirth is in your form
+      medicalRecordNumber: this.updatePatientForm.value.medicalRecordNumber, // Ensure medicalRecordNumber is in your form
+      phoneNumber: this.updatePatientForm.value.phone,
       email: this.updatePatientForm.value.email,
-      phone: this.updatePatientForm.value.phone,
+      userName: ''
     };
+    
 
     this.patientService.updatePatient(updatedPatient).subscribe(
       (response) => {

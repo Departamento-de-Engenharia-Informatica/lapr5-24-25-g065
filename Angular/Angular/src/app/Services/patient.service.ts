@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CreatePatientDTO, PatientDTO } from '../Interfaces/patientId';
 
-// Define the PatientId interface
 export interface PatientId {
   value: string;  // GUID as a string
 }
@@ -12,7 +11,7 @@ export interface PatientId {
   providedIn: 'root'
 })
 export class PatientService {
-  private baseUrl = 'https://localhost:5001/api/Patient';
+  private baseUrl = 'https://localhost:5001/api/Patient';  // Directly setting the API base URL
 
   constructor(private http: HttpClient) {}
 
