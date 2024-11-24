@@ -1,0 +1,21 @@
+<div *ngIf="loading">Loading operations...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<div *ngIf="!loading && operations.length > 0">
+  <h2>Operation Requests</h2>
+  <ul>
+    <li *ngFor="let operation of operations">
+      <strong>Patient ID:</strong> {{ operation.patientID }} <br>
+      <strong>Doctor ID:</strong> {{ operation.doctorID }} <br>
+      <strong>Operation Type ID:</strong> {{ operation.operationTypeID }} <br>
+      <strong>Operation Date & Time:</strong> {{ operation.operationDateTime | date:'short' }} <br>
+      <strong>Deadline:</strong> {{ operation.deadline | date:'short' }} <br>
+      <strong>Priority:</strong> {{ operation.priority }} <br>
+      <hr>
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="!loading && operations.length === 0">
+  <p>No operations found.</p>
+</div>

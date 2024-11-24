@@ -5,6 +5,8 @@ import { DoctorDashboardComponent } from './Dashboards/doctor-dashboard/doctor-d
 import { NurseDashboardComponent } from './Dashboards/nurse-dashboard/nurse-dashboard.component';
 import { TechnicianDashboardComponent } from './Dashboards/technician-dashboard/technician-dashboard.component';
 import { PatientDashboardComponent } from './Dashboards/patient-dashboard/patient-dashboard.component';
+import { OperationDashboardComponent } from './Dashboards/operation-dashboard/operation-dashboard.component';
+
 import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
@@ -14,5 +16,6 @@ export const routes: Routes = [
   { path: 'nurse-dashboard', component: NurseDashboardComponent },
   { path: 'technician-dashboard', component: TechnicianDashboardComponent },
   { path: 'patient-dashboard', component: PatientDashboardComponent },
+  { path: 'operation-dashboard', component: OperationDashboardComponent},
   { path: '**', component: LoginComponent }, // Redirect unknown routes to login
 ];
