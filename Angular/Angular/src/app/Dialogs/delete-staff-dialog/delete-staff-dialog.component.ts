@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+/*import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Staff } from '../../Interfaces/staff';
@@ -59,4 +59,4 @@ export class DeleteStaffDialogComponent implements OnInit {
   onCancel() {
     this.dialogRef.close(false); // Pass `false` if deletion is canceled
   }
-}
+}*/

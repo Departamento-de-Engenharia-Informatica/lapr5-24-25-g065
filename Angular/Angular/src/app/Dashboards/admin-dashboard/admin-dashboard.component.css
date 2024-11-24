@@ -1,0 +1,49 @@
+table {
+    width: 100%;
+    border-collapse: collapse; /* To remove the space between borders */
+    table-layout: fixed; /* This will make sure each column takes equal width */
+  }
+  
+  th, td {
+    padding: 12px; /* Adjust the padding for spacing */
+    text-align: left;
+    border: 1px solid #ddd; /* Add border for better visibility */
+  }
+  
+  th {
+    background-color: #f4f4f4; /* Light background for header */
+  }
+  
+  td {
+    word-wrap: break-word; /* Ensure text wraps inside cells */
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f9f9f9; /* Stripe effect for better readability */
+  }
+  
+  /* Optional: Adjust individual column width */
+  th:nth-child(1), td:nth-child(1) {
+    width: 10%; /* First column */
+  }
+  
+  th:nth-child(2), td:nth-child(2) {
+    width: 10%; /* Second column */
+  }
+  
+  th:nth-child(3), td:nth-child(3) {
+    width: 20%; /* Third column */
+  }
+  
+  th:nth-child(4), td:nth-child(4) {
+    width: 10%; /* Fourth column */
+  }
+  
+  th:nth-child(5), td:nth-child(5) {
+    width: 10%; /* Fifth column */
+  }
+  
+  th:nth-child(6), td:nth-child(6) {
+    width: 10%; /* Sixth column */
+  }
+  

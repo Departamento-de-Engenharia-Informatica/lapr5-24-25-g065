@@ -1,1 +1,46 @@
-<button (click)="loadStaffs()">Staff Management</button>
+<h1>Admin Dashboard</h1>
+<div *ngIf="!showStaffList">
+    <!-- Button is displayed if showStaffList is false -->
+    <button (click)="loadStaffs()">Staff Management</button>
+  </div>
+  
+  <div *ngIf="showStaffList">
+    <!-- Staff list is displayed if showStaffList is true -->
+    <button (click)="onCreate()">Register Staff Member</button>
+    <div *ngIf="loading">Loading staff list...</div>
+    <div *ngIf="error">{{ error }}</div>
+    <table *ngIf="!loading && staffs.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Full Name</th>
+          <th>Gender</th>
+          <th>Specialization</th>
+          <th>Phone Number</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let staff of staffs; let i = index">
+          <!-- Use the correct property names that match the response -->
+          <td>{{ staff.Id }}</td>
+          <td>{{ staff.FirstName }}</td>
+          <td>{{ staff.LastName }}</td>
+          <td>{{ staff.FullName }}</td>
+          <td>{{ staff.Gender }}</td>
+          <td>{{ staff.Specialization }}</td>
+          <td>{{ staff.PhoneNumber }}</td>
+          <td>{{ staff.Email }}</td>
+          <td>
+            <button (click)="onUpdate(staff)">Update</button>
+            <button (click)="onDelete(i)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="!loading && staffs.length === 0">No staff available.</div>
+  </div>
+  
