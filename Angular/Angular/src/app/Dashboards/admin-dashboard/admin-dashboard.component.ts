@@ -147,21 +147,35 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   // Show the patient registration form
-  onShowPatientRegistrationForm(): void {
-    this.showPatientRegistrationForm = !this.showPatientRegistrationForm; // Toggle visibility of the form
-  }
+onShowPatientRegistrationForm(): void {
+  this.showPatientRegistrationForm = !this.showPatientRegistrationForm; // Toggle visibility of the form
+}
 
   // Register a new patient
-  onRegisterPatient(): void {
-    this.patientService.registerPatient(this.patientData).subscribe({
-      next: (response) => {
-        console.log('Patient registered successfully:', response);
-        // Optionally redirect or display success message
-      },
-      error: (err) => {
-        console.error('Error registering patient:', err);
-        this.error = 'Failed to register patient.'; // Handle the error case
-      }
-    });
-  }
+  // Register a new patient
+onRegisterPatient(): void {
+  this.patientService.registerPatient(this.patientData).subscribe({
+    next: (response) => {
+      console.log('Patient registered successfully:', response);
+      // Optionally reset form or show success message
+      this.showPatientRegistrationForm = false;  // Hide the form after successful registration
+      this.patientData = {
+        firstname: '',
+        lastname: '',
+        fullName: '',
+        gender: '',
+        allergies: [],
+        emergencyContact: '',
+        dateOfBirth: '',
+        medicalRecordNumber: '',
+        phoneNumber: '',
+        email: '',
+      }; // Reset form data
+    },
+    error: (err) => {
+      console.error('Error registering patient:', err);
+      this.error = 'Failed to register patient.'; // Handle the error case
+    }
+  });
+}
 }

@@ -17,13 +17,15 @@ import { FormsModule } from '@angular/forms';
 import { OperationRequestDialogComponent } from './Dashboards/operation-request-dialog/operation-request-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { RegisterPatientComponent } from './patient/register-patient.component';
 @NgModule({
   declarations: [
     AppComponent,
     UpdateStaffDialogComponent,
     AdminDashboardComponent,
     OperationDashboardComponent,
-    OperationRequestDialogComponent
+    OperationRequestDialogComponent,
+    RegisterPatientComponent
   ],
   imports: [
     BrowserModule,
@@ -37,6 +39,8 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     MatButtonModule,
     MatInputModule,
+    ReactiveFormsModule // Add this
+
     
   ],
   providers: [],

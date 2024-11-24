@@ -96,4 +96,10 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/']); // Redirect to home or an error page if role is unknown
     }
   }
+
+  onRegisterNewPatient(): void {
+    // Logic to navigate to registration page or open a registration form
+    console.log("Redirecting to patient registration page...");
+    this.router.navigate(['/patient-registration']); // Replace with your actual registration route
+  }
 }
