@@ -1,46 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { PatientService } from '../../Services/patient.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-patient-dashboard',
-  standalone: true,
-  imports: [],
   templateUrl: './patient-dashboard.component.html',
   styleUrls: ['./patient-dashboard.component.css']
 })
-export class PatientDashboardComponent {
+export class PatientDashboardComponent implements OnInit {
+  patient: any;
 
-  patient: any = {
-    FullName: 'John Doe',
-    Email: 'john.doe@example.com',
-    PhoneNumber: '1234567890',
-    MedicalRecordNumber: '12345',
-  };
+  constructor(private patientService: PatientService, private router: Router) {}
 
-  isUpdating = false;
-  isConfirmingDelete = false;
-
-  onUpdateClick() {
-    this.isUpdating = true;
+  ngOnInit(): void {
+    this.loadPatientData();
   }
 
-  onDeleteClick() {
-    this.isConfirmingDelete = true;
+  loadPatientData(): void {
+    this.patientService.getPatientProfile().subscribe(
+      (data: any) => { // Explicitly type 'data' as 'any'
+        this.patient = data;
+      },
+      (error: any) => { // Explicitly type 'error' as 'any'
+        console.error('Error loading patient data', error);
+      }
+    );
   }
 
-  onSubmitUpdate() {
-    // Simulate the update logic (you can implement your API call here)
-    console.log('Updated Patient Info:', this.patient);
-    this.isUpdating = false;
+  updateProfile(): void {
+    this.router.navigate(['/patient/update']);
   }
 
-  onConfirmDelete() {
-    // Simulate account deletion logic (e.g., calling a delete API)
-    console.log('Account deleted:', this.patient.FullName);
-    this.isConfirmingDelete = false;
+  deleteProfile(): void {
+    if (confirm('Are you sure you want to delete your profile?')) {
+      const patientIdObj = { value: this.patient.id }; // Create the PatientId object
+      this.patientService.deletePatientProfile(patientIdObj).subscribe(
+        () => {
+          alert('Profile deleted');
+          this.router.navigate(['/login']);
+        },
+        (error: any) => { // Explicitly type 'error' as 'any'
+          console.error('Error deleting profile', error);
+        }
+      );
+    }
   }
-
-  onCancelDelete() {
-    this.isConfirmingDelete = false;
-  }
-
 }

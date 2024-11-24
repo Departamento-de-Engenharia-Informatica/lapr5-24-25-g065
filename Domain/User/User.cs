@@ -15,8 +15,10 @@ namespace DDDSample1.Domain.Users
         public Role Role { get; private set; }
         public Password Password { get; private set; }
 
+        // Protected constructor to ensure controlled instantiation
         protected User() { }
 
+        // Public constructor for creating new instances of User
         public User(string userName, string email, Role role, Password password)
         {
             ValidateUserName(userName);
@@ -27,6 +29,13 @@ namespace DDDSample1.Domain.Users
             Role = role;
             Password = password;
         }
+
+        // Static factory method to create a new User instance
+        public static User Create(string userName, string email, Role role, Password password)
+        {
+            return new User(userName, email, role, password);
+        }
+
         private void ValidateUserName(string userName)
         {
             if (string.IsNullOrWhiteSpace(userName) || userName.Contains(" "))
@@ -37,12 +46,12 @@ namespace DDDSample1.Domain.Users
 
         private void ValidateEmail(string email)
         {
-                        var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled);
             if (!EmailRegex.IsMatch(email))
             {
                 throw new ArgumentException("Invalid email format.");
             }
         }
+
         public void ChangeUserName(string username) => UserName = username;
 
         public void ChangeEmail(string email) => Email = email;

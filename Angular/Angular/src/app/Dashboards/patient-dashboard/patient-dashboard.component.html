@@ -1,1 +1,16 @@
-<p>patient-dashboard works!</p>
+<div class="dashboard">
+    <h2>Welcome, {{ patient?.firstname }} {{ patient?.lastname }}</h2>
+  
+    <div class="patient-info">
+      <p><strong>Email:</strong> {{ patient?.email }}</p>
+      <p><strong>Phone Number:</strong> {{ patient?.phoneNumber }}</p>
+      <p><strong>Medical Record Number:</strong> {{ patient?.medicalRecordNumber }}</p>
+      <!-- Add other fields as necessary -->
+    </div>
+  
+    <div class="actions">
+      <button (click)="updateProfile()">Update Profile</button>
+      <button (click)="deleteProfile()">Delete Profile</button>
+    </div>
+  </div>
+  

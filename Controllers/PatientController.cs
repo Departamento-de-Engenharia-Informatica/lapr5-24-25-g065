@@ -36,29 +36,6 @@ public async Task<ActionResult<string>> AuthenticateUser()
     return Ok(new { AccessToken = token });
 }
 
-        [HttpPost("add")]
-        public async Task<IActionResult> RegisterPatient([FromBody] CreatePatientDTO model)
-        {
-            if (model == null)
-            {
-                return BadRequest(new { Message = "Patient details are required." });
-            }
-
-            try
-            {
-                var patientId = await _patientService.AddAsync(model);
-                return Ok(new { Message = "Patient registered successfully.", PatientId = patientId });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { Error = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"An error occurred while registering the patient: {ex.Message}");
-            }
-        }
-
    [HttpGet]
 public async Task<ActionResult> GetAllPatients()
 {
@@ -77,7 +54,58 @@ public async Task<ActionResult> GetAllPatients()
         return StatusCode(500, new { Error = ex.Message });
     }
 }
+[HttpPost("register")]
+public async Task<IActionResult> RegisterPatient()
+{
+    try
+    {
+        // Redirect to Google login
+        var token = await _authServicePatient.AuthenticateUser();
+        if (string.IsNullOrEmpty(token))
+        {
+            return Unauthorized(new { Message = "Google authentication failed." });
+        }
 
+        // Extract user info (e.g., email) from the token
+        var userEmail = await _authServicePatient.GetUserEmailFromTokenAsync(token);
+
+        // Generate an email verification token
+        var verificationToken = await _authServicePatient.GenerateEmailVerificationTokenAsync(userEmail);
+
+        return Ok(new { Message = "Registration in progress. Please verify your email.", VerificationToken = verificationToken });
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, $"An error occurred during registration: {ex.Message}");
+    }
+}
+[HttpPost("add")]
+        public async Task<IActionResult> RegisterPatient([FromBody] CreatePatientDTO model)
+        {
+            if (model == null)
+            {
+                return BadRequest(new { Message = "Patient details are required." });
+            }
+
+            try
+            {
+                // Step 1: Register patient
+                var patientDto = await _patientService.AddAsync(model);
+
+                // Step 2: Send email verification (to be handled in the service)
+                await _authServicePatient.SendEmailVerificationAsync(model.Email);
+
+                return Ok(new { Message = "Patient registered successfully. Please verify your email." });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { Error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while registering the patient: {ex.Message}");
+            }
+        }
 
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdatePatient(string id, [FromBody] UpdatePatientDTO model)
@@ -161,49 +189,44 @@ public async Task<ActionResult> GetAllPatients()
                 return StatusCode(500, $"An error occurred while retrieving the patient: {ex.Message}");
             }
         }
+    
+
+
         [HttpGet("verify-email")]
-public async Task<IActionResult> VerifyEmail([FromQuery] string token)
-{
-    if (string.IsNullOrEmpty(token))
-    {
-        return BadRequest(new { Message = "Token is required for verification." });
-    }
-
-    var isVerified = await _authServicePatient.VerifyEmailAsync(token);
-    if (!isVerified)
-    {
-        return BadRequest(new { Message = "Invalid or expired token." });
-    }
-
-    return Ok(new { Message = "Email verified successfully." });
-}
-[HttpPost("register")]
-public async Task<IActionResult> RegisterPatient()
-{
-    try
-    {
-        // Redirect to Google login
-        var token = await _authServicePatient.AuthenticateUser();
-        if (string.IsNullOrEmpty(token))
+        public async Task<IActionResult> VerifyEmail([FromQuery] string token)
         {
-            return Unauthorized(new { Message = "Google authentication failed." });
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest(new { Message = "Token is required for verification." });
+            }
+
+            try
+            {
+                // Step 3: Verify email using token
+                var isVerified = await _authServicePatient.VerifyEmailAsync(token);
+                if (!isVerified)
+                {
+                    return BadRequest(new { Message = "Invalid or expired token." });
+                }
+
+                // Step 4: After verification, create a new user automatically
+                var user = await _authServicePatient.CreateUserFromVerifiedEmailAsync(token);
+                if (user == null)
+                {
+                    return StatusCode(500, new { Message = "Error creating user after email verification." });
+                }
+
+                return Ok(new { Message = "Email verified and user created successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred during email verification: {ex.Message}");
+            }
         }
-
-        // Extract user info (e.g., email) from the token
-        var userEmail = await _authServicePatient.GetUserEmailFromTokenAsync(token);
-
-        // Generate an email verification token
-        var verificationToken = await _authServicePatient.GenerateEmailVerificationTokenAsync(userEmail);
-
-        return Ok(new { Message = "Registration in progress. Please verify your email.", VerificationToken = verificationToken });
-    }
-    catch (Exception ex)
-    {
-        return StatusCode(500, $"An error occurred during registration: {ex.Message}");
     }
 }
 
 
-}
-}
+
+
 

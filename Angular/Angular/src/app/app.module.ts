@@ -15,12 +15,29 @@ import { PatientDashboardComponent } from './Dashboards/patient-dashboard/patien
 import { AppRoutingModule } from './app-routing.module';
 import { OperationDashboardComponent } from './Dashboards/operation-dashboard/operation-dashboard.component';
 import { FormsModule } from '@angular/forms';
+import { GoogleLoginProvider, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+
+providers: [
+  {
+    provide: 'SocialAuthServiceConfig',
+    useValue: {
+      autoLogin: false,
+      providers: [
+        {
+          id: GoogleLoginProvider.PROVIDER_ID,
+          provider: new GoogleLoginProvider('YOUR_GOOGLE_CLIENT_ID'),
+        },
+      ],
+    } as SocialAuthServiceConfig,
+  },
+]
 
 @NgModule({
   declarations: [
+    AppComponent,
     UpdateStaffDialogComponent,
     DeleteStaffDialogComponent,
-    AdminDashboardComponent,  
+    AdminDashboardComponent,
     OperationDashboardComponent,
   ],
   imports: [
@@ -35,4 +52,5 @@ import { FormsModule } from '@angular/forms';
   providers: [],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

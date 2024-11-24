@@ -20,18 +20,17 @@ namespace DDDSample1.Domain.Patients
         }
 
         public async Task<List<PatientDto>> GetAllAsync()
-{
-    var patients = await _patientRepository.GetAllAsync();
+        {
+            var patients = await _patientRepository.GetAllAsync();
 
-    // Debug log: Ensure you're getting the correct patient data
-    foreach (var patient in patients)
-    {
-        Console.WriteLine($"Patient: {patient.Id} - {patient.Firstname} {patient.LastName}");
-    }
+            // Debug log: Ensure you're getting the correct patient data
+            foreach (var patient in patients)
+            {
+                Console.WriteLine($"Patient: {patient.Id} - {patient.Firstname} {patient.LastName}");
+            }
 
-    return patients.Select(MapToPatientDto).ToList();
-}
-
+            return patients.Select(MapToPatientDto).ToList();
+        }
 
         public async Task<PatientDto> GetByIdAsync(PatientId id)
         {
@@ -102,23 +101,22 @@ namespace DDDSample1.Domain.Patients
         }
 
         private PatientDto MapToPatientDto(Patient patient)
-{
-    if (patient == null) throw new ArgumentNullException(nameof(patient));
+        {
+            if (patient == null) throw new ArgumentNullException(nameof(patient));
 
-    return new PatientDto(
-        patient.Id.AsGuid(),
-        patient.Firstname,
-        patient.LastName,
-        patient.FullName,
-        patient.Gender,
-        patient.Allergies ?? new List<string>(),
-        patient.EmergencyContact,
-        patient.DateOfBirth,
-        patient.MedicalRecordNumber,
-        patient.PhoneNumber,
-        patient.Email
-    );
-}
-
+            return new PatientDto(
+                patient.Id.AsGuid(),
+                patient.Firstname,
+                patient.LastName,
+                patient.FullName,
+                patient.Gender,
+                patient.Allergies ?? new List<string>(),
+                patient.EmergencyContact,
+                patient.DateOfBirth,
+                patient.MedicalRecordNumber,
+                patient.PhoneNumber,
+                patient.Email
+            );
+        }
     }
 }

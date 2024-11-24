@@ -1,2 +1,22 @@
-<asl-google-signin-button type="standard" size="medium"></asl-google-signin-button>
-<router-outlet></router-outlet>
+<div class="auth-container">
+    <div class="auth-box">
+      <h2>Welcome to the Healthcare System</h2>
+  
+      <div class="login-section">
+        <h3>Login</h3>
+        <asl-google-signin-button type="standard" size="medium"></asl-google-signin-button>
+      </div>
+  
+      <div class="divider">
+        <span>OR</span>
+      </div>
+  
+      <div class="register-section">
+        <h3>Register as a Patient</h3>
+        <button class="register-button" (click)="onRegister()">Register</button>
+      </div>
+    </div>
+  </div>
+  
+  <router-outlet></router-outlet>
+  

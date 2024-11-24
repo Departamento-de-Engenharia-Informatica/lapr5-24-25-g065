@@ -8,6 +8,9 @@ import { PatientDashboardComponent } from './Dashboards/patient-dashboard/patien
 import { OperationDashboardComponent } from './Dashboards/operation-dashboard/operation-dashboard.component';
 
 import { AuthGuard } from './auth.guard';
+import { RegisterPatientComponent } from './patient/register-patient.component';
+import { UpdatePatientComponent } from './patient/update-patient.component';
+import { DeletePatientComponent } from './patient/delete-patient.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -18,4 +21,8 @@ export const routes: Routes = [
   { path: 'patient-dashboard', component: PatientDashboardComponent },
   { path: 'operation-dashboard', component: OperationDashboardComponent},
   { path: '**', component: LoginComponent }, // Redirect unknown routes to login
+  { path: 'register-patient', component: RegisterPatientComponent },
+  { path: 'update-patient/:id', component: UpdatePatientComponent },
+  { path: 'delete-patient/:id', component: DeletePatientComponent },
+  { path: '', redirectTo: '/patient-dashboard', pathMatch: 'full' }
 ];

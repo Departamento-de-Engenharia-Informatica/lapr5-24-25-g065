@@ -1,7 +1,8 @@
 import { UserId } from './userId'; 
-import { PatientId } from './patientId';     
+import { PatientDTO } from './patientId';     
 import { StaffId } from './staffId'; 
 import { OperationRequestId } from './operationRequestId';
+import { PatientId } from '../Services/patient.service';
 
 
 export interface OperationRequest {

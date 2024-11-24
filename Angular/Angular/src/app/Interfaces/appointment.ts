@@ -1,6 +1,7 @@
 // src/app/interfaces/appointment.ts
+import { PatientId } from '../Services/patient.service';
 import { AppointmentId } from './appointmentId';
-import { PatientId } from './patientId';
+import { PatientDTO } from './patientId';
 import { StaffId } from './staffId';
 
 export interface Appointment {

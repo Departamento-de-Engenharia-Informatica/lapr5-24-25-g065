@@ -4,6 +4,8 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
+using DDDSample1.Domain.Passwords;
+using DDDSample1.Domain.Users;
 using Microsoft.Extensions.Configuration;
 
 namespace DDDNetCore.Services
@@ -20,9 +22,9 @@ namespace DDDNetCore.Services
             _httpClient = httpClient;
 
             var googleKeys = configuration.GetSection("GoogleKeys");
-            _googleClientId = googleKeys["ClientId"];
-            _googleClientSecret = googleKeys["ClientSecret"];
-            _redirectUri = googleKeys["RedirectUri"];
+            _googleClientId = googleKeys["893040379732-le0ofpg38advhvckken7foj9tggr43u0.apps.googleusercontent.com"];
+            _googleClientSecret = googleKeys["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"];
+            _redirectUri = googleKeys["https://localhost:5001/auth/callback"];
         }
 
         public async Task<string?> AuthenticateUser()
@@ -94,6 +96,39 @@ namespace DDDNetCore.Services
             }
         }
 
+        public async Task<string> GetUserEmailFromTokenAsync(string token)
+        {
+            try
+            {
+                var userInfoUrl = "https://www.googleapis.com/oauth2/v3/userinfo";
+                var request = new HttpRequestMessage(HttpMethod.Get, userInfoUrl);
+                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                var response = await _httpClient.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    var userInfo = await response.Content.ReadFromJsonAsync<JsonElement>();
+                    return userInfo.GetProperty("email").GetString() ?? string.Empty;
+                }
+
+                Console.WriteLine($"Failed to retrieve user email: {response.StatusCode}");
+                return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving user email: {ex.Message}");
+                return string.Empty;
+            }
+        }
+
+        public async Task<string> GenerateEmailVerificationTokenAsync(string email)
+        {
+            // Generate a simple mock token for email verification
+            var token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+            Console.WriteLine($"Generated email verification token for {email}: {token}");
+            return await Task.FromResult(token);
+        }
+
         public async Task<bool> VerifyEmailAsync(string token)
         {
             // Example logic for verifying an email token
@@ -101,53 +136,23 @@ namespace DDDNetCore.Services
             if (string.IsNullOrEmpty(token)) return false;
 
             // Simulating token verification
-            return token == "valid-token"; // Replace with actual implementation
+            return token == "valid-token";
         }
 
-        public async Task<string?> GetUserEmailFromTokenAsync(string token)
+        public async Task SendEmailVerificationAsync(string email)
         {
-            try
-            {
-                // Decode the token and extract the email
-                // This example assumes the token is a JWT; adjust for actual implementation
-                var payload = await DecodeJwtAsync(token);
-                if (payload == null || !payload.TryGetValue("email", out var email))
-                {
-                    return null;
-                }
-
-                return email?.ToString();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error extracting email from token: {ex.Message}");
-                return null;
-            }
+            // Simulate sending email verification
+            Console.WriteLine($"Sending email verification to {email}");
+            await Task.CompletedTask; // Replace with actual email sending logic
         }
 
-        public async Task<string> GenerateEmailVerificationTokenAsync(string email)
+        public async Task<User?> CreateUserFromVerifiedEmailAsync(string token)
         {
-            // Example logic to generate a dummy email verification token
-            // Replace with your actual token generation logic
-            return Guid.NewGuid().ToString(); // Example: Use a GUID as the token
-        }
+            // Simulating user creation after email verification
+            if (string.IsNullOrEmpty(token)) return null;
 
-        private async Task<Dictionary<string, object>?> DecodeJwtAsync(string token)
-        {
-            try
-            {
-                var parts = token.Split('.');
-                if (parts.Length < 3) return null;
-
-                var payload = parts[1];
-                var json = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(payload));
-                return JsonSerializer.Deserialize<Dictionary<string, object>>(json);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error decoding JWT: {ex.Message}");
-                return null;
-            }
+            // Use the static Create method to create a new User instance
+            return User.Create("testuser", "test@example.com", Role.Patient, new Password("password"));
         }
     }
 }
