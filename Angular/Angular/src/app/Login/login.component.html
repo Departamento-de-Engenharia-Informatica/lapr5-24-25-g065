@@ -1,22 +1,43 @@
-<div class="auth-container">
-    <div class="auth-box">
-      <h2>Welcome to the Healthcare System</h2>
-  
-      <div class="login-section">
-        <h3>Login</h3>
-        <asl-google-signin-button type="standard" size="medium"></asl-google-signin-button>
-      </div>
-  
-      <div class="divider">
-        <span>OR</span>
-      </div>
-  
-      <div class="register-section">
-        <h3>Register as a Patient</h3>
-        <button class="register-button" (click)="onRegister()">Register</button>
-      </div>
-    </div>
-  </div>
-  
+<div class="login-container">
+  <!-- Title of the page -->
+  <h1>Welcome to this app</h1>
+
+  <!-- Login text -->
+  <p>Login</p>
+
+  <!-- Google SignIn Button -->
+  <asl-google-signin-button type="standard" size="medium"></asl-google-signin-button>
+
+  <!-- Register Button -->
+
+  <!-- Router Outlet for Angular Routing -->
   <router-outlet></router-outlet>
-  
+</div>
+
+<!-- Basic Styling (Optional) -->
+<style>
+  .login-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  asl-google-signin-button {
+    margin-top: 20px;
+  }
+  .login-container p {
+    font-size: 18px;
+    margin-top: 20px;
+  }
+  .register-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  .register-button:hover {
+    background-color: #0056b3;
+  }
+</style>
