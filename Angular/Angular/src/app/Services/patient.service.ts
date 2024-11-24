@@ -30,14 +30,29 @@ export class PatientService {
   deletePatientProfile(patientIdObj: PatientId): Observable<any> {
     return this.http.delete(`${this.baseUrl}/delete/${patientIdObj.value}`);
   }
-  
-  // Get patient details
-  getPatientProfile(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/profile`);
+
+  // Get patient details using the email stored in localStorage
+  getPatientProfile(): Observable<PatientDTO> {
+    const email = localStorage.getItem('userEmail');
+    if (email) {
+      return this.http.get<PatientDTO>(`${this.baseUrl}/byEmail?email=${email}`);
+    } else {
+      throw new Error('No email found for the logged-in user');
+    }
   }
 
   // Get patient details by ID
   getPatientById(id: string): Observable<PatientDTO> {
     return this.http.get<PatientDTO>(`${this.baseUrl}/${id}`);
+  }
+
+  // Get patient details by email
+  getPatientByEmail(email: string): Observable<PatientDTO> {
+    return this.http.get<PatientDTO>(`${this.baseUrl}/byEmail?email=${email}`);
+  }
+
+  // Verify email for account activation or password reset
+  verifyEmail(token: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/verify-email?token=${token}`);
   }
 }

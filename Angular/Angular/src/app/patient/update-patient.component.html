@@ -1,26 +1,28 @@
 <div class="container">
-    <h2>Update Patient Information</h2>
-    <form (ngSubmit)="onSubmit()">
-      <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-  
-      <div class="form-group">
-        <label for="firstname">First Name</label>
-        <input type="text" id="firstname" [(ngModel)]="patient.firstname" name="firstname" class="form-control" required>
-      </div>
-  
-      <div class="form-group">
-        <label for="lastname">Last Name</label>
-        <input type="text" id="lastname" [(ngModel)]="patient.lastname" name="lastname" class="form-control" required>
-      </div>
-  
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" [(ngModel)]="patient.email" name="email" class="form-control" required>
-      </div>
-  
-      <!-- Add other fields here like gender, date of birth, phone number, etc. -->
-  
-      <button type="submit" class="btn btn-primary">Update</button>
-    </form>
-  </div>
-  
+  <h2>Update Patient Information</h2>
+  <form [formGroup]="updatePatientForm" (ngSubmit)="onSubmit()">
+    <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input type="text" id="firstName" formControlName="firstName" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input type="text" id="lastName" formControlName="lastName" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" formControlName="email" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      <input type="text" id="phone" formControlName="phone" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="updatePatientForm.invalid">Update</button>
+  </form>
+</div>
