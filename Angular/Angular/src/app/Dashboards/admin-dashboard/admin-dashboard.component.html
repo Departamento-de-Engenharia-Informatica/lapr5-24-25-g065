@@ -1,6 +1,7 @@
 <h1>Admin Dashboard</h1>
 
 <div *ngIf="!showStaffList">
+  <button (click)="onCreateStaff()">Register Staff Member</button>
   <button (click)="loadStaffs()">Staff Management</button>
 </div>
 <!-- Register New Patient Button -->
@@ -126,3 +127,45 @@
     </form>
   </div>
 </div>
+
+<!-- Staff creation form -->
+<div *ngIf="showCreateStaffForm">
+  <h2>Create New Staff Member</h2>
+  <form (ngSubmit)="onSaveNewStaff()">
+    <label for="FirstName">First Name:</label>
+    <input id="FirstName" [(ngModel)]="newStaff.FirstName" name="FirstName" required>
+
+    <label for="LastName">Last Name:</label>
+    <input id="LastName" [(ngModel)]="newStaff.LastName" name="LastName" required>
+
+    <label for="FullName">Full Name:</label>
+    <input id="FullName" [(ngModel)]="newStaff.FullName" name="FullName" required>
+
+    <label for="Gender">Gender:</label>
+    <select id="Gender" [(ngModel)]="newStaff.Gender" name="Gender" required>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <label for="Specialization">Specialization:</label>
+    <input id="Specialization" [(ngModel)]="newStaff.Specialization" name="Specialization">
+
+    <label for="PhoneNumber">Phone Number:</label>
+    <input id="PhoneNumber" [(ngModel)]="newStaff.PhoneNumber" name="PhoneNumber" required>
+
+    <label for="Email">Email:</label>
+    <input id="Email" [(ngModel)]="newStaff.Email" name="Email" required>
+
+    <label for="LicenseNumber">License Number:</label>
+    <input id="LicenseNumber" [(ngModel)]="newStaff.LicenseNumber" name="LicenseNumber">
+
+    <label for="AvailabilitySlot">Availability Slot:</label>
+    <input id="AvailabilitySlot" [(ngModel)]="newStaff.AvailabilitySlot" name="AvailabilitySlot">
+
+    <button type="submit" >Save Staff Member</button>
+    <button type="button" (click)="cancelCreate()">Cancel</button>
+  </form>
+</div>
+
+
