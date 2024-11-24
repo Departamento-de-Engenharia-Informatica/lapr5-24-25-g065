@@ -18,6 +18,7 @@ export class AdminDashboardComponent implements OnInit {
   loading: boolean = true;
   error: string | null = null;
   showStaffList = false; // Initialize with `false`
+  editingStaff: Staff | null = null; // Tracks the staff being edited
 
   // New property to control the visibility of the patient registration form
   showPatientRegistrationForm: boolean = false;
@@ -79,15 +80,58 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
 
-  onCreate(): void {
+  onCreateStaff(): void {
     console.log('Create staff');
   }
 
-  onUpdate(staff: any): void {
+  onUpdateStaff(staff: any): void {
     console.log('Update staff:', staff);
   }
 
-  onDelete(index: number): void {
+  onEditStaff(staff: Staff): void {
+    this.editingStaff = { ...staff }; 
+  }
+
+  cancelEdit(): void {
+    this.editingStaff = null;
+  }
+
+  onSaveUpdate() {
+    // Clean the form data to replace null or undefined fields with empty strings
+    this.editingStaff = this.cleanFormData(this.editingStaff);
+  
+    // Now send the cleaned data to the backend
+    this.staffService.updateStaff(this.editingStaff).subscribe({
+      next: (updatedStaff) => {
+        console.log('Staff updated successfully:', updatedStaff);
+        const index = this.staffs.findIndex((staff) => staff.Id === updatedStaff.Id);
+        if (index !== -1) {
+          this.staffs[index] = { ...updatedStaff };
+        }
+        this.cancelEdit();
+      },
+      error: (err) => {
+        console.error('Error updating staff:', err);
+        this.error = 'Failed to update staff member.';
+      },
+    });
+  }
+  
+  
+  cleanFormData(formData: any) {
+    for (const key in formData) {
+      if (formData.hasOwnProperty(key)) {
+        if ( formData[key] === undefined) {
+          formData[key] = '';
+        }
+      }
+    }
+    return formData;
+  }
+  
+  
+
+  onDeleteStaff(index: number): void {
     console.log("Deleting staff: ", this.staffs[index].FullName);
     console.log(this.staffs[index].Id.value);
     this.staffService.deleteStaff(this.staffs[index].Id).subscribe({

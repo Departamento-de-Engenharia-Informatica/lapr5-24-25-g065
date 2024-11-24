@@ -21,8 +21,8 @@ export class StaffService {
 
   }
 
-  updateStaff(updateStaff: Staff) {
-    const link = `https://localhost:5001/api/Staff/${updateStaff.Id.value}`;
+  updateStaff(updateStaff: any) {
+    const link = `https://localhost:5001/api/Staff/${updateStaff.Id}`;
     return this.http.put<Staff>(link, updateStaff);
   }
 
