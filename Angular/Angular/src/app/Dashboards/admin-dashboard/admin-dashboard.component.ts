@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../Services/user.service';
-import { Router } from '@angular/router';
-import { User } from '../../Interfaces/user';
 import { StaffService } from '../../Services/staff.service';
 import { Staff } from '../../Interfaces/staff';
 import { PatientService } from '../../Services/patient.service';  // Import PatientService
 import { CreatePatientDTO } from '../../Interfaces/patientId';  // Assuming you have an interface for creating a patient
+import { v4 as uuidv4 } from 'uuid';
+import { StaffId } from '../../Interfaces/staffId';
 
 @Component({
   selector: 'admin-dashboard',
@@ -20,8 +19,8 @@ export class AdminDashboardComponent implements OnInit {
   showStaffList = false; // Initialize with `false`
   editingStaff: Staff | null = null; // Tracks the staff being edited
 
-  // New property to control the visibility of the patient registration form
   showPatientRegistrationForm: boolean = false;
+  showCreateStaffForm: boolean = false;
 
   // Patient Registration Fields
   patientData: CreatePatientDTO = {
@@ -35,6 +34,22 @@ export class AdminDashboardComponent implements OnInit {
     medicalRecordNumber: '',  // Updated to `medicalRecordNumber`
     phoneNumber: '',  // Updated to `phoneNumber`
     email: '',  // Email remains the same
+  };
+
+  newStaff: Staff = {
+    Id: { value: uuidv4() }, // Generate GUID for StaffId
+    Gender: '',
+    Type: '',
+    Specialization: '',
+    FirstName: '',
+    LastName: '',
+    FullName: '',
+    LicenseNumber: '',
+    UserId: { value: uuidv4() }, // Generate GUID for UserId
+    AvailabilitySlot: '',
+    PhoneNumber: '',
+    Email: '',
+    Appointments: [] // Empty array for Appointments
   };
 
   constructor(
@@ -81,7 +96,48 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   onCreateStaff(): void {
-    console.log('Create staff');
+    this.showCreateStaffForm = true;
+  }
+
+  onSaveNewStaff(): void {
+    
+
+    // Ensure the `StaffId` and `UserId` are filled with new GUIDs before sending to the backend
+    this.newStaff.Id = { value: uuidv4() }; // Generate a new GUID for StaffId
+    this.newStaff.UserId = { value: uuidv4() }; // Generate a new GUID for UserId
+    console.log(this.newStaff);
+    // Make the API call to save the new staff
+    this.staffService.createStaff(this.newStaff).subscribe({
+      next: (response) => {
+        console.log('Staff created successfully:', response);
+        this.loadStaffs();  
+        this.showCreateStaffForm = false;  
+        this.newStaff = { // Reset the form data
+          Id: { value: uuidv4() },
+          Gender: '',
+          Type: '',
+          Specialization: '',
+          FirstName: '',
+          LastName: '',
+          FullName: '',
+          LicenseNumber: '',
+          UserId: { value: uuidv4() },
+          AvailabilitySlot: '',
+          PhoneNumber: '',
+          Email: '',
+          Appointments: []
+        };
+      },
+      error: (err) => {
+        console.error('Error creating staff:', err);
+        this.error = 'Failed to create staff member.'; // Show error message
+        this.loading = false;
+      }
+    });
+  }
+  
+  cancelCreate(): void {
+    this.showCreateStaffForm = false;
   }
 
   onUpdateStaff(staff: any): void {
