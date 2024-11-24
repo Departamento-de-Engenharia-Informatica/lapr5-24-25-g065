@@ -15,6 +15,8 @@ import { PatientDashboardComponent } from './Dashboards/patient-dashboard/patien
 import { AppRoutingModule } from './app-routing.module';
 import { OperationDashboardComponent } from './Dashboards/operation-dashboard/operation-dashboard.component';
 import { FormsModule } from '@angular/forms';
+import { OperationRequestDialogComponent } from './Dashboards/operation-request-dialog/operation-request-dialog.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,6 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatInputModule,
     MatButtonModule,
 
     
