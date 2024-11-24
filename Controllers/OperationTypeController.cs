@@ -2,6 +2,7 @@ using DDDNetCore.DTOs.OperationType;
 using dddsample1.domain;
 using DDDSample1.Domain.OperationType;
 using DDDSample1.Domain.Shared;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace DDDSample1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowSpecificOrigins")]
     public class OperationTypeController : ControllerBase
     {
         private readonly OperationTypeService operationTypeService;

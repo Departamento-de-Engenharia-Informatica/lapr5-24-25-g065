@@ -10,7 +10,7 @@ export class StaffService {
   constructor(private http: HttpClient) { }
 
   getStaffs() {
-    return this.http.get<Staff>('https://10.9.10.65:5001/api/Staff');
+    return this.http.get<Staff[]>('https://localhost:5001/api/Staff');
   }
 
   createStaff(newStaff: Staff) {

@@ -6,11 +6,13 @@ using System.Linq;
 using System.Collections.Generic;
 using System;
 using DDDNetCore.Services;
+using Microsoft.AspNetCore.Cors;
 
 namespace TodoApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowSpecificOrigins")]
     public class PatientController : ControllerBase
     {
         private readonly PatientService _patientService;

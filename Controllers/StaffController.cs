@@ -11,7 +11,7 @@ namespace DDDSample1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("Policy1")]
+    [EnableCors("AllowSpecificOrigins")]
     public class StaffController : ControllerBase
     {
         private readonly StaffService _service;

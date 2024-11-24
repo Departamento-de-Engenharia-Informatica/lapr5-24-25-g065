@@ -10,7 +10,7 @@ namespace DDDSample1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("AllowLocalhostAngular")]
+    [EnableCors("AllowSpecificOrigins")]
     public class UsersController : ControllerBase
     {
         private readonly UserService _service;

@@ -84,24 +84,16 @@ builder.Services.AddSwaggerGen();
 // Configure CORS policies
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowLocalhostAngular",
+    options.AddPolicy("AllowSpecificOrigins",
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200")
+            policy.WithOrigins("http://localhost:4200","http://localhost:5000", "https://localhost:5001", "http://localhost:5001","https://localhost:5000")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
         }
     );
-    options.AddPolicy("AllowSwaggerUI",
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:5000", "https://localhost:5001")
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials(); // if using authentication
-        }
-    );
+    
 });
 
 var app = builder.Build();
@@ -125,9 +117,7 @@ app.UseHttpsRedirection();
 app.UseRouting(); // Ensure routing is in place before authentication
 
 // Enable CORS for specific origins
-app.UseCors("AllowLocalhostAngular");
-app.UseCors("AllowSwaggerUI");
-
+app.UseCors("AllowSpecificOrigins");
 app.UseAuthentication(); // Enable authentication
 app.UseAuthorization(); // Enable authorization
 
