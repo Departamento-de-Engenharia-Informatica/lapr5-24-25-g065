@@ -1,42 +1,49 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PatientService } from '../../app/Services/patient.service';
-import { CreatePatientDTO } from '../Interfaces/patientId'; // Make sure to import the correct path
-import { FormsModule } from '@angular/forms'; 
-import { CommonModule } from '@angular/common';
+import { PatientService } from '../Services/patient.service';  // Assuming you have a service to interact with the backend
+
 @Component({
   selector: 'app-register-patient',
-  standalone: true, // Indicate this is a standalone component
-  imports: [CommonModule, FormsModule], // Include FormsModule here
   templateUrl: './register-patient.component.html',
   styleUrls: ['./register-patient.component.css']
 })
 export class RegisterPatientComponent implements OnInit {
-  patient: CreatePatientDTO = { 
-    firstname: '',
-    lastname: '',
-    fullName: '',  // Assuming fullName is a combination of firstname and lastname
-    gender: '',  // Initialize gender
-    allergies: [],  // Defaulting to an empty array for allergies
-    emergencyContact: '',  // Initialize emergency contact
-    dateOfBirth:'',  // Nullable DateTime, initialize to null
-    medicalRecordNumber: '',  // Initialize medical record number
-    phoneNumber: '',  // Initialize phone number
-    email: ''  // Initialize email
-  };  
-  errorMessage: string | null = null;
+  registerPatientForm: FormGroup;
+  errorMessage: string = '';
+  successMessage: string = '';
+  
+  constructor(
+    private fb: FormBuilder,
+    private patientService: PatientService,
+    private router: Router
+  ) { 
+    this.registerPatientForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]],  // Assuming phone should be 9 digits
+    });
+  }
 
-  constructor(private patientService: PatientService, private router: Router) {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onSubmit(): void {
-    this.patientService.registerPatient(this.patient).subscribe(
+    if (this.registerPatientForm.invalid) {
+      return;
+    }
+
+    const patientData = this.registerPatientForm.value;
+
+    this.patientService.registerPatient(patientData).subscribe(
       response => {
-        this.router.navigate(['/login']);
+        this.successMessage = response.message;
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 2000);
       },
       error => {
-        this.errorMessage = error.error.Message || 'An error occurred during registration';
+        this.errorMessage = error.error.Message || 'An error occurred during registration.';
       }
     );
   }
