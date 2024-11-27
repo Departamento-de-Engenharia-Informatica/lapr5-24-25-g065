@@ -41,7 +41,7 @@ async function loadWalls() {
   const wallsData = await response.json();
 
   wallsData.forEach(wallData => {
-    const { width, height, depth } = wallData.dimensions; // Desestruturando as dimensões
+    const { width, height, depth } = wallData.dimensions;
     const wall = createWall(
       width,
       height,
