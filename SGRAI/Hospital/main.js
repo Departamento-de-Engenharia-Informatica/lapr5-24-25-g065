@@ -68,6 +68,11 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.25;
 controls.screenSpacePanning = false;
 
+controls.mouseButtons = {
+  LEFT: null, // Unused for now
+  RIGHT: THREE.MOUSE.ROTATE, // Orbit with right mouse button
+  MIDDLE: THREE.MOUSE.DOLLY // Zoom/dolly with the wheel
+};
 
 camera.position.set(10, 10, 25);
 
