@@ -32,7 +32,7 @@ export class OperationRequestDialogComponent implements OnInit {
   }
 
   getPatients() {
-    this.http.get<any>('https://localhost:5001/api/Patient')
+    this.http.get<any>('https://10.9.10.65/api/Patient')
       .subscribe({
         next: (response) => {
           this.patients = response.data// Assuming the response contains an array of patients
@@ -48,7 +48,7 @@ export class OperationRequestDialogComponent implements OnInit {
   }
 
   getOperationTypes() {
-    this.http.get<any>('https://localhost:5001/api/OperationType').subscribe({
+    this.http.get<any>('https://10.9.10.65/api/OperationType').subscribe({
       next: (response) => {
         console.log('API Response for operation types:', response);
         this.operationTypes = response;
@@ -82,6 +82,7 @@ export class OperationRequestDialogComponent implements OnInit {
     (response) => {
       console.log('Operation Request saved successfully:', response);
       // Close the dialog or reset the form after successful save
+      this.dialogRef.close();
     },
     (error) => {
       console.error('Error saving Operation Request:', error);

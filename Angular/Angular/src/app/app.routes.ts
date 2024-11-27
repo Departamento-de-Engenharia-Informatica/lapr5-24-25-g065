@@ -13,15 +13,15 @@ import { UpdatePatientComponent } from './patient/update-patient.component';
 import { DeletePatientComponent } from './patient/delete-patient.component';
 
 export const routes: Routes = [
-    { path: '', component: LoginComponent }, // Remove the duplicate redirect path
-    { path: 'admin-dashboard', component: AdminDashboardComponent }, 
-    { path: 'doctor-dashboard', component: DoctorDashboardComponent },
-    { path: 'nurse-dashboard', component: NurseDashboardComponent },
-    { path: 'technician-dashboard', component: TechnicianDashboardComponent },
-    { path: 'patient-dashboard', component: PatientDashboardComponent },
-    { path: 'operation-dashboard', component: OperationDashboardComponent },
-    { path: '**', component: LoginComponent }, // Redirect unknown routes to login
-    { path: 'register-patient', component: RegisterPatientComponent },
-    { path: 'update-patient/:id', component: UpdatePatientComponent },
-    { path: 'delete-patient/:id', component: DeletePatientComponent }
-  ];
+  { path: '', component: LoginComponent }, // Remove the duplicate redirect path
+  { path: 'admin-dashboard', component: AdminDashboardComponent }, 
+  { path: 'doctor-dashboard', component: DoctorDashboardComponent },
+  { path: 'nurse-dashboard', component: NurseDashboardComponent },
+  { path: 'technician-dashboard', component: TechnicianDashboardComponent },
+  { path: 'patient-dashboard', component: PatientDashboardComponent },
+  { path: 'operation-dashboard', component: OperationDashboardComponent },
+  { path: '**', component: LoginComponent }, // Redirect unknown routes to login
+  { path: 'register-patient', component: RegisterPatientComponent },
+  { path: 'update-patient/:id', component: UpdatePatientComponent },
+  { path: 'delete-patient/:id', component: DeletePatientComponent }
+];

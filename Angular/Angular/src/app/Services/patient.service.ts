@@ -11,7 +11,7 @@ export interface PatientId {
   providedIn: 'root'
 })
 export class PatientService {
-  private baseUrl = 'https://localhost:5001/api/Patient';  // Directly setting the API base URL
+  private baseUrl = 'https://10.9.10.65/api/Patient';  // Directly setting the API base URL
 
   constructor(private http: HttpClient) {}
 
