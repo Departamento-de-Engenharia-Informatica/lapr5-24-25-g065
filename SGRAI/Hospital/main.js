@@ -41,7 +41,7 @@ async function loadWalls() {
   const wallsData = await response.json();
 
   wallsData.forEach(wallData => {
-    const { width, height, depth } = wallData.dimensions; // Desestruturando as dimensões
+    const { width, height, depth } = wallData.dimensions;
     const wall = createWall(
       width,
       height,
@@ -68,7 +68,6 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.25;
 controls.screenSpacePanning = false;
 
-// Configure OrbitControls for the specific requirements
 controls.mouseButtons = {
   LEFT: null, // Unused for now
   RIGHT: THREE.MOUSE.ROTATE, // Orbit with right mouse button
