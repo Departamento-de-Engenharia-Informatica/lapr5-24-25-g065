@@ -12,22 +12,22 @@ export class StaffService {
 
   getStaffs() {
     console.log("getting staffs");
-    return this.http.get<Staff[]>('https://10.9.10.65:5001/api/Staff');
+    return this.http.get<Staff[]>('https://localhost:5001/api/Staff');
   }
 
   createStaff(newStaff: Staff) {
 
-    return this.http.post<Staff>('https://10.9.10.65:5001/api/Staff',newStaff);
+    return this.http.post<Staff>('https://localhost:5001/api/Staff',newStaff);
 
   }
 
   updateStaff(updateStaff: any) {
-    const link = `https://10.9.10.65:5001/api/Staff/${updateStaff.Id}`;
+    const link = `https://localhost:5001/api/Staff/${updateStaff.Id}`;
     return this.http.put<Staff>(link, updateStaff);
   }
 
   deleteStaff(id: StaffId) {
-    const link = `https://10.9.10.65:5001/api/Staff/${id}/hard`;
+    const link = `https://localhost:5001/api/Staff/${id}/hard`;
     return this.http.delete<Staff>(link);
   }
 }
