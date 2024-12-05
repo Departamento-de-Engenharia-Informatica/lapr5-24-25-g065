@@ -138,22 +138,33 @@ let animationStartTime = 0;
 const animationDuration = 4000;
 let isAnimating = false;
 
+function easeOutQuad(t) {
+  return t * (2 - t);
+}
+
 function updateCameraPosition() {
   if (!isAnimating) return;
 
   const elapsedTime = Date.now() - animationStartTime;
-  const progress = Math.min(elapsedTime / animationDuration, 1);
+  let progress = Math.min(elapsedTime / animationDuration, 1);
 
-  camera.position.lerp(cameraStartPosition, 1 - progress);
-  camera.position.lerp(targetCameraPosition, progress);
-  controls.target.lerp(targetCameraPosition, progress);
+  progress = easeOutQuad(progress);
+
+  camera.position.lerpVectors(cameraStartPosition, targetCameraPosition, progress);
+
+  const interpolatedTarget = new THREE.Vector3(
+    targetCameraPosition.x,
+    targetCameraPosition.y - 5,
+    targetCameraPosition.z
+  );
+
+  controls.target.lerp(interpolatedTarget, progress);
 
   if (progress === 1) {
     isAnimating = false;
-    controls.target.set(targetCameraPosition.x, targetCameraPosition.y - 2, targetCameraPosition.z);
+    controls.target.copy(interpolatedTarget);
   }
 }
-
 function animate() {
   requestAnimationFrame(animate);
 
