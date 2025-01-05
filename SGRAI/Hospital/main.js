@@ -42,14 +42,14 @@ const boxPositions = [
 ];
 
 const roomData = [
-  { name: "Room A", description: "This is room A, a spacious area with modern amenities." },
-  { name: "Room B", description: "Room B is ideal for general medical treatments." },
-  { name: "Room C", description: "Room C is used for critical care with state-of-the-art equipment." },
-  { name: "Room D", description: "Room with more space for surgical processes." },
-  { name: "Room E", description: "Room E is a small consultation room." },
-  { name: "Room F", description: "Room F is used for minor surgeries." },
-  { name: "Room G", description: "Room G is an emergency response room." },
-  { name: "Room H", description: "Room with more space for surgical processes" }
+  { name: "Room A |", description: "This is room A, a spacious area with modern amenities." },
+  { name: "Room B |", description: "Room B is ideal for general medical treatments." },
+  { name: "Room C |", description: "Room C is used for critical care with state-of-the-art equipment." },
+  { name: "Room D |", description: "Room with more space for surgical processes." },
+  { name: "Room E |", description: "Room E is a small consultation room." },
+  { name: "Room F |", description: "Room F is used for minor surgeries." },
+  { name: "Room G |", description: "Room G is an emergency response room." },
+  { name: "Room H |", description: "Room with more space for surgical processes" }
 ];
 
 boxPositions.forEach((pos, index) => {
